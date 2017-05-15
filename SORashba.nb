@@ -1,0 +1,2149 @@
+(***********************************************************************
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used on any computer system with Mathematica 3.0,
+MathReader 3.0, or any compatible application. The data for the notebook 
+starts with the line of stars above.
+
+To get the notebook into a Mathematica-compatible application, do one of 
+the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing the 
+word CacheID, otherwise Mathematica-compatible applications may try to 
+use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+***********************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     71350,       1880]*)
+(*NotebookOutlinePosition[     72000,       1903]*)
+(*  CellTagsIndexPosition[     71956,       1899]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SO with Rashba", "Section"],
+
+Cell["The requirement for the Dirac-Weyl equation in 3D is that ", "Text"],
+
+Cell[BoxData[
+    \(\(H = \ 
+      \[HBar]v \((\(k\_x\) \(\[Tau]\_z\) \[Sigma]\_x + \(k\_y\) \[Sigma]\_y)
+            \) + \[CapitalDelta]\ \(s\_z\) \(\[Tau]\_z\) \[Sigma]\_z\  + 
+        m\ \[Sigma]\_z\  + \ 
+        \[CapitalLambda] 
+          \((\[Tau]\_z\ \(\[Sigma]\_x\) s\_y - \(\[Sigma]\_y\) s\_x)\), \)\)],
+   "DisplayFormula"],
+
+Cell[CellGroupData[{
+
+Cell["Wavefunction", "Subsubsection"],
+
+Cell[BoxData[
+    RowBox[{"\[Psi]", " ", "=", 
+      FormBox[
+        RowBox[{"(", "\[NoBreak]", GridBox[{
+              {\(\[Psi]A\[UpArrow]\)},
+              {\(\[Psi]A\[DownArrow]\)},
+              {\(\[Psi]B\[UpArrow]\)},
+              {\(\[Psi]B\[DownArrow]\)}
+              },
+            ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+        "TraditionalForm"]}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Matrix operators", "Subsubsection"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Id = IdentityMatrix[4] // TraditionalForm\)], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+            {"1", "0", "0", "0"},
+            {"0", "1", "0", "0"},
+            {"0", "0", "1", "0"},
+            {"0", "0", "0", "1"}
+            },
+          ColumnAlignments->{Decimal}], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    RowBox[{
+      RowBox[{\(\[Sigma]\_x\), "=", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"0", "0", "1", "0"},
+                {"0", "0", "0", "1"},
+                {"1", "0", "0", "0"},
+                {"0", "1", "0", "0"}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+          "TraditionalForm"]}], ";", "\n", "\n", 
+      RowBox[{\(\[Sigma]\_y\), "=", 
+        RowBox[{"\[ImaginaryI]", 
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {"0", "0", \(-1\), "0"},
+                  {"0", "0", "0", \(-1\)},
+                  {"1", "0", "0", "0"},
+                  {"0", "1", "0", "0"}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"]}]}], ";", "\n", "\[IndentingNewLine]", "\n", 
+      RowBox[{
+        RowBox[{\(\[Sigma]\_z\), "=", 
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {"1", "0", "0", "0"},
+                  {"0", "1", "0", "0"},
+                  {"0", "0", \(-1\), "0"},
+                  {"0", "0", "0", \(-1\)}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"]}], ";"}]}], 
+    RowBox[{"\[IndentingNewLine]", "\n", 
+      RowBox[{
+        RowBox[{\(s\_x\), "=", 
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {"0", "1", "0", "0"},
+                  {"1", "0", "0", "0"},
+                  {"0", "0", "0", "1"},
+                  {"0", "0", "1", "0"}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"]}], ";"}]}], 
+    RowBox[{"\n", "\n", 
+      RowBox[{
+        RowBox[{\(s\_y\), "=", 
+          RowBox[{
+            FormBox["\[ImaginaryI]",
+              "TraditionalForm"], 
+            FormBox[
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                    {"0", \(-1\), "0", "0"},
+                    {"1", "0", "0", "0"},
+                    {"0", "0", "0", \(-1\)},
+                    {"0", "0", "1", "0"}
+                    },
+                  ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+              "TraditionalForm"]}]}], ";"}]}], 
+    RowBox[{"\n", "\n", 
+      RowBox[{
+        RowBox[{\(s\_z\), "=", 
+          FormBox[
+            FormBox[
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                    {"1", "0", "0", "0"},
+                    {"0", \(-1\), "0", "0"},
+                    {"0", "0", "1", "0"},
+                    {"0", "0", "0", \(-1\)}
+                    },
+                  ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+              "TraditionalForm"],
+            "TraditionalForm"]}], ";"}]}]}], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Eigensystem for K states", "Subsubsection"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\ v \((\(k\_x\) \[Sigma]\_x + \(k\_y\) \[Sigma]\_y)\) + 
+        \[CapitalDelta]\ s\_z.\[Sigma]\_z + \ m\ \[Sigma]\_z\  + 
+        \[CapitalLambda] \((\[Sigma]\_x.s\_y - \[Sigma]\_y.s\_x)\)\ \  // 
+      TraditionalForm\)\)], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(m + \[CapitalDelta]\), "0", 
+              \(v\ \((k\_x - \[ImaginaryI]\ k\_y)\)\), "0"},
+           
+             {"0", \(m - \[CapitalDelta]\), 
+              \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(v\ \((k\_x - \[ImaginaryI]\ k\_y)\)\)},
+           
+             {\(v\ \((k\_x + \[ImaginaryI]\ k\_y)\)\), 
+              \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(\(-m\) - \[CapitalDelta]\), "0"},
+           
+             {"0", \(v\ \((k\_x + \[ImaginaryI]\ k\_y)\)\), "0", 
+              \(\[CapitalDelta] - m\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+           
+             {\(m + \[CapitalDelta]\), "0", 
+              \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+              "0"},
+           
+             {"0", \(m - \[CapitalDelta]\), 
+              \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\)},
+           
+             {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+              \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(\(-m\) - \[CapitalDelta]\), "0"},
+           
+             {"0", \(v\ k\ 
+                \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+              \(\[CapitalDelta] - m\)}
+            }], "\[NoBreak]", ")"}], TraditionalForm]], "Input",
+  FormatType->StandardForm],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"\[CapitalDelta]", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0"},
+               
+                 {"0", \(-\[CapitalDelta]\), 
+                  \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                        \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                  \(-\[CapitalDelta]\), "0"},
+               
+                 {"0", \(v\ k\ 
+                    \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+                  "\[CapitalDelta]"}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//", "FullSimplify"}]], "Input"],
+
+Cell[BoxData[
+    \({{\(-\@\(k\^2\ v\^2 + \((\[CapitalDelta] - \[CapitalLambda])\)\^2\)\) + 
+          \[CapitalLambda], 
+        \@\(k\^2\ v\^2 + \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) + 
+          \[CapitalLambda], 
+        \(-\[CapitalLambda]\) - 
+          \@\(k\^2\ v\^2 + \((\[CapitalDelta] + \[CapitalLambda])\)\^2\), 
+        \(-\[CapitalLambda]\) + 
+          \@\(k\^2\ v\^2 + \((\[CapitalDelta] + \[CapitalLambda])\)\^2\)}, {{
+          \(-\[ImaginaryI]\)\ 
+            \[ExponentialE]\^\(\(-2\)\ \[ImaginaryI]\ \[Theta]\), 
+          \(-\(\(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+                  \((\[CapitalDelta] + 
+                      \@\(k\^2\ v\^2 + 
+                          \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) - 
+                      \[CapitalLambda])\)\)\/\(k\ v\)\)\), 
+          \(\[ImaginaryI]\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\[CapitalDelta] + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) - 
+                  \[CapitalLambda])\)\)\/\(k\ v\), 1}, {
+          \(-\[ImaginaryI]\)\ 
+            \[ExponentialE]\^\(\(-2\)\ \[ImaginaryI]\ \[Theta]\), 
+          \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\(-\[CapitalDelta]\) + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) + 
+                  \[CapitalLambda])\)\)\/\(k\ v\), 
+          \(-\(\(\[ImaginaryI]\ 
+                  \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+                  \((\(-\[CapitalDelta]\) + 
+                      \@\(k\^2\ v\^2 + 
+                          \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) + 
+                      \[CapitalLambda])\)\)\/\(k\ v\)\)\), 1}, {
+          \[ImaginaryI]\ 
+            \[ExponentialE]\^\(\(-2\)\ \[ImaginaryI]\ \[Theta]\), 
+          \(-\(\(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+                  \((\[CapitalDelta] + \[CapitalLambda] + 
+                      \@\(k\^2\ v\^2 + 
+                          \((\[CapitalDelta] + \[CapitalLambda])\)\^2\))
+                    \)\)\/\(k\ v\)\)\), 
+          \(-\(\(\[ImaginaryI]\ 
+                  \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+                  \((\[CapitalDelta] + \[CapitalLambda] + 
+                      \@\(k\^2\ v\^2 + 
+                          \((\[CapitalDelta] + \[CapitalLambda])\)\^2\))
+                    \)\)\/\(k\ v\)\)\), 1}, {
+          \[ImaginaryI]\ 
+            \[ExponentialE]\^\(\(-2\)\ \[ImaginaryI]\ \[Theta]\), 
+          \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\(-\[CapitalDelta]\) - \[CapitalLambda] + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] + \[CapitalLambda])\)\^2\))\)\)\/\(k
+              \ v\), \(\[ImaginaryI]\ 
+              \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\(-\[CapitalDelta]\) - \[CapitalLambda] + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] + \[CapitalLambda])\)\^2\))\)\)\/\(k
+              \ v\), 1}}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    RowBox[{" ", 
+      RowBox[{
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {\(\(\[MinusPlus]i\)\ v\ k\ 
+                    \[ExponentialE]\^\(\(-\[ImaginaryI]\) \[Theta]\)\)},
+                {\(\[Epsilon] - \[CapitalDelta]\)},
+                {\(\[PlusMinus]\ \(i(\[Epsilon] - \[CapitalDelta])\)\)},
+                {
+                  RowBox[{"v", " ", "k", " ", 
+                    FormBox[\(\[ExponentialE]\^\(\[ImaginaryI]  \[Theta]\)\),
+                      "TraditionalForm"]}]}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "//", "TeXForm"}]}]], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+    \(\[Epsilon]\_p\%b = 
+          p\ \[CapitalLambda] + 
+            b \@\(\( k\^2\) v\^2 + 
+                  \((\[CapitalDelta] - p\ \[CapitalLambda])\)\^2\))\), ",", 
+      " ", 
+      FormBox[
+        RowBox[{"(", "\[NoBreak]", GridBox[{
+             
+               {\(\(-b\) \[ImaginaryI]  v  k 
+                   \[ExponentialE]\^\(\(-\[ImaginaryI]\) \[Theta]\)\)},
+              {\(\[Epsilon] - \[CapitalDelta]\)},
+              {\(b\ \(\[ImaginaryI](\[Epsilon] - \[CapitalDelta])\)\)},
+              {
+                RowBox[{"v", " ", "k", " ", 
+                  FormBox[\(\[ExponentialE]\^\(\[ImaginaryI]  \[Theta]\)\),
+                    "TraditionalForm"]}]}
+              }], "\[NoBreak]", ")"}],
+        "TraditionalForm"]}]], "Input"],
+
+Cell[BoxData[{
+    \(v =. ; \nb =. \), 
+    \(\tky =. \)}], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"0", "0", \(\(-\[ImaginaryI]\)\ v\ \((Dx\  + ky)\)\), "0"},
+               
+                 {"0", "0", \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                  \(\(-\[ImaginaryI]\)\ v\ \((Dx\  + ky)\)\)},
+               
+                 {\(\(-\[ImaginaryI]\)\ v\ \((Dx\  - ky)\)\), 
+                  \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), "0", "0"},
+                {"0", \(\(-\[ImaginaryI]\)\ v\ \((Dx\  - ky)\)\), "0", "0"}
+                }], "\[NoBreak]", ")"}], ".", "\n", "\t", 
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {\(f[x]\  + d[x]\)},
+                {\(\[Alpha](f[\(-x\)] - d[x])\)},
+                {\(\[Beta](f[x] - d[\(-x\)])\)},
+                {\(\[Gamma](f[\(-x\)] + d[\(-x\)])\)}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}], "//", 
+        "TraditionalForm"}], TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(\(-\[ImaginaryI]\)\ \((Dx + ky)\)\ v\ 
+                \(\[Beta](f(x) - d(\(-x\)))\)\)},
+           
+             {\(2\ \[ImaginaryI]\ \[CapitalLambda]\ 
+                  \(\[Beta](f(x) - d(\(-x\)))\) - 
+                \[ImaginaryI]\ \((Dx + ky)\)\ v\ 
+                  \(\[Gamma](d(\(-x\)) + f(\(-x\)))\)\)},
+           
+             {\(\(-\[ImaginaryI]\)\ \((Dx - ky)\)\ v\ \((d(x) + f(x))\) - 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ 
+                  \(\[Alpha](f(\(-x\)) - d(x))\)\)},
+           
+             {\(\(-\[ImaginaryI]\)\ \((Dx - ky)\)\ v\ 
+                \(\[Alpha](f(\(-x\)) - d(x))\)\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Analogy with Graphene bilayers:", "Subsubsection"],
+
+Cell[BoxData[
+    RowBox[{"\[Psi]", " ", "=", 
+      RowBox[{
+        RowBox[{
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {\(\[Psi]A\[UpArrow]\)},
+                  {\(\[Psi]A\[DownArrow]\)},
+                  {\(\[Psi]B\[UpArrow]\)},
+                  {\(\[Psi]B\[DownArrow]\)}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"], "\[Implies]", "\[Psi]"}], " ", "=", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {\(\[Psi]A~\)},
+                {"\[Psi]A"},
+                {\(\[Psi]B~\)},
+                {"\[Psi]B"}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+          "TraditionalForm"]}]}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"0", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0"},
+               
+                 {"0", "0", \(2  g\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                        \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   \(2  g\), "0", "0"},
+               
+                 {"0", \(v\ k\ 
+                    \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+                  "0"}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//", "FullSimplify"}]], "Input"],
+
+Cell[BoxData[
+    \({{\(-g\) - \@\(g\^2 + k\^2\ v\^2\), g - \@\(g\^2 + k\^2\ v\^2\), 
+        \(-g\) + \@\(g\^2 + k\^2\ v\^2\), 
+        g + \@\(g\^2 + k\^2\ v\^2\)}, {{\(-E\^\(\(-2\)\ I\ \[Theta]\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((g + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\)\)\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ \((g + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k
+              \ v\), 1}, {E\^\(\(-2\)\ I\ \[Theta]\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\)\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\)\)\), 
+          1}, {\(-E\^\(\(-2\)\ I\ \[Theta]\)\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ 
+              \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\)\)\), 
+          1}, {E\^\(\(-2\)\ I\ \[Theta]\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ \((g + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k
+              \ v\), \(E\^\(\(-I\)\ \[Theta]\)\ 
+              \((g + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\), 1}}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    RowBox[{
+    \(\[Epsilon]\_\[PlusMinus]\%\(p, b\) = 
+          p\ g + b \@\(\( k\^2\) v\^2 + \ g\^2\))\), ",", " ", 
+      FormBox[
+        RowBox[{"(", "\[NoBreak]", GridBox[{
+             
+               {\(\(-b\)\ 
+                  vk\[ExponentialE]\^\(\(-\[ImaginaryI]\) \[Theta]\)\)},
+              {"\[Epsilon]"},
+              {\(b\ \[Epsilon]\)},
+              {
+                RowBox[{"v", " ", "k", " ", 
+                  FormBox[\(\[ExponentialE]\^\(\[ImaginaryI]  \[Theta]\)\),
+                    "TraditionalForm"]}]}
+              }], "\[NoBreak]", ")"}],
+        "TraditionalForm"]}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"m", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0"},
+               
+                 {"0", \(-m\), \(2  g\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                        \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   \(2  g\), \(-m\), "0"},
+               
+                 {"0", \(v\ k\ 
+                    \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+                  "m"}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//", "\n", "\t", "FullSimplify"}]], 
+  "Input"],
+
+Cell[BoxData[
+    \({{g - \@\(\((g - m)\)\^2 + k\^2\ v\^2\), 
+        g + \@\(\((g - m)\)\^2 + k\^2\ v\^2\), 
+        \(-g\) - \@\(\((g + m)\)\^2 + k\^2\ v\^2\), 
+        \(-g\) + \@\(\((g + m)\)\^2 + k\^2\ v\^2\)}, {{
+          E\^\(\(-2\)\ I\ \[Theta]\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((\(-g\) + m + \@\(\((g - m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k
+                  \ v\)\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((\(-g\) + m + \@\(\((g - m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k
+                  \ v\)\)\), 1}, {E\^\(\(-2\)\ I\ \[Theta]\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ 
+              \((g - m + \@\(\((g - m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ 
+              \((g - m + \@\(\((g - m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\), 
+          1}, {\(-E\^\(\(-2\)\ I\ \[Theta]\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((g + m + \@\(\((g + m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k\ v
+                  \)\)\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ 
+              \((g + m + \@\(\((g + m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k\ v\), 
+          1}, {\(-E\^\(\(-2\)\ I\ \[Theta]\)\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ 
+              \((\(-g\) - m + \@\(\((g + m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k\ v
+              \), \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ 
+                  \((\(-g\) - m + \@\(\((g + m)\)\^2 + k\^2\ v\^2\))\)\)\/\(k
+                  \ v\)\)\), 1}}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \( (*\ Or\ alternate\ "\<natural\>" mapping\ *) \)], "Input"],
+
+Cell[BoxData[
+    RowBox[{"\[Psi]", " ", "=", 
+      RowBox[{
+        RowBox[{
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {\(\[Psi]A\[UpArrow]\)},
+                  {\(\[Psi]A\[DownArrow]\)},
+                  {\(\[Psi]B\[UpArrow]\)},
+                  {\(\[Psi]B\[DownArrow]\)}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"], "\[Implies]", "\[Psi]"}], " ", "=", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"\[Psi]A"},
+                {\(\[Psi]A~\)},
+                {"\[Psi]B"},
+                {\(\[Psi]B~\)}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+          "TraditionalForm"]}]}]], "Input"],
+
+Cell[BoxData[
+    \( (*\ K\ \(states : \)*) \)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"0", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   \(2  g\)},
+               
+                 {"0", "0", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                        \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0", "0", "0"},
+               
+                 {\(2  g\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0", "0"}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//", "FullSimplify"}]], "Input"],
+
+Cell[BoxData[
+    \({{\(-g\) - \@\(g\^2 + k\^2\ v\^2\), g - \@\(g\^2 + k\^2\ v\^2\), 
+        \(-g\) + \@\(g\^2 + k\^2\ v\^2\), 
+        g + \@\(g\^2 + k\^2\ v\^2\)}, {{\(-1\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(g + 
+                  \@\(g\^2 + k\^2\ v\^2\)\)\)\), 
+          \(E\^\(I\ \[Theta]\)\ \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k
+              \ v\), 1}, {1, 
+          \(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(g - \@\(g\^2 + k\^2\ v\^2\)\), 
+          \(-\(\(E\^\(I\ \[Theta]\)\ \((g + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k
+                  \ v\)\)\), 1}, {\(-1\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(\(-g\) + 
+              \@\(g\^2 + k\^2\ v\^2\)\), 
+          \(-\(\(E\^\(I\ \[Theta]\)\ \((g + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k
+                  \ v\)\)\), 1}, {1, 
+          \(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(g + \@\(g\^2 + k\^2\ v\^2\)\), 
+          \(E\^\(I\ \[Theta]\)\ \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))\)\)\/\(k
+              \ v\), 1}}}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"m", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   \(2  g\)},
+               
+                 {"0", \(-m\), "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                        \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0", "m", "0"},
+               
+                 {\(2  g\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0", \(-m\)}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//", "FullSimplify"}]], "Input"],
+
+Cell[BoxData[
+    \({{\(-
+          \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+              2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)\), 
+        \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+            2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\), 
+        \(-\@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+              2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)\), 
+        \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+            2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)}, {{
+          \(-\(\((g\ \((
+                  m + \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                        2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))\)/
+              \((g\^2 - \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) + 
+                  m\ \((m + 
+                      \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                          2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))
+                \)\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(\(-m\) + 
+                  \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)\)\)\), 
+          \((E\^\(I\ \[Theta]\)\ g\ k\ v)\)/
+            \((g\^2 - \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) + 
+                m\ \((m + 
+                    \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                        2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))
+              \), 1}, {
+          \((g\ \((
+                \(-m\) + 
+                  \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))\)/
+            \((g\^2 + m\^2 - \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) - 
+                m\ \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(m + 
+              \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                  2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)\), 
+          \((E\^\(I\ \[Theta]\)\ g\ k\ v)\)/
+            \((g\^2 + m\^2 - \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) - 
+                m\ \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 - 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\), 
+          1}, {\(-\(\((
+                g\ \((m + 
+                    \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                        2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))\)/
+              \((g\^2 + \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) + 
+                  m\ \((m + 
+                      \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                          2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))
+                \)\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(\(-m\) + 
+                  \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)\)\)\), 
+          \((E\^\(I\ \[Theta]\)\ g\ k\ v)\)/
+            \((g\^2 + \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) + 
+                m\ \((m + 
+                    \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                        2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))
+              \), 1}, {
+          \((g\ \((
+                \(-m\) + 
+                  \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\))\)/
+            \((g\^2 + m\^2 + \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) - 
+                m\ \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ k\ v\)\/\(m + 
+              \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                  2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\)\), 
+          \((E\^\(I\ \[Theta]\)\ g\ k\ v)\)/
+            \((g\^2 + m\^2 + \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\) - 
+                m\ \@\(2\ g\^2 + m\^2 + k\^2\ v\^2 + 
+                      2\ \@\(g\^4 + k\^2\ \((g\^2 + m\^2)\)\ v\^2\)\))\), 1}}}
+      \)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \( (*\ K'\ \(states : \)*) \)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"0", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\), 
+                  \(2  g\)},
+               
+                 {"0", "0", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0", "0", "0"},
+               
+                 {\(2  g\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0", "0"}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//", "FullSimplify"}]], "Input"],
+
+Cell[BoxData[
+    \({{\(-g\) - \@\(g\^2 + k\^2\ v\^2\), g - \@\(g\^2 + k\^2\ v\^2\), 
+        \(-g\) + \@\(g\^2 + k\^2\ v\^2\), 
+        g + \@\(g\^2 + k\^2\ v\^2\)}, {{\(-1\), 
+          \(-\(\(E\^\(I\ \[Theta]\)\ k\ v\)\/\(g + 
+                  \@\(g\^2 + k\^2\ v\^2\)\)\)\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))
+              \)\)\/\(k\ v\), 1}, {1, 
+          \(E\^\(I\ \[Theta]\)\ k\ v\)\/\(g - \@\(g\^2 + k\^2\ v\^2\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ \((g + \@\(g\^2 + k\^2\ v\^2\))
+                  \)\)\/\(k\ v\)\)\), 1}, {\(-1\), 
+          \(E\^\(I\ \[Theta]\)\ k\ v\)\/\(\(-g\) + \@\(g\^2 + k\^2\ v\^2\)\), 
+          \(-\(\(E\^\(\(-I\)\ \[Theta]\)\ \((g + \@\(g\^2 + k\^2\ v\^2\))
+                  \)\)\/\(k\ v\)\)\), 1}, {1, 
+          \(E\^\(I\ \[Theta]\)\ k\ v\)\/\(g + \@\(g\^2 + k\^2\ v\^2\)\), 
+          \(E\^\(\(-I\)\ \[Theta]\)\ \((\(-g\) + \@\(g\^2 + k\^2\ v\^2\))
+              \)\)\/\(k\ v\), 1}}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \( (*\ K\ states\ again\ *) \)], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"Eigensystem", "[", 
+        FormBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+               
+                 {"m", "0", 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                   "0"},
+               
+                 {"0", \(-m\), \(2\ g\), 
+                  \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                        \[Theta]\)\)},
+               
+                 {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                   \(2  g\), \(-m\), "0"},
+               
+                 {"0", \(v\ k\ 
+                    \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+                  \(-m\)}
+                }], "\[NoBreak]", ")"}],
+          "TraditionalForm"], "]"}], "//"}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Eigensystem for K' states", "Subsubsection"],
+
+Cell[BoxData[
+    \(k =. \)], "Input"],
+
+Cell[BoxData[
+    \(v =. \)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\ v \((\(-k\_x\) \[Sigma]\_x + \(k\_y\) \[Sigma]\_y)\) - 
+        \[CapitalDelta]\ s\_z.\[Sigma]\_z\  + 
+        \[CapitalLambda] \((\(-\ \[Sigma]\_x.s\_y\) - \[Sigma]\_y.s\_x)\) // 
+      TraditionalForm\)\)], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(-\[CapitalDelta]\), "0", 
+              \(v\ \((\(-k\_x\) - \[ImaginaryI]\ k\_y)\)\), 
+              \(2\ \[ImaginaryI]\ \[CapitalLambda]\)},
+           
+             {"0", "\[CapitalDelta]", "0", 
+              \(v\ \((\(-k\_x\) - \[ImaginaryI]\ k\_y)\)\)},
+           
+             {\(v\ \((\[ImaginaryI]\ k\_y - k\_x)\)\), "0", "\[CapitalDelta]",
+               "0"},
+           
+             {\(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(v\ \((\[ImaginaryI]\ k\_y - k\_x)\)\), "0", 
+              \(-\[CapitalDelta]\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+           
+             {\(-\[CapitalDelta]\), "0", 
+              \(\(-v\)\ \ k\ 
+                \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+              \(2\ \[ImaginaryI]\ \[CapitalLambda]\)},
+           
+             {"0", "\[CapitalDelta]", "0", 
+              \(\(-v\)\ \ k\ 
+                \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\)},
+           
+             {\(\(-v\)\ \ k\ 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+              "\[CapitalDelta]", "0"},
+           
+             {\(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(\(-v\)\ \ k\ 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+              \(-\[CapitalDelta]\)}
+            }], "\[NoBreak]", ")"}], TraditionalForm]], "Input",
+  FormatType->StandardForm],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        RowBox[{"Eigensystem", "[", 
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                 
+                   {\(-\[CapitalDelta]\), "0", 
+                    \(v\ \ k\ 
+                      \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+                    \(2\ \[ImaginaryI]\ \[CapitalLambda]\)},
+                 
+                   {"0", "\[CapitalDelta]", "0", 
+                    \(v\ \ k\ 
+                      \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\)},
+                 
+                   {\(v\ \ k\ 
+                      \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                    "0", "\[CapitalDelta]", "0"},
+                 
+                   {\(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(v\ \ k\ 
+                      \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                    "0", \(-\[CapitalDelta]\)}
+                  }], "\[NoBreak]", ")"}],
+            "TraditionalForm"], "]"}], "//", "FullSimplify"}], "//", 
+      "TrigToExp"}]], "Input"],
+
+Cell[BoxData[
+    \({{\(-\@\(k\^2\ v\^2 + \((\[CapitalDelta] - \[CapitalLambda])\)\^2\)\) + 
+          \[CapitalLambda], 
+        \@\(k\^2\ v\^2 + \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) + 
+          \[CapitalLambda], 
+        \(-\[CapitalLambda]\) - 
+          \@\(k\^2\ v\^2 + \((\[CapitalDelta] + \[CapitalLambda])\)\^2\), 
+        \(-\[CapitalLambda]\) + 
+          \@\(k\^2\ v\^2 + \((\[CapitalDelta] + \[CapitalLambda])\)\^2\)}, {{
+          \[ImaginaryI], 
+          \(-\(\(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+                  \((\(-\[CapitalDelta]\) + 
+                      \@\(k\^2\ v\^2 + 
+                          \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) + 
+                      \[CapitalLambda])\)\)\/\(k\ v\)\)\), 
+          \(-\(\(\[ImaginaryI]\ \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ 
+                  k\ v\)\/\(\[CapitalDelta] + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) - 
+                  \[CapitalLambda]\)\)\), 1}, {\[ImaginaryI], 
+          \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\[CapitalDelta] + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) - 
+                  \[CapitalLambda])\)\)\/\(k\ v\), 
+          \(\[ImaginaryI]\ \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v
+              \)\/\(\(-\[CapitalDelta]\) + 
+              \@\(k\^2\ v\^2 + 
+                  \((\[CapitalDelta] - \[CapitalLambda])\)\^2\) + 
+              \[CapitalLambda]\), 1}, {\(-\[ImaginaryI]\), 
+          \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\[CapitalDelta] + \[CapitalLambda] - 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] + \[CapitalLambda])\)\^2\))\)\)\/\(k
+              \ v\), \(\[ImaginaryI]\ 
+              \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v
+              \)\/\(\[CapitalDelta] + \[CapitalLambda] + 
+              \@\(k\^2\ v\^2 + 
+                  \((\[CapitalDelta] + \[CapitalLambda])\)\^2\)\), 1}, {
+          \(-\[ImaginaryI]\), 
+          \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ 
+              \((\[CapitalDelta] + \[CapitalLambda] + 
+                  \@\(k\^2\ v\^2 + 
+                      \((\[CapitalDelta] + \[CapitalLambda])\)\^2\))\)\)\/\(k
+              \ v\), \(\[ImaginaryI]\ 
+              \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v
+              \)\/\(\[CapitalDelta] + \[CapitalLambda] - 
+              \@\(k\^2\ v\^2 + 
+                  \((\[CapitalDelta] + \[CapitalLambda])\)\^2\)\), 1}}}\)], 
+  "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    RowBox[{\(\[Epsilon]\_\[PlusMinus]\%b = 
+        b \((\[CapitalLambda] \[PlusMinus] \@\(k\^2\ v\^2 + \
+\((\[CapitalDelta] - \[CapitalLambda])\)\^2\))\)\), ",", 
+      FormBox[
+        RowBox[{"(", "\[NoBreak]", GridBox[{
+              {"\[ImaginaryI]"},
+              {\(\(\ \)\(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ \
+\((\[Epsilon] + \[CapitalDelta] - 2  \[CapitalLambda])\)/kv\)\)},
+              {
+                RowBox[{
+                "\[ImaginaryI]", 
+                  " ", \(\[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\), " ", 
+                  "v", " ", 
+                  RowBox[{"k", "/", 
+                    RowBox[{"(", 
+                      FormBox[\(\[Epsilon] - \[CapitalDelta]\),
+                        "TraditionalForm"], ")"}]}]}]},
+              {"1"}
+              }], "\[NoBreak]", ")"}],
+        "TraditionalForm"]}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Series[\@\(A^2 + B^2\), {B, 0, 3}]\)], "Input"],
+
+Cell[BoxData[
+    InterpretationBox[
+      RowBox[{\(\@A\^2\), "+", \(B\^2\/\(2\ \@A\^2\)\), "+", 
+        InterpretationBox[\(O[B]\^4\),
+          SeriesData[ B, 0, {}, 0, 4, 1]]}],
+      SeriesData[ B, 0, {
+        Power[ 
+          Power[ A, 2], 
+          Rational[ 1, 2]], 0, 
+        Times[ 
+          Rational[ 1, 2], 
+          Power[ 
+            Power[ A, 2], 
+            Rational[ -1, 2]]]}, 0, 4, 1]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(2 \((ee - dd)\)^2 \((ee^2 - dd^2 - vky^2)\) + 
+        \((vky^2 - \((ee - dd)\)^2)\)^2 + \((ee^2 + dd^2 - vky^2)\)^2 - 
+        4  ll^2 \((ee - dd)\)^2 // FullSimplify\)], "Input"],
+
+Cell[BoxData[
+    \(4\ ee\^2\ \((2\ dd\^2 - 2\ dd\ ee + ee\^2)\) - 
+      4\ \((dd - ee)\)\^2\ ll\^2 - 
+      2\ \((3\ dd\^2 - 4\ dd\ ee + 3\ ee\^2)\)\ vky\^2 + 2\ vky\^4\)], 
+  "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(% - 2 \((ee^2 - dd^2 - vky^2)\) \((vky)\)^2 // FullSimplify\)], "Input"],
+
+Cell[BoxData[
+    \($Aborted\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Series[\((Tan[p\ x]/Tan[q\ x]\  + \ Tan[q\ x]/Tan[p\ x])\), {x, 0, 6}]
+         // Simplify\)], "Input"],
+
+Cell[BoxData[
+    InterpretationBox[
+      RowBox[{
+      \((p\/q + q\/p)\), "+", \(\(\((p\^2 - q\^2)\)\^2\ x\^2\)\/\(3\ p\ q\)\),
+         "+", \(\(2\ \((p\^2 - q\^2)\)\^2\ \((p\^2 + q\^2)\)\ x\^4\)\/\(15\ p
+              \ q\)\), "+", 
+        \(\(\((p\^2 - q\^2)\)\^2\ \((51\ p\^4 + 58\ p\^2\ q\^2 + 51\ q\^4)\)\ 
+              x\^6\)\/\(945\ p\ q\)\), "+", 
+        InterpretationBox[\(O[x]\^7\),
+          SeriesData[ x, 0, {}, 0, 7, 1]]}],
+      SeriesData[ x, 0, {
+        Plus[ 
+          Times[ p, 
+            Power[ q, -1]], 
+          Times[ 
+            Power[ p, -1], q]], 0, 
+        Times[ 
+          Rational[ 1, 3], 
+          Power[ p, -1], 
+          Power[ q, -1], 
+          Power[ 
+            Plus[ 
+              Power[ p, 2], 
+              Times[ -1, 
+                Power[ q, 2]]], 2]], 0, 
+        Times[ 
+          Rational[ 2, 15], 
+          Power[ p, -1], 
+          Power[ q, -1], 
+          Power[ 
+            Plus[ 
+              Power[ p, 2], 
+              Times[ -1, 
+                Power[ q, 2]]], 2], 
+          Plus[ 
+            Power[ p, 2], 
+            Power[ q, 2]]], 0, 
+        Times[ 
+          Rational[ 1, 945], 
+          Power[ p, -1], 
+          Power[ q, -1], 
+          Power[ 
+            Plus[ 
+              Power[ p, 2], 
+              Times[ -1, 
+                Power[ q, 2]]], 2], 
+          Plus[ 
+            Times[ 51, 
+              Power[ p, 4]], 
+            Times[ 58, 
+              Power[ p, 2], 
+              Power[ q, 2]], 
+            Times[ 51, 
+              Power[ q, 4]]]]}, 0, 7, 1]]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \( (*\ Tami' s\ \(suggestion : \ SuperSymmetry\)\ *) \)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                 
+                   {"\[CapitalDelta]", "0", 
+                    \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                          \[Theta]\)\), "0"},
+                 
+                   {"0", \(-\[CapitalDelta]\), 
+                    \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                          \[Theta]\)\)},
+                 
+                   {\(v\ k\ 
+                      \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                    \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(-\[CapitalDelta]\), "0"},
+                 
+                   {"0", \(v\ k\ 
+                      \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                    "0", "\[CapitalDelta]"}
+                  }], "\[NoBreak]", ")"}],
+            "TraditionalForm"], ".", 
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                 
+                   {"\[CapitalDelta]", "0", 
+                    \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                          \[Theta]\)\), "0"},
+                 
+                   {"0", \(-\[CapitalDelta]\), 
+                    \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                          \[Theta]\)\)},
+                 
+                   {\(v\ k\ 
+                      \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                    \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(-\[CapitalDelta]\), "0"},
+                 
+                   {"0", \(v\ k\ 
+                      \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                    "0", "\[CapitalDelta]"}
+                  }], "\[NoBreak]", ")"}],
+            "TraditionalForm"]}], "//", "TraditionalForm"}], 
+      TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(k\^2\ v\^2 + \[CapitalDelta]\^2\), 
+              \(\(-2\)\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\), "0", "0"},
+           
+             {\(2\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\), 
+              \(k\^2\ v\^2 + \[CapitalDelta]\^2 + 4\ \[CapitalLambda]\^2\), 
+              \(\(-4\)\ \[ImaginaryI]\ \[CapitalDelta]\ \[CapitalLambda]\), 
+              "0"},
+           
+             {"0", \(4\ \[ImaginaryI]\ \[CapitalDelta]\ \[CapitalLambda]\), 
+              \(k\^2\ v\^2 + \[CapitalDelta]\^2 + 4\ \[CapitalLambda]\^2\), 
+              \(\(-2\)\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\)},
+           
+             {"0", "0", 
+              \(2\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\), \(k\^2\ v\^2 + \[CapitalDelta]\^2\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(% /. \[CapitalDelta] -> 0 // TraditionalForm\)], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(k\^2\ v\^2\), 
+              \(\(-2\)\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\), "0", "0"},
+           
+             {\(2\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\), \(k\^2\ v\^2 + 4\ \[CapitalLambda]\^2\), 
+              "0", "0"},
+           
+             {"0", "0", \(k\^2\ v\^2 + 4\ \[CapitalLambda]\^2\), 
+              \(\(-2\)\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\)},
+           
+             {"0", "0", 
+              \(2\ \[ImaginaryI]\ 
+                \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v\ 
+                \[CapitalLambda]\), \(k\^2\ v\^2\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \( (*\ Try\ A + B\ and\ A - B\ basis\ *) \)], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {\(\[Psi]A\[UpArrow]\)},
+                  {\(\[Psi]A\[DownArrow]\)},
+                  {\(\[Psi]B\[UpArrow]\)},
+                  {\(\[Psi]B\[DownArrow]\)}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"], "+", 
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {\(\[Psi]B\[UpArrow]\)},
+                {\(\[Psi]B\[DownArrow]\)},
+                {\(\[Psi]A\[UpArrow]\)},
+                {\(\[Psi]A\[DownArrow]\)}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}], ",", 
+        RowBox[{
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {\(\[Psi]A\[UpArrow]\)},
+                  {\(\[Psi]A\[DownArrow]\)},
+                  {\(\[Psi]B\[UpArrow]\)},
+                  {\(\[Psi]B\[DownArrow]\)}
+                  },
+                ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}],
+            "TraditionalForm"], "-", 
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {\(\[Psi]B\[UpArrow]\)},
+                {\(\[Psi]B\[DownArrow]\)},
+                {\(\[Psi]A\[UpArrow]\)},
+                {\(\[Psi]A\[DownArrow]\)}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}]}], 
+      TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+           
+             {\(-\[CapitalDelta]\), "0", 
+              \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+              \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\)},
+           
+             {"0", \(+\[CapitalDelta]\), "0", 
+              \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\)},
+           
+             {\(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+              "0", \(+\[CapitalDelta]\), "0"},
+           
+             {\(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+              \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+              "0", \(-\[CapitalDelta]\)}
+            }], "\[NoBreak]", ")"}], TraditionalForm]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{
+          RowBox[{
+            RowBox[{
+              FormBox[
+                RowBox[{"(", "\[NoBreak]", GridBox[{
+                     
+                       {"\[CapitalDelta]", "0", 
+                        \(v\ k\ 
+                          \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                         "0"},
+                     
+                       {"0", \(-\[CapitalDelta]\), 
+                        \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                        \(v\ k\ 
+                          \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                              \[Theta]\)\)},
+                     
+                       {\(v\ k\ 
+                          \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                         \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                        \(-\[CapitalDelta]\), "0"},
+                     
+                       {"0", \(v\ k\ 
+                          \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                         "0", "\[CapitalDelta]"}
+                      }], "\[NoBreak]", ")"}],
+                "TraditionalForm"], ".", 
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                    {"\[Psi]Au"},
+                    {"\[Psi]Ad"},
+                    {"\[Psi]Bu"},
+                    {"\[Psi]Bd"}
+                    },
+                  ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}], "+", 
+            RowBox[{
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                   
+                     {\(-\[CapitalDelta]\), "0", 
+                      \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ 
+                            \[Theta]\)\), 
+                      \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\)},
+                   
+                     {"0", \(+\[CapitalDelta]\), "0", 
+                      \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ 
+                            \[Theta]\)\)},
+                   
+                     {\(v\ k\ 
+                        \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+                      "0", \(+\[CapitalDelta]\), "0"},
+                   
+                     {\(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                      \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                            \[Theta]\)\), "0", \(-\[CapitalDelta]\)}
+                    }], "\[NoBreak]", ")"}], ".", 
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                    {"\[Psi]Bu"},
+                    {"\[Psi]Bd"},
+                    {"\[Psi]Au"},
+                    {"\[Psi]Ad"}
+                    },
+                  ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}]}], "//",
+           "TraditionalForm"}], "//", "Simplify"}], TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\ \[Psi]Ad + 
+                \[CapitalDelta]\ \((\[Psi]Au - \[Psi]Bu)\) + 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ \((
+                  \[ExponentialE]\^\(2\ \[ImaginaryI]\ \[Theta]\)\ \[Psi]Au + 
+                    \[Psi]Bu)\)\)},
+           
+             {\(\[CapitalDelta]\ \((\[Psi]Bd - \[Psi]Ad)\) + 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ \((
+                  \[ExponentialE]\^\(2\ \[ImaginaryI]\ \[Theta]\)\ \[Psi]Ad + 
+                    \[Psi]Bd)\) + 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ \[Psi]Bu\)},
+           
+             {\(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\ \[Psi]Ad + 
+                \[CapitalDelta]\ \((\[Psi]Au - \[Psi]Bu)\) + 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ \((
+                  \[ExponentialE]\^\(2\ \[ImaginaryI]\ \[Theta]\)\ \[Psi]Au + 
+                    \[Psi]Bu)\)\)},
+           
+             {\(\[CapitalDelta]\ \((\[Psi]Bd - \[Psi]Ad)\) + 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v\ \((
+                  \[ExponentialE]\^\(2\ \[ImaginaryI]\ \[Theta]\)\ \[Psi]Ad + 
+                    \[Psi]Bd)\) + 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ \[Psi]Bu\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        RowBox[{"(", 
+          RowBox[{
+            FormBox[
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                   
+                     {"\[CapitalDelta]", "0", 
+                      \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                            \[Theta]\)\), "0"},
+                   
+                     {"0", \(-\[CapitalDelta]\), 
+                      \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                      \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                            \[Theta]\)\)},
+                   
+                     {\(v\ k\ 
+                        \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                      \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                      \(-\[CapitalDelta]\), "0"},
+                   
+                     {"0", \(v\ k\ 
+                        \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                      "0", "\[CapitalDelta]"}
+                    }], "\[NoBreak]", ")"}],
+              "TraditionalForm"], "+", 
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                 
+                   {\(-\[CapitalDelta]\), "0", 
+                    \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ 
+                          \[Theta]\)\), 
+                    \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\)},
+                 
+                   {"0", \(+\[CapitalDelta]\), "0", 
+                    \(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ 
+                          \[Theta]\)\)},
+                 
+                   {\(v\ k\ 
+                      \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+                    "0", \(+\[CapitalDelta]\), "0"},
+                 
+                   {\(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                          \[Theta]\)\), "0", \(-\[CapitalDelta]\)}
+                  }], "\[NoBreak]", ")"}]}], ")"}], ".", 
+        RowBox[{"(", "\[NoBreak]", GridBox[{
+              {\(\[Psi]Au + \[Psi]Bu\)},
+              {\(\[Psi]Ad + \[Psi]Bd\)},
+              {\(\[Psi]Bu + \[Psi]Au\)},
+              {\(\[Psi]Bd + \[Psi]Ad\)}
+              },
+            ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}], "//", 
+      "TraditionalForm"}]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(\((\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v + 
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v)\)\ 
+                  \((\[Psi]Au + \[Psi]Bu)\) - 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ \((\[Psi]Ad + \[Psi]Bd)
+                  \)\)},
+           
+             {\(\((\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v + 
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v)\)\ 
+                  \((\[Psi]Ad + \[Psi]Bd)\) + 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ \((\[Psi]Au + \[Psi]Bu)
+                  \)\)},
+           
+             {\(\((\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v + 
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v)\)\ 
+                  \((\[Psi]Au + \[Psi]Bu)\) - 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ \((\[Psi]Ad + \[Psi]Bd)
+                  \)\)},
+           
+             {\(\((\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v + 
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v)\)\ 
+                  \((\[Psi]Ad + \[Psi]Bd)\) + 
+                2\ \[ImaginaryI]\ \[CapitalLambda]\ \((\[Psi]Au + \[Psi]Bu)
+                  \)\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{
+          FormBox[
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {"1", "0", "\[ImaginaryI]", "0"},
+                  {"0", "1", "0", \(-\[ImaginaryI]\)},
+                  {\(-\[ImaginaryI]\), "0", \(-1\), "0"},
+                  {"0", "\[ImaginaryI]", "0", \(-1\)}
+                  }], "\[NoBreak]", ")"}],
+            "TraditionalForm"], ".", 
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"\[Psi]Au"},
+                {"\[Psi]Ad"},
+                {"\[Psi]Bu"},
+                {"\[Psi]Bd"}
+                },
+              ColumnAlignments->{Decimal}], "\[NoBreak]", ")"}]}], "//", 
+        "TraditionalForm"}], TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+            {\(\[Psi]Au + \[ImaginaryI]\ \[Psi]Bu\)},
+            {\(\[Psi]Ad - \[ImaginaryI]\ \[Psi]Bd\)},
+            {\(\(-\[ImaginaryI]\)\ \[Psi]Au - \[Psi]Bu\)},
+            {\(\[ImaginaryI]\ \[Psi]Ad - \[Psi]Bd\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{\(1/2\), 
+          RowBox[{
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {"1", "0", "\[ImaginaryI]", "0"},
+                  {"0", "1", "0", \(-\[ImaginaryI]\)},
+                  {\(-\[ImaginaryI]\), "0", \(-1\), "0"},
+                  {"0", "\[ImaginaryI]", "0", \(-1\)}
+                  }], "\[NoBreak]", ")"}], ".", 
+            RowBox[{"(", "\[NoBreak]", GridBox[{
+                  {"1", "0", "\[ImaginaryI]", "0"},
+                  {"0", "1", "0", \(-\[ImaginaryI]\)},
+                  {\(-\[ImaginaryI]\), "0", \(-1\), "0"},
+                  {"0", "\[ImaginaryI]", "0", \(-1\)}
+                  }], "\[NoBreak]", ")"}]}]}], "//", "TraditionalForm"}], 
+      TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+            {"1", "0", "0", "0"},
+            {"0", "1", "0", "0"},
+            {"0", "0", "1", "0"},
+            {"0", "0", "0", "1"}
+            },
+          ColumnAlignments->{Decimal}], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    FormBox[
+      FormBox[
+        RowBox[{"(", "\[NoBreak]", GridBox[{
+             
+               {"\[CapitalDelta]", "0", 
+                \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\), 
+                "0"},
+             
+               {"0", \(-\[CapitalDelta]\), 
+                \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                \(v\ k\ \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\)},
+             
+               {\(v\ k\ \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), 
+                \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                \(-\[CapitalDelta]\), "0"},
+             
+               {"0", \(v\ k\ 
+                  \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\), "0", 
+                "\[CapitalDelta]"}
+              }], "\[NoBreak]", ")"}],
+        "TraditionalForm"], TraditionalForm]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{\(1\/2\), 
+          RowBox[{
+            FormBox[
+              RowBox[{"(", "\[NoBreak]", GridBox[{
+                    {"1", "0", "\[ImaginaryI]", "0"},
+                    {"0", "1", "0", \(-\[ImaginaryI]\)},
+                    {\(-\[ImaginaryI]\), "0", \(-1\), "0"},
+                    {"0", "\[ImaginaryI]", "0", \(-1\)}
+                    }], "\[NoBreak]", ")"}],
+              "TraditionalForm"], ".", 
+            RowBox[{"(", 
+              RowBox[{
+                RowBox[{"(", "\[NoBreak]", GridBox[{
+                     
+                       {"\[CapitalDelta]", "0", 
+                        \(v\ k\ 
+                          \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\),
+                         "0"},
+                     
+                       {"0", \(-\[CapitalDelta]\), 
+                        \(2\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                        \(v\ k\ 
+                          \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 
+                              \[Theta]\)\)},
+                     
+                       {\(v\ k\ 
+                          \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                         \(\(-2\)\ \[ImaginaryI]\ \[CapitalLambda]\), 
+                        \(-\[CapitalDelta]\), "0"},
+                     
+                       {"0", \(v\ k\ 
+                          \[ExponentialE]\^\(\(+\[ImaginaryI]\)\ \[Theta]\)\),
+                         "0", "\[CapitalDelta]"}
+                      }], "\[NoBreak]", ")"}], ".", 
+                RowBox[{"(", "\[NoBreak]", GridBox[{
+                      {"1", "0", "\[ImaginaryI]", "0"},
+                      {"0", "1", "0", \(-\[ImaginaryI]\)},
+                      {\(-\[ImaginaryI]\), "0", \(-1\), "0"},
+                      {"0", "\[ImaginaryI]", "0", \(-1\)}
+                      }], "\[NoBreak]", ")"}]}], ")"}]}]}], "//", 
+        "TraditionalForm"}], TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(1\/2\ 
+                \((\(-\[ImaginaryI]\)\ 
+                      \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v
+                       + \[ImaginaryI]\ \((
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v + 
+                        \[ImaginaryI]\ \[CapitalDelta])\) + \[CapitalDelta])
+                  \)\), "\[CapitalLambda]", 
+              \(1\/2\ \((
+                  \(-\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\)\ k\ v
+                       + \[ImaginaryI]\ \[CapitalDelta] + 
+                    \[ImaginaryI]\ \((
+                      \[ImaginaryI]\ 
+                          \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v
+                           + \[CapitalDelta])\))\)\), 
+              \(\(-\[ImaginaryI]\)\ \[CapitalLambda]\)},
+           
+             {"\[CapitalLambda]", 
+              \(1\/2\ \((
+                  \[ImaginaryI]\ 
+                      \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ v
+                       - \[ImaginaryI]\ \((
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v + 
+                        \[ImaginaryI]\ \[CapitalDelta])\) - \[CapitalDelta])
+                  \)\), \(\(-\[ImaginaryI]\)\ \[CapitalLambda]\), 
+              \(1\/2\ \((
+                  \(-\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\)\ k\ v
+                       - \[ImaginaryI]\ \((
+                      \(-\[ImaginaryI]\)\ 
+                          \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v
+                           - \[CapitalDelta])\) + 
+                    \[ImaginaryI]\ \[CapitalDelta])\)\)},
+           
+             {\(1\/2\ 
+                \((\(-\[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\)\ k\ v - 
+                    \[ImaginaryI]\ \[CapitalDelta] - 
+                    \[ImaginaryI]\ \((
+                      \[CapitalDelta] - 
+                        \[ImaginaryI]\ 
+                          \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k
+                          \ v)\))\)\), \(\[ImaginaryI]\ \[CapitalLambda]\), 
+              \(1\/2\ \((
+                  \(-\[ImaginaryI]\)\ 
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v - 
+                    \[ImaginaryI]\ \((
+                      \[ImaginaryI]\ \[CapitalDelta] - 
+                        \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ 
+                          v)\) - \[CapitalDelta])\)\), "\[CapitalLambda]"},
+           
+             {\(\[ImaginaryI]\ \[CapitalLambda]\), 
+              \(1\/2\ \((
+                  \(-\[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\)\ k\ v + 
+                    \[ImaginaryI]\ \((
+                      \[ImaginaryI]\ 
+                          \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k
+                          \ v - \[CapitalDelta])\) - 
+                    \[ImaginaryI]\ \[CapitalDelta])\)\), "\[CapitalLambda]", 
+              \(1\/2\ 
+                \((\[ImaginaryI]\ 
+                      \[ExponentialE]\^\(\[ImaginaryI]\ \[Theta]\)\ k\ v + 
+                    \[ImaginaryI]\ \((
+                      \[ImaginaryI]\ \[CapitalDelta] - 
+                        \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ \[Theta]\)\ k\ 
+                          v)\) + \[CapitalDelta])\)\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \(-\[ImaginaryI]\)\ \((kx - \[ImaginaryI]\ ky)\)\ \ v + 
+            \[ImaginaryI]\ 
+              \((\((kx + \[ImaginaryI]\ ky)\)\ v + 
+                  \[ImaginaryI]\ \[CapitalDelta])\) + \[CapitalDelta])\) // 
+      Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(\(-ky\)\ v\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \(-\((kx - \[ImaginaryI]\ ky)\)\)\ \ \ v + 
+            \[ImaginaryI]\ \[CapitalDelta] + 
+            \[ImaginaryI]\ 
+              \((\[ImaginaryI]\ \((kx + \[ImaginaryI]\ ky)\)\ v + 
+                  \[CapitalDelta])\))\) // Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(\(-kx\)\ v + I\ \[CapitalDelta]\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \[ImaginaryI]\ \((kx - \[ImaginaryI]\ ky)\)\ \ v - 
+            \[ImaginaryI]\ 
+              \((\((kx + \[ImaginaryI]\ ky)\)\ \ \ v + 
+                  \[ImaginaryI]\ \[CapitalDelta])\) - \[CapitalDelta])\) // 
+      Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(ky\ v\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \(-\((kx - \[ImaginaryI]\ ky)\)\)\ \ \ v - 
+            \[ImaginaryI]\ 
+              \((\(-\[ImaginaryI]\)\ \((kx + \[ImaginaryI]\ ky)\)\ \ \ v - 
+                  \[CapitalDelta])\) + \[ImaginaryI]\ \[CapitalDelta])\) // 
+      Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(\(-kx\)\ v + I\ \[CapitalDelta]\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \(-\ \((kx + \[ImaginaryI]\ ky)\)\)\ \ \ v - 
+            \[ImaginaryI]\ \[CapitalDelta] - 
+            \[ImaginaryI]\ 
+              \((\[CapitalDelta] - 
+                  \[ImaginaryI]\ \ \((kx - \[ImaginaryI]\ ky)\)\ \ \ v)\))
+          \) // Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(\(-kx\)\ v - I\ \[CapitalDelta]\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \(-\[ImaginaryI]\)\ \((kx + \[ImaginaryI]\ ky)\)\ v - 
+            \[ImaginaryI]\ 
+              \((\[ImaginaryI]\ \[CapitalDelta] - 
+                  \((kx - \[ImaginaryI]\ ky)\)\ \ v)\) - \[CapitalDelta])
+          \) // Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(ky\ v\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \(-\((kx + \[ImaginaryI]\ ky)\)\)\ v + 
+            \[ImaginaryI]\ 
+              \((\[ImaginaryI]\ \((kx - \[ImaginaryI]\ ky)\)\ v - 
+                  \[CapitalDelta])\) - \[ImaginaryI]\ \[CapitalDelta])\) // 
+      Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(\(-kx\)\ v - I\ \[CapitalDelta]\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TraditionalForm
+    \`1\/2\ \((
+          \[ImaginaryI]\ \((kx + \[ImaginaryI]\ ky)\) v + 
+            \[ImaginaryI]\ 
+              \((\[ImaginaryI]\ \[CapitalDelta] - 
+                  \((kx - \[ImaginaryI]\ ky)\) v)\) + \[CapitalDelta])\) // 
+      Simplify\)], "Input"],
+
+Cell[BoxData[
+    \(\(-ky\)\ v\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{
+        RowBox[{
+          RowBox[{
+            RowBox[{"(", GridBox[{
+                 
+                   {\(\(-ky\)\ v\), "\[CapitalLambda]", 
+                    \(\(-kx\)\ v + I\ \[CapitalDelta]\), 
+                    \(\(-\[ImaginaryI]\)\ \[CapitalLambda]\)},
+                 
+                   {"\[CapitalLambda]", \(ky\ v\), 
+                    \(\(-\[ImaginaryI]\)\ \[CapitalLambda]\), 
+                    \(\(-kx\)\ v + I\ \[CapitalDelta]\)},
+                 
+                   {\(\(-kx\)\ v - I\ \[CapitalDelta]\), 
+                    \(\[ImaginaryI]\ \[CapitalLambda]\), \(ky\ v\), 
+                    "\[CapitalLambda]"},
+                 
+                   {\(\[ImaginaryI]\ \[CapitalLambda]\), 
+                    \(\(-kx\)\ v - I\ \[CapitalDelta]\), "\[CapitalLambda]", 
+                    \(\(-ky\)\ v\)}
+                  }], ")"}], "/.", \(kx\  -> \(-\[ImaginaryI]\)\ Dx\)}], "//",
+           "Simplify"}], "//", "TraditionalForm"}], TraditionalForm]], "Input"],
+
+Cell[BoxData[
+    FormBox[
+      RowBox[{"(", GridBox[{
+           
+             {\(\(-ky\)\ v\), "\[CapitalLambda]", 
+              \(\[ImaginaryI]\ \((Dx\ v + \[CapitalDelta])\)\), 
+              \(\(-\[ImaginaryI]\)\ \[CapitalLambda]\)},
+           
+             {"\[CapitalLambda]", \(ky\ v\), 
+              \(\(-\[ImaginaryI]\)\ \[CapitalLambda]\), 
+              \(\[ImaginaryI]\ \((Dx\ v + \[CapitalDelta])\)\)},
+           
+             {\(\[ImaginaryI]\ \((Dx\ v - \[CapitalDelta])\)\), 
+              \(\[ImaginaryI]\ \[CapitalLambda]\), \(ky\ v\), 
+              "\[CapitalLambda]"},
+           
+             {\(\[ImaginaryI]\ \[CapitalLambda]\), 
+              \(\[ImaginaryI]\ \((Dx\ v - \[CapitalDelta])\)\), 
+              "\[CapitalLambda]", \(\(-ky\)\ v\)}
+            }], ")"}], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\[Integral]\_\(-a\)\%a\((Cos[b\ z])\)^2 \[DifferentialD]z\)], "Input"],
+
+Cell[BoxData[
+    \(a + Sin[2\ a\ b]\/\(2\ b\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\[Integral]\_\(-a\)\%a\((Sin[b\ z])\)^2 \[DifferentialD]z\)], "Input"],
+
+Cell[BoxData[
+    \(a - Sin[2\ a\ b]\/\(2\ b\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\[Integral]\_\(-a\)\%a\((Cos[b\ z]*Cos[c\ z])\) \[DifferentialD]z\)], 
+  "Input"],
+
+Cell[BoxData[
+    \(\(b\ Sin[a\ b - a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\) + 
+      \(c\ Sin[a\ b - a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\) + 
+      \(b\ Sin[a\ b + a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\) - 
+      \(c\ Sin[a\ b + a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(% // FullSimplify\)], "Input"],
+
+Cell[BoxData[
+    \(Sin[a\ \((b - c)\)]\/\(b - c\) + Sin[a\ \((b + c)\)]\/\(b + c\)\)], 
+  "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\[Integral]\_\(-a\)\%a\((Sin[b\ z]*Sin[c\ z])\) \[DifferentialD]z\)], 
+  "Input"],
+
+Cell[BoxData[
+    \(\(b\ Sin[a\ b - a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\) + 
+      \(c\ Sin[a\ b - a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\) - 
+      \(b\ Sin[a\ b + a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\) + 
+      \(c\ Sin[a\ b + a\ c]\)\/\(\((b - c)\)\ \((b + c)\)\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(% // FullSimplify\)], "Input"],
+
+Cell[BoxData[
+    \(Sin[a\ \((b - c)\)]\/\(b - c\) - Sin[a\ \((b + c)\)]\/\(b + c\)\)], 
+  "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+FrontEndVersion->"Microsoft Windows 3.0",
+ScreenRectangle->{{0, 1024}, {0, 699}},
+WindowSize->{905, 572},
+WindowMargins->{{9, Automatic}, {12, Automatic}}
+]
+
+
+(***********************************************************************
+Cached data follows.  If you edit this Notebook file directly, not using
+Mathematica, you must remove the line containing CacheID at the top of 
+the file.  The cache data will then be recreated when you save this file 
+from within Mathematica.
+***********************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1731, 51, 33, 0, 53, "Section"],
+Cell[1767, 53, 74, 0, 33, "Text"],
+Cell[1844, 55, 335, 7, 45, "DisplayFormula"],
+
+Cell[CellGroupData[{
+Cell[2204, 66, 37, 0, 43, "Subsubsection"],
+Cell[2244, 68, 385, 10, 72, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[2666, 83, 41, 0, 43, "Subsubsection"],
+
+Cell[CellGroupData[{
+Cell[2732, 87, 74, 1, 30, "Input"],
+Cell[2809, 90, 281, 8, 80, "Output"]
+}, Open  ]],
+Cell[3105, 101, 2813, 74, 617, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5955, 180, 49, 0, 43, "Subsubsection"],
+
+Cell[CellGroupData[{
+Cell[6029, 184, 256, 4, 50, "Input"],
+Cell[6288, 190, 688, 17, 88, "Output"]
+}, Open  ]],
+Cell[6991, 210, 855, 20, 88, "Input"],
+
+Cell[CellGroupData[{
+Cell[7871, 234, 996, 23, 144, "Input"],
+Cell[8870, 259, 3140, 58, 410, "Output"]
+}, Open  ]],
+Cell[12025, 320, 659, 15, 80, "Input"],
+Cell[12687, 337, 782, 19, 81, "Input"],
+Cell[13472, 358, 68, 2, 70, "Input"],
+
+Cell[CellGroupData[{
+Cell[13565, 364, 1005, 21, 182, "Input"],
+Cell[14573, 387, 758, 18, 94, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[15380, 411, 56, 0, 43, "Subsubsection"],
+Cell[15439, 413, 791, 21, 72, "Input"],
+
+Cell[CellGroupData[{
+Cell[16255, 438, 831, 21, 88, "Input"],
+Cell[17089, 461, 1207, 20, 209, "Output"]
+}, Open  ]],
+Cell[18311, 484, 631, 16, 80, "Input"],
+
+Cell[CellGroupData[{
+Cell[18967, 504, 852, 22, 116, "Input"],
+Cell[19822, 528, 1470, 27, 295, "Output"]
+}, Open  ]],
+Cell[21307, 558, 79, 1, 30, "Input"],
+Cell[21389, 561, 791, 21, 72, "Input"],
+Cell[22183, 584, 57, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[22265, 589, 829, 21, 88, "Input"],
+Cell[23097, 612, 1004, 17, 236, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[24138, 634, 835, 21, 88, "Input"],
+Cell[24976, 657, 3926, 73, 1400, "Output"]
+}, Open  ]],
+Cell[28917, 733, 58, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[29000, 738, 794, 20, 88, "Input"],
+Cell[29797, 760, 989, 16, 236, "Output"]
+}, Open  ]],
+Cell[30801, 779, 59, 1, 30, "Input"],
+Cell[30863, 782, 824, 21, 88, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[31724, 808, 50, 0, 43, "Subsubsection"],
+Cell[31777, 810, 38, 1, 30, "Input"],
+Cell[31818, 813, 38, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[31881, 818, 241, 4, 30, "Input"],
+Cell[32125, 824, 675, 17, 102, "Output"]
+}, Open  ]],
+Cell[32815, 844, 896, 22, 88, "Input"],
+
+Cell[CellGroupData[{
+Cell[33736, 870, 1112, 26, 88, "Input"],
+Cell[34851, 898, 2641, 49, 236, "Output"]
+}, Open  ]],
+Cell[37507, 950, 888, 20, 81, "Input"],
+
+Cell[CellGroupData[{
+Cell[38420, 974, 67, 1, 33, "Input"],
+Cell[38490, 977, 425, 13, 49, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[38952, 995, 200, 3, 30, "Input"],
+Cell[39155, 1000, 187, 4, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[39379, 1009, 92, 1, 30, "Input"],
+Cell[39474, 1012, 42, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[39553, 1018, 124, 2, 30, "Input"],
+Cell[39680, 1022, 1580, 53, 47, "Output"]
+}, Open  ]],
+Cell[41275, 1078, 84, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[41384, 1083, 2058, 48, 88, "Input"],
+Cell[43445, 1133, 1190, 26, 106, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[44672, 1164, 77, 1, 30, "Input"],
+Cell[44752, 1167, 952, 23, 106, "Output"]
+}, Open  ]],
+Cell[45719, 1193, 72, 1, 30, "Input"],
+Cell[45794, 1196, 1456, 37, 80, "Input"],
+Cell[47253, 1235, 778, 17, 88, "Input"],
+
+Cell[CellGroupData[{
+Cell[48056, 1256, 2827, 64, 88, "Input"],
+Cell[50886, 1322, 1436, 27, 106, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[52359, 1354, 2349, 53, 88, "Input"],
+Cell[54711, 1409, 1370, 27, 102, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[56118, 1441, 742, 19, 80, "Input"],
+Cell[56863, 1462, 327, 7, 94, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[57227, 1474, 780, 17, 80, "Input"],
+Cell[58010, 1493, 281, 8, 94, "Output"]
+}, Open  ]],
+Cell[58306, 1504, 883, 21, 88, "Input"],
+
+Cell[CellGroupData[{
+Cell[59214, 1529, 1980, 43, 88, "Input"],
+Cell[61197, 1574, 3411, 67, 130, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[64645, 1646, 303, 7, 44, "Input"],
+Cell[64951, 1655, 44, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65032, 1661, 311, 7, 44, "Input"],
+Cell[65346, 1670, 65, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65448, 1676, 302, 7, 44, "Input"],
+Cell[65753, 1685, 39, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65829, 1691, 314, 7, 44, "Input"],
+Cell[66146, 1700, 65, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[66248, 1706, 330, 8, 44, "Input"],
+Cell[66581, 1716, 65, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[66683, 1722, 307, 7, 44, "Input"],
+Cell[66993, 1731, 39, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[67069, 1737, 301, 7, 44, "Input"],
+Cell[67373, 1746, 65, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[67475, 1752, 294, 7, 44, "Input"],
+Cell[67772, 1761, 44, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[67853, 1767, 1034, 23, 80, "Input"],
+Cell[68890, 1792, 826, 19, 94, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[69753, 1816, 90, 1, 41, "Input"],
+Cell[69846, 1819, 60, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[69943, 1825, 90, 1, 41, "Input"],
+Cell[70036, 1828, 60, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[70133, 1834, 101, 2, 41, "Input"],
+Cell[70237, 1838, 276, 4, 44, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[70550, 1847, 50, 1, 30, "Input"],
+Cell[70603, 1850, 100, 2, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[70740, 1857, 101, 2, 41, "Input"],
+Cell[70844, 1861, 276, 4, 44, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[71157, 1870, 50, 1, 30, "Input"],
+Cell[71210, 1873, 100, 2, 42, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+
+(***********************************************************************
+End of Mathematica Notebook file.
+***********************************************************************)
+

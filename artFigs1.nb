@@ -1,0 +1,5039 @@
+(***********************************************************************
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used on any computer system with Mathematica 3.0,
+MathReader 3.0, or any compatible application. The data for the notebook 
+starts with the line of stars above.
+
+To get the notebook into a Mathematica-compatible application, do one of 
+the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing the 
+word CacheID, otherwise Mathematica-compatible applications may try to 
+use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+***********************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[    162245,       4202]*)
+(*NotebookOutlinePosition[    164713,       4275]*)
+(*  CellTagsIndexPosition[    164601,       4268]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Graphene Edge states", "Title",
+  GeneratedCell->True],
+
+Cell["Armchair edges", "Subtitle",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell["Armchair Definitions", "Subsection",
+  GeneratedCell->True],
+
+Cell["The graphene strip spectrum for a armchair edge:", "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(Clear[GSSarmchair, GSSaPlot, GSSaPlot2, GSSaDensity]\), 
+    \(\n\), 
+    \(Off[General::spell]\), 
+    \(\n\), 
+    \(Off[General::spell1]\), 
+    \(\n\), 
+    \(Needs["\<Graphics`Graphics`\>"]\), 
+    \(\n\), 
+    \(Needs["\<Graphics`MultipleListPlot`\>"]\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+      \(GSSarmchair[percent_, Ly_Integer, Nx_Integer, ep_, 
+          \[CapitalDelta]SO_, Bz_, options___]\), ":=", 
+        RowBox[{"Module", "[", 
+          RowBox[{
+          \({kyY, a, X, Y, \[Phi], \ fa, Ns, t0, t1, t2, ts, tp, tm, e2p, i, 
+              j, H, spectrum, energies, ept}\), ",", "\[IndentingNewLine]", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+            \(a = \ 2.4612*10^\(-10\)\), ";", "  ", "\[IndentingNewLine]", 
+              \(Y = \ \(\@3.\) a\), ";", "                       ", 
+              "\[IndentingNewLine]", \(\[Phi]\  = \ 4.1356*10^\(-15\)\), ";", 
+              "   ", 
+              RowBox[{"(*", " ", 
+                RowBox[{\(flux\ quantum\), " ", "=", " ", 
+                  RowBox[{
+                    RowBox[{\(h/e\ [T*m^2]\), " ", 
+                      FormBox[\(Note : \ \[Phi]\),
+                        "InputForm"]}], "=", \(68272\ \ Ta^2\)}]}], "   ", 
+                "*)"}], "\[IndentingNewLine]", 
+              \(fa\  = \((\(-2\) \[Pi]\ Y\ a\ Bz/\[Phi]\ )\)\), ";", 
+              "        ", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              \(Ns\  = 4  Nx\), " ", ";", "  ", "\[IndentingNewLine]", 
+              \(spectrum = Table[{0, 0}, {i, 1, Ly*Ns}]\), ";", 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", \(t0 = \ 2.7\), 
+              ";", " ", "\[IndentingNewLine]", 
+              \(ts\  = \ \((\[CapitalDelta]SO\/\(3 \@ 3.\))\)/t0\), ";", " ", 
+              "\[IndentingNewLine]", \(tp = \(+\ \[ImaginaryI]\)\ ts\), ";", 
+              "\[IndentingNewLine]", \(tm = \(-\ \[ImaginaryI]\)\ ts\), ";", 
+              "\[IndentingNewLine]", \(e2p = 0\), ";", "\[IndentingNewLine]", 
+              \(ept = ep/t0\), ";", "\[IndentingNewLine]", "\n", " ", 
+              "\[IndentingNewLine]", 
+              \(xD[i_] := 
+                Floor[i/4] + If[Mod[i, 4] == 0 || Mod[i, 4] == 1, 1/2, 0]\), 
+              ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              \(phase1[i_] := fa \((xD[i])\)\), ";", "            ", 
+              "\[IndentingNewLine]", \(phase2[i_] := fa \((xD[i] - 1\/4.)\)\),
+               ";", " ", "\[IndentingNewLine]", 
+              \(phase3[i_] := fa \((xD[i] + 1\/4.)\)\), ";", " ", 
+              "\[IndentingNewLine]", \(phase4[i_] := fa \((xD[i] + 1\/2.)\)\),
+               ";", " ", "\[IndentingNewLine]", 
+              \(phase5[i_] := fa \((xD[i] + 3\/4.)\)\), ";", " ", "\n", "\t", 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              \(For[j = 1, j < \((Ly + 1)\), \(j++\), 
+                \(\[IndentingNewLine]kyY\) = 
+                  \(N[\(\[Pi]\ \((2  j - Ly)\)\)\/Ly]*percent\); \ \ \ \ \ \ 
+                \ \ \ \ \ \ \ 
+                \(\[IndentingNewLine]\[IndentingNewLine]\) 
+                    \(\[IndentingNewLine]diag\) = 
+                  Table[e2p + If[OddQ[i], ept, \(-ept\)], {i, 1, Ns}]; 
+                \(\[IndentingNewLine]H\) = DiagonalMatrix[diag]; 
+                \(\[IndentingNewLine]\[IndentingNewLine]\)\ 
+                  \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+                    \(\[IndentingNewLine]H\)[[i, i + 1]] = \ \ \ \ \ \ 
+                      Chop[\(-
+                          Exp[\(-\[ImaginaryI]\) \((kyY + phase2[i])\)/6.]
+                            \)\ ]; 
+                    \(\[IndentingNewLine]H\)[[i, i + 3]] = \ \ \ \ \ \ 
+                      Chop[\(-Exp[\[ImaginaryI] \((kyY + phase1[i])\)/3.]\)]; 
+                    \(\[IndentingNewLine]H\)[[i + 1, i + 2]] = 
+                      Chop[\(-
+                          Exp[\(-\[ImaginaryI]\) \((kyY + phase1[i])\)/3.]
+                            \)]; \(\[IndentingNewLine]H\)[[i + 2, i + 3]] = 
+                      \(Chop[\(-
+                          Exp[\(-\[ImaginaryI]\) \((kyY + phase3[i])\)/6.]\)]
+                        \[IndentingNewLine]\)]; 
+                \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), i += 4, 
+                  \(\[IndentingNewLine]H\)[[i, i + 5]] = \ \ \ \ \ \ \ 
+                    Chop[\(-
+                        Exp[\(-\[ImaginaryI]\) \((kyY + phase3[i])\)/6.]\)]; 
+                  \(\[IndentingNewLine]H\)[[i + 3, i + 6]] = 
+                    \(Chop[\(-Exp[\[ImaginaryI] \((kyY + phase3[i])\)/6.]\)]
+                      \[IndentingNewLine]\)]; 
+                \(\[IndentingNewLine]\[IndentingNewLine]\) 
+                  \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), 
+                    \(i++\), 
+                    H[[i, i + 4]] = 
+                      \(-\[ImaginaryI]\) \(\((\(-1\))\)\^i\) ts]; 
+                \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+                  \(\[IndentingNewLine]H\)[[i, i + 2]] = \ \ \ \ \ \ \ 
+                    2  tp\ Cos[\((kyY + phase2[i])\)/2]; 
+                  \(\[IndentingNewLine]H\)[[i + 1, i + 3]] = 
+                    \(2  tp\ 
+                      Cos[\((kyY + phase3[i])\)/2]\[IndentingNewLine]\)]; 
+                \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), i += 4, 
+                  \(\[IndentingNewLine]H\)[[i, i + 6]] = \ \ \ \ \ \ \ 
+                    2  tm\ Cos[\((kyY + phase3[i])\)/2]; 
+                  \(\[IndentingNewLine]H\)[[i + 3, i + 5]] = \ 
+                    \(2  tp\ 
+                      Cos[\((kyY + phase3[i])\)/2]\[IndentingNewLine]\)]; 
+                \(\[IndentingNewLine]\[IndentingNewLine]\) 
+                  \(\[IndentingNewLine]For\)[i = 1, i < Ns, \(i++\), 
+                    H[[i + 1, i]] = Conjugate[H[[i, i + 1]]]]; 
+                \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), \(i++\), 
+                  \(\[IndentingNewLine]H\)[[i + 4, i]] = 
+                    \(Conjugate[H[[i, i + 4]]]\[IndentingNewLine]\)]; 
+                \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), i += 4, 
+                  \(\(\[IndentingNewLine]H\)[[i + 2, i]] = \ \ \ \ \ \ 
+                    Conjugate[H[[i, i + 2]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 3, i]] = \ \ \ \ \ \ 
+                    Conjugate[H[[i, i + 3]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 3, i + 1]] = 
+                    Conjugate[H[[i + 1, i + 3]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 4, i + 1]] = 
+                    Conjugate[H[[i + 1, i + 4]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 5, i]] = \ \ \ \ \ \ \ 
+                    Conjugate[H[[i, i + 5]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 5, i + 2]] = 
+                    Conjugate[H[[i + 2, i + 5]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 5, i + 3]] = 
+                    Conjugate[H[[i + 3, i + 5]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 6, i]] = \ \ \ \ \ \ \ 
+                    Conjugate[H[[i, i + 6]]]; 
+                  \(\[IndentingNewLine]H\)[[i + 6, i + 1]] = 
+                    \(H[[i + 4, i + 3]] = Conjugate[H[[i + 1, i + 6]]]\); 
+                  \(\[IndentingNewLine]H\)[[i + 6, i + 3]] = 
+                    Conjugate[H[[i + 3, i + 6]]]; \[IndentingNewLine]\)]; 
+                \(\[IndentingNewLine]H\)[[Ns - 1, Ns - 3]] = 
+                  Conjugate[H[[Ns - 3, Ns - 1]]]; 
+                \(\[IndentingNewLine]H\)[[Ns, Ns - 3]] = \ \ \ \ \ \ \ 
+                  Conjugate[H[[Ns - 3, Ns]]]; 
+                \(\[IndentingNewLine]H\)[[Ns, Ns - 2]] = \ \ \ \ \ \ \ 
+                  Conjugate[H[[Ns - 2, Ns]]]; 
+                \(\[IndentingNewLine]\[IndentingNewLine]energies\)[j] = 
+                  Sort[Eigenvalues[H]]; 
+                \(\(\[IndentingNewLine]\[IndentingNewLine]For\)[i = 1, 
+                    i <= Ns, \(i++\), 
+                    If[OddQ[i], 
+                      spectrum[[\((i - 1)\)*Ly + j]] = {kyY, 
+                          \(energies[j]\)[[i]]}, 
+                      spectrum[[i*Ly - \((j - 1)\)]] = {kyY, 
+                          \(energies[j]\)[[i]]}\ ]] 
+                  \(\[IndentingNewLine]\[IndentingNewLine]\)\
+\[IndentingNewLine]\)]\), ";", "\[IndentingNewLine]", \(Return[spectrum]\), 
+              ";"}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSarmH[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, j_, 
+        options___] := 
+      Module[\(\[IndentingNewLine]{kyY, a, X, Y, \[Phi], \ fa, Ns, t0, t1, 
+          t2, ts, tp, tm, e2p, i, H, spectrum, energies, ept}\), 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\(\
+\[IndentingNewLine]a\)\) = \ 2.4612*10^\(-10\); \ \ 
+        \(\[IndentingNewLine]Y\) = \ \(\@3.\) a; \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]\[Phi]\)\  = \ 4.1356*10^\(-15\); \ 
+        \(\[IndentingNewLine]fa\)\  = \((\(-2\) \[Pi]\ Y\ a\ Bz/\[Phi]\ )\); 
+        \ \ \ \ \ \ \ \ \(\[IndentingNewLine]Ns\)\  = 4  Nx\ ; \ \ 
+        \(\[IndentingNewLine]spectrum\) = Table[{0, 0}, {i, 1, Ly*Ns}]; 
+        \(\[IndentingNewLine]t0\) = \ 2.7; \ 
+        \(\[IndentingNewLine]ts\)\  = \ 
+          \((\[CapitalDelta]SO\/\(3 \@ 3.\))\)/t0; \ 
+        \(\[IndentingNewLine]tp\) = \(+\ \[ImaginaryI]\)\ ts; 
+        \(\[IndentingNewLine]tm\) = \(-\ \[ImaginaryI]\)\ ts; 
+        \(\[IndentingNewLine]e2p\) = 0; \(\[IndentingNewLine]ept\) = ep/t0; 
+        \(\[IndentingNewLine]\ \(\[IndentingNewLine]xD\)[i_]\) := 
+          Floor[i/4] + If[Mod[i, 4] == 0 || Mod[i, 4] == 1, 1/2, 0]; 
+        \(\[IndentingNewLine]phase1\)[i_] := fa \((xD[i])\); \ \ \ \ \ \ \ \ 
+        \ \ \ \ \(\[IndentingNewLine]phase2\)[i_] := fa \((xD[i] - 1\/4.)\); 
+        \ \(\[IndentingNewLine]phase3\)[i_] := fa \((xD[i] + 1\/4.)\); \ 
+        \(\[IndentingNewLine]phase4\)[i_] := fa \((xD[i] + 1\/2.)\); \ 
+        \(\[IndentingNewLine]phase5\)[i_] := fa \((xD[i] + 3\/4.)\); \ 
+        \(\[IndentingNewLine]kyY\) = N[\(\[Pi]\ \((2  j - Ly)\)\)\/Ly]; \ \ \ 
+        \ \ \ \ \ 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]diag\)\) = 
+          Table[e2p + If[OddQ[i], ept, \(-ept\)], {i, 1, Ns}]; 
+        \(\[IndentingNewLine]H\) = DiagonalMatrix[diag]; 
+        \(\[IndentingNewLine]\ 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          \(\[IndentingNewLine]H\)[[i, i + 1]] = \ \ \ \ \ \ 
+            Chop[\(-Exp[\(-\[ImaginaryI]\) \((kyY + phase2[i])\)/6.]\)\ ]; 
+          \(\[IndentingNewLine]H\)[[i, i + 3]] = \ \ \ \ \ \ 
+            Chop[\(-Exp[\[ImaginaryI] \((kyY + phase1[i])\)/3.]\)]; 
+          \(\[IndentingNewLine]H\)[[i + 1, i + 2]] = 
+            Chop[\(-Exp[\(-\[ImaginaryI]\) \((kyY + phase1[i])\)/3.]\)]; 
+          \(\[IndentingNewLine]H\)[[i + 2, i + 3]] = 
+            \(Chop[\(-Exp[\(-\[ImaginaryI]\) \((kyY + phase3[i])\)/6.]\)]
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), i += 4, 
+          \(\[IndentingNewLine]H\)[[i, i + 5]] = \ \ \ \ \ \ \ 
+            Chop[\(-Exp[\(-\[ImaginaryI]\) \((kyY + phase3[i])\)/6.]\)]; 
+          \(\[IndentingNewLine]H\)[[i + 3, i + 6]] = 
+            \(Chop[\(-Exp[\[ImaginaryI] \((kyY + phase3[i])\)/6.]\)]
+              \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 1, 
+          i < \((Ns - 3)\), \(i++\), 
+          H[[i, i + 4]] = \(-\[ImaginaryI]\) \(\((\(-1\))\)\^i\) ts]\); 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          \(\[IndentingNewLine]H\)[[i, i + 2]] = \ \ \ \ \ \ \ 
+            2  tp\ Cos[\((kyY + phase2[i])\)/2]; 
+          \(\[IndentingNewLine]H\)[[i + 1, i + 3]] = 
+            \(2  tp\ Cos[\((kyY + phase3[i])\)/2]\[IndentingNewLine]\)]; \n\t
+        \tFor[i = 1, i < \((Ns - 3)\), i += 4, \n\t\t\t
+          H[[i, i + 6]] = \ \ \ \ \ \ \ 2  tm\ Cos[\((kyY + phase3[i])\)/2]; 
+          \(\[IndentingNewLine]H\)[[i + 3, i + 5]] = \ 
+            \(2  tp\ Cos[\((kyY + phase3[i])\)/2]\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 1, i < Ns, 
+          \(i++\), H[[i + 1, i]] = Conjugate[H[[i, i + 1]]]]\); 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), \(i++\), 
+          \(\[IndentingNewLine]H\)[[i + 4, i]] = 
+            \(Conjugate[H[[i, i + 4]]]\[IndentingNewLine]\)]; \n\t\t
+        For[i = 1, i < \((Ns - 3)\), i += 4, 
+          \(\(\[IndentingNewLine]H\)[[i + 2, i]] = \ \ \ \ \ \ 
+            Conjugate[H[[i, i + 2]]]; 
+          \(\[IndentingNewLine]H\)[[i + 3, i]] = \ \ \ \ \ \ 
+            Conjugate[H[[i, i + 3]]]; 
+          \(\[IndentingNewLine]H\)[[i + 3, i + 1]] = 
+            Conjugate[H[[i + 1, i + 3]]]; 
+          \(\[IndentingNewLine]H\)[[i + 4, i + 1]] = 
+            Conjugate[H[[i + 1, i + 4]]]; 
+          \(\[IndentingNewLine]H\)[[i + 5, i]] = \ \ \ \ \ \ \ 
+            Conjugate[H[[i, i + 5]]]; 
+          \(\[IndentingNewLine]H\)[[i + 5, i + 2]] = 
+            Conjugate[H[[i + 2, i + 5]]]; 
+          \(\[IndentingNewLine]H\)[[i + 5, i + 3]] = 
+            Conjugate[H[[i + 3, i + 5]]]; 
+          \(\[IndentingNewLine]H\)[[i + 6, i]] = \ \ \ \ \ \ \ 
+            Conjugate[H[[i, i + 6]]]; 
+          \(\[IndentingNewLine]H\)[[i + 6, i + 1]] = 
+            \(H[[i + 4, i + 3]] = Conjugate[H[[i + 1, i + 6]]]\); 
+          \(\[IndentingNewLine]H\)[[i + 6, i + 3]] = 
+            Conjugate[H[[i + 3, i + 6]]]; \[IndentingNewLine]\)]; \n\t\t
+        H[[Ns - 1, Ns - 3]] = Conjugate[H[[Ns - 3, Ns - 1]]]; 
+        \(\[IndentingNewLine]H\)[[Ns, Ns - 3]] = \ \ \ \ \ \ \ 
+          Conjugate[H[[Ns - 3, Ns]]]; \n\t\t
+        H[[Ns, Ns - 2]] = \ \ \ \ \ \ \ Conjugate[H[[Ns - 2, Ns]]]; \n\t\t
+        Return[H]; \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSvy[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, j_, 
+        options___] := 
+      Module[\(\[IndentingNewLine]{kyY, a, X, Y, \[Phi], \ fa, Ns, ts, t0, i, 
+          vy, ept}\), 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\
+\[IndentingNewLine]\(\[IndentingNewLine]\[IndentingNewLine]a\)\) = \ 
+          2.4612*10^\(-10\); \ \ \(\[IndentingNewLine]Y\) = \ \(\@3.\) a; \ \ 
+        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]X\) = \ 1\/\@3.; \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \ \ \ \ \ \ \(\[IndentingNewLine]\[Phi]\)\  = \ 4.1356*10^\(-15\); \ 
+        \(\[IndentingNewLine]fa\)\  = \((2  \[Pi]\ Y\^2/\[Phi]\ )\); \ \ 
+        \(\[IndentingNewLine]\[IndentingNewLine]Ns\)\  = 4  Nx\ ; \ \ 
+        \(\[IndentingNewLine]t0\) = 2.7; 
+        \(\[IndentingNewLine]ts\)\  = \ 
+          \[ImaginaryI]\ \((\[CapitalDelta]SO\/\(3 \@ 3.\))\)/t0; \ 
+        \(\[IndentingNewLine]ept\) = ep/t0; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)\ 
+            \(\[IndentingNewLine]xD\)[i_] := \(Floor[i/4]*X\); \ \ \ \ \ \ \ 
+        \ \ \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]phase1\)[i_] := \(\(fa\ Bz\)\/3\) \((xD[i])\); \ 
+        \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]phase2\)[i_] := 
+          \(\(fa\ Bz\)\/6\) \((xD[i] - X\/4)\); \ 
+        \(\[IndentingNewLine]phase3\)[i_] := 
+          \(\(fa\ Bz\)\/6\) \((xD[i] + X\/4)\); \ \n\t
+        \(\[IndentingNewLine]kyY\) = N[\(\[Pi]\ \((2  j - Ly)\)\)\/Ly]; \ \ \ 
+        \ \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]diag
+            \) = Table[\ 0, {i, 1, Ns}]; 
+        \(\[IndentingNewLine]vy\) = DiagonalMatrix[diag]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)\ 
+          \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+            \(\[IndentingNewLine]\(vy[[i, i + 3]] = \ \ \ \ \ \ 
+              \(-\[ImaginaryI]\)\ Y\ 
+                \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ kyY\)\) 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ phase1[i]\)*t0*10^10; 
+            \)\ \ \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+            \(\[IndentingNewLine]vy\)[[i, i + 2]] = \ \ \ \ \ \ \ 
+              \(\(-\[ImaginaryI]\)\ Y*ts*
+                  \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ kyY\)\) 
+                  \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 3\ phase2[i]\)\)*
+                t0*10^10; 
+            \(\[IndentingNewLine]vy\)[[i + 1, i + 3]] = 
+              \(\(-\[ImaginaryI]\)\ Y*ts*
+                  \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ kyY\)\) 
+                  \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 3\ phase3[i]\)*
+                t0*10^10\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), i += 4, 
+          \(\(\[IndentingNewLine]vy\)[[i, i + 6]] = \ \ \ \ \ \ \ 
+            \(\[ImaginaryI]\ Y*ts*
+                \(\[ExponentialE]\^\(\(-\[ImaginaryI]\)\ kyY\)\) 
+                \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ 3\ phase3[i]\)\)*
+              t0*10^10; 
+          \(\[IndentingNewLine]vy\)[[i + 3, i + 5]] = 
+            \(\[ImaginaryI]\ Y*ts*\(\[ExponentialE]\^\(\[ImaginaryI]\ kyY\)\) 
+                \[ExponentialE]\^\(\[ImaginaryI]\ 3\ phase3[i]\)\)*t0*10^10; 
+          \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 3)\), i += 4, 
+            \(\(\[IndentingNewLine]vy\)[[i + 2, i]] = \ \ \ \ \ \ 
+              Conjugate[vy[[i, i + 2]]]; 
+            \(\[IndentingNewLine]vy\)[[i + 3, i]] = \ \ \ \ \ \ 
+              Conjugate[vy[[i, i + 3]]]; 
+            \(\[IndentingNewLine]vy\)[[i + 3, i + 1]] = 
+              Conjugate[vy[[i + 1, i + 3]]]; 
+            \(\[IndentingNewLine]vy\)[[i + 5, i + 3]] = 
+              Conjugate[vy[[i + 3, i + 5]]]; 
+            \(\[IndentingNewLine]vy\)[[i + 6, i]] = \ \ \ \ \ \ \ 
+              Conjugate[vy[[i, i + 6]]]; \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]vy\)[[Ns - 1, Ns - 3]] = 
+          Conjugate[vy[[Ns - 3, Ns - 1]]]; 
+        \(\[IndentingNewLine]vy\)[[Ns, Ns - 3]] = \ \ \ \ \ \ 
+          Conjugate[vy[[Ns - 3, Ns]]]; 
+        \(\[IndentingNewLine]vy\)[[Ns, Ns - 2]] = \ \ \ \ \ \ 
+          Conjugate[vy[[Ns - 2, Ns]]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[vy]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(GSSaPlot[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, 
+        options___] := 
+      Module[\(\[IndentingNewLine]{spectrum}\), 
+        \(\[IndentingNewLine]spectrum\) = 
+          GSSarmchair[1, Ly, Nx, ep, \[CapitalDelta]SO, Bz, options]; 
+        \(\(\[IndentingNewLine]ListPlot\)[spectrum, Frame \[Rule] True, 
+          FrameTicks 
+            \[Rule] {{\(-3\) \[Pi]/4, \(-\[Pi]\)/2, \(-\[Pi]\)/4, 0, \[Pi]/4, 
+                \[Pi]/2, 3  \[Pi]/4}, Automatic}, 
+          GridLines \[Rule] {{0}, {0}}, 
+          PlotRange 
+            \[Rule] {{N[\((\[Pi] \((2 - Ly)\))\)/Ly], N[\[Pi]]}, Automatic}, 
+          ImageSize \[Rule] 72*7.5, 
+          FrameLabel 
+            \[Rule] {"\<\!\(k\_y\)\!\(\@3\)a\>", "\<E/t\>", "\<\>", "\<\>"}, 
+          RotateLabel \[Rule] False, options]\[IndentingNewLine]\)]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(GSSaPlot2[percent_, range_List, Ly_Integer, Nx_Integer, ep_, 
+        \[CapitalDelta]SO_, Bz_, options___] := 
+      Module[\(\[IndentingNewLine]{spectrum}\), 
+        \(\(\[IndentingNewLine]spectrum\) = 
+          GSSarmchair[percent, Ly, Nx, ep, \[CapitalDelta]SO, Bz, options]; 
+        \(\[IndentingNewLine]Return\)[
+          ListPlot[spectrum, 
+            AxesOrigin 
+              \[Rule] {\(N[\((\[Pi] \((2 - Ly)\))\)/Ly]*percent\), 
+                range[[1]]}, 
+            Ticks \[Rule] {{\(-3\) \[Pi]/4, \(-\[Pi]\)/2, \(-\[Pi]\)/4, 0, 
+                  \[Pi]/4, \[Pi]/2, 3  \[Pi]/4}, Automatic}, 
+            GridLines \[Rule] {{0}, {0}}, 
+            PlotRange 
+              \[Rule] {{\(N[\((\[Pi] \((2 - Ly)\))\)/Ly]*percent\), 
+                  \(N[\[Pi]]*percent\)}, range}, ImageSize \[Rule] 72*7.5, 
+            RotateLabel \[Rule] False, options, 
+            AxesLabel \[Rule] 
+              TraditionalForm/@{"\<\!\(q\_y\)\!\(\@3\)a\>", 
+                  "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+            \(\[IndentingNewLine]TextStyle\) 
+              \[Rule] {FontFamily \[Rule] "\<Times\>", 
+                FontSize \[Rule] 14}]]; \[IndentingNewLine]\)]; \)\)}], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSaDensity[percent_, range_List, Ly_Integer, Nx_Integer, ep_, 
+        \[CapitalDelta]SO_, Bz_, EF_, options___] := 
+      Module[\(\[IndentingNewLine]{spectrum, Ns, Nc, DOS, lp}\), 
+        \(\(\[IndentingNewLine]Needs\)["\<Graphics`Graphics`\>"]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]spectrum\) = 
+          GSSarmchair[Abs[percent], Ly, Nx, ep, \[CapitalDelta]SO, Bz, 
+            options]; \(\[IndentingNewLine]Ls\) = \((4*Nx)\)*Ly; \ 
+        \(\[IndentingNewLine]Nc\) = 0; \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \ \ \ \ \(\[IndentingNewLine]DOS\) = {}; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[i = 1, 
+          i \[LessEqual] Ls, \(i++\), 
+          \(\(\[IndentingNewLine]If\)[
+            \(spectrum[[i]]\)[[2]] \[LessSlantEqual] EF, 
+            \(\[IndentingNewLine]\(Nc++\)\); 
+            \(\[IndentingNewLine]\(DOS\  = \ 
+              DOS\ ~Join~\ {\(spectrum[[i]]\)[[2]]}; 
+            \)\[IndentingNewLine]\), ]\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]Print\)[
+          "\<The number of carriers below EF = \>", \ EF, "\< is \>", \ Nc]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]If\)[
+          percent < 0, 
+          \(\[IndentingNewLine]MultipleListPlot\)[
+            spectrum, {{\(N[\((\[Pi] \((2 - Ly)\))\)/Ly]*Abs[percent]\), 
+                EF}, {\(N[\[Pi]]*Abs[percent]\), EF}}, Frame \[Rule] True, 
+            GridLines \[Rule] {{0}, None}, 
+            PlotRange 
+              \[Rule] {{\(N[\((\[Pi] \((2 - Ly)\))\)/Ly]*Abs[percent]\), 
+                  \(N[\[Pi]]*Abs[percent]\)}, range}, ImageSize \[Rule] 72*8, 
+            FrameLabel 
+              \[Rule] {"\<\!\(k\_y\)\!\(\@3\)a\>", "\<\!\(E\/t\)\>", "\<\>", 
+                "\<\>"}, RotateLabel \[Rule] False, options]; 
+          \(\[IndentingNewLine]\(Return[
+            Histogram[DOS, BarStyle \[Rule] GrayLevel[.6], 
+              BarEdgeStyle -> GrayLevel[.6]]]; \)\[IndentingNewLine]\), ]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(GetEdgeStates[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_] := 
+      Module[{Proto, EdgeEg, EdgeH, EdgeVy, diag, i, Nes, spectrum, r, ly}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]r\) = Sign[Ly]; 
+        \(\[IndentingNewLine]ly\) = Abs[Ly]; 
+        \(\[IndentingNewLine]spectrum\) = 
+          GSSarmchair[1, ly, Nx, ep, \[CapitalDelta]SO, Bz]; 
+        \(\[IndentingNewLine]Proto\) = 
+          Table[\ \(spectrum[[i + \((2*Nx - 1)\)*ly]]\)[[2]], {i, 1, 2*ly}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]EdgeEg\) = 
+          Table[\ 0, {i, 1, ly}]; 
+        \(\[IndentingNewLine]diag\) = Table[\ 0, {i, 1, 4*Nx}]; 
+        \(\[IndentingNewLine]EdgeH\) = 
+          Table[DiagonalMatrix[diag], {i, 1, ly}]; 
+        \(\[IndentingNewLine]EdgeVy\) = 
+          Table[\ Table[\ 0, {i, 1, 4*Nx}], {i, 1, ly}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]If\)[r > 0, \ \ \ \ \ \ \ \ \ 
+          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+          \(\[IndentingNewLine]For\)[i = 1, i < \((ly/2 + 1)\), \(i++\), 
+            \(\(\[IndentingNewLine]EdgeEg\)[[i]] = Proto[[ly + 1 - i]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = \ \ 
+              GSSarmH[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \(\[IndentingNewLine]EdgeVy\)[[i]] = 
+              GSSvy[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \[IndentingNewLine]\)]; 
+          \(\[IndentingNewLine]For\)[i = \((ly/2)\) + 1, i < \((ly + 1)\), 
+            \(i++\), \(\(\[IndentingNewLine]EdgeEg\)[[i]] = Proto[[i + ly]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = \ \ 
+              GSSarmH[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \(\[IndentingNewLine]EdgeVy\)[[i]] = 
+              GSSvy[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \[IndentingNewLine]\)], \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+          \(\[IndentingNewLine]For\)[i = 1, i < \((ly/2 + 1)\), \(i++\), 
+            \(\(\[IndentingNewLine]EdgeEg\)[[i]] = Proto[[ly + i]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]]\ \  = 
+              GSSarmH[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \(\[IndentingNewLine]EdgeVy\)[[i]] = 
+              GSSvy[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \[IndentingNewLine]\)]; 
+          \(\[IndentingNewLine]For\)[i = \((ly/2 + 1)\), i < \((ly + 1)\), 
+            \(i++\), 
+            \(\(\[IndentingNewLine]EdgeEg\)[[i]] = Proto[[ly + 1 - i]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = \ \ 
+              GSSarmH[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \(\[IndentingNewLine]EdgeVy\)[[i]] = 
+              GSSvy[ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+            \[IndentingNewLine]\)]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return
+          \)[{EdgeEg, EdgeH, EdgeVy}]; \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(GetMatrices[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_] := 
+      Module[{Eig, Ham, Vy, diag, i, Ns, spectrum, ly}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]ly\) = Abs[Ly]; 
+        \(\[IndentingNewLine]Ns\) = 4*Nx; 
+        \(\[IndentingNewLine]\[IndentingNewLine]diag\) = 
+          Table[\ 0, {i, 1, Ns}]; 
+        \(\[IndentingNewLine]Eig\) = Table[\ diag, {i, 1, ly}]; 
+        \(\[IndentingNewLine]Ham\) = Table[DiagonalMatrix[diag], {i, 1, ly}]; 
+        \(\[IndentingNewLine]Vy\) = 
+          Table[DiagonalMatrix[diag]\ , {i, 1, ly}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[i = 1, 
+          i < \((ly + 1)\), \(i++\), 
+          \(\[IndentingNewLine]Ham\)[[i]] = 
+            GSSarmH[Ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+          \(\[IndentingNewLine]Eig\)[[i]] = Sort[Eigenvalues[Ham[[i]]]]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[{Eig, Ham, Vy}]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetWf[eigi_, Hami_] := 
+      Module[{evs, i, ind, L}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]evs\) = Eigenvalues[Hami]; 
+        \(\[IndentingNewLine]L\) = Length[evs]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]ind\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]\(If[
+            SetPrecision[evs[[i]], 12] == SetPrecision[eigi, 12], ind = i, ]; 
+          \)\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          \(Eigenvectors[Hami]\)[[ind]]]; \[IndentingNewLine]\)]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetWfK[eigi_, Hami_] := 
+      Module[{evs, i, ind, L, evc, R, th, devc, K, diag, inFT}, 
+        \(\[IndentingNewLine]\[IndentingNewLine]evs\) = Eigenvalues[Hami]; 
+        \(\[IndentingNewLine]L\) = Length[evs]; 
+        \(\[IndentingNewLine]K\) = \(4\ \[Pi]\)\/3.0; 
+        \(\[IndentingNewLine]\[IndentingNewLine]ind\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]\(If[
+            SetPrecision[evs[[i]], 12] == SetPrecision[eigi, 12], ind = i, ]; 
+          \)\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]If\)[ind \[Equal] 0, \ Return[{\(-1\)}]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]diag
+            \) = Table[\ 
+            Exp[\(-\[ImaginaryI]\)*K*Floor[\((i - .5)\)/4]], {i, 1, L}]; 
+        \(\[IndentingNewLine]inFT\) = DiagonalMatrix[diag]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = 
+          \(Eigenvectors[Hami]\)[[ind]]; 
+        \(\[IndentingNewLine]evc\) = inFT.evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]\[IndentingNewLine]devc\) = evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 5, 
+          i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = L - 3, 
+          i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + 
+                  \((Abs[evc[[i]]]/Abs[evc[[i - 12]]])\) evc[[i - 8]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = devc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; \n
+        For[i = 5, i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]; \n
+        \(\[IndentingNewLine]For\)[i = L - 3, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + 
+                  \((Abs[evc[[i]]]/Abs[evc[[i - 12]]])\) evc[[i - 8]])\)/3
+              \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          devc/\@\((Conjugate[{devc}].Transpose[{devc}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetWfKp[eigi_, Hami_] := 
+      Module[{evs, i, ind, L, evc, R, th, devc, K, diag, inFT}, 
+        \(\[IndentingNewLine]\[IndentingNewLine]evs\) = Eigenvalues[Hami]; 
+        \(\[IndentingNewLine]L\) = Length[evs]; 
+        \(\[IndentingNewLine]Kp\) = \(-\(\(4\ \[Pi]\)\/3.0\)\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]ind\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]\(If[evs[[i]] \[Equal] eigi, ind = i, ]; 
+          \)\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]diag
+            \) = Table[\ 
+            Exp[\(-\[ImaginaryI]\)*Kp*Floor[\((i - .5)\)/4]], {i, 1, L}]; 
+        \(\[IndentingNewLine]inFT\) = DiagonalMatrix[diag]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = 
+          \(Eigenvectors[Hami]\)[[ind]]; 
+        \(\[IndentingNewLine]evc\) = inFT.evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]\[IndentingNewLine]devc\) = evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 5, 
+          i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = L - 3, 
+          i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + 
+                  \((Abs[evc[[i]]]/Abs[evc[[i - 12]]])\) evc[[i - 8]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = devc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]For\)[i = 5, i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = L - 3, 
+          i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + 
+                  \((Abs[evc[[i]]]/Abs[evc[[i - 12]]])\) evc[[i - 8]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          devc/\@\((Conjugate[{devc}].Transpose[{devc}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(PlotWf[wf_] := 
+      Module[{len, lista, listsb, listc, listd, listaA, listbA, listcA, 
+          listdA}, 
+        \(\(\[IndentingNewLine]Needs\)["\<Graphics`MultipleListPlot`\>"]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]len\) = Length[wf]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]lista\) = 
+          Table[wf[[i]], {i, 1, len, 4}]; 
+        \(\[IndentingNewLine]listb\) = Table[wf[[i]], {i, 2, len, 4}]; 
+        \(\[IndentingNewLine]listc\) = Table[wf[[i]], {i, 3, len, 4}]; 
+        \(\[IndentingNewLine]listd\) = Table[wf[[i]], {i, 4, len, 4}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]listaA\)\  = \ 
+          Table[{i, Abs[lista[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listbA\)\  = 
+          Table[{i, Abs[listb[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listcA\)\  = \ 
+          Table[{i, Abs[listc[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listdA\)\  = \ 
+          Table[{i, Abs[listd[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]MultipleListPlot\)[listaA, 
+          listbA, listcA, listdA, PlotJoined \[Rule] True, 
+          Frame \[Rule] True, 
+          PlotLegend 
+            \[Rule] {"\<'a'[A]\>", "\<'b'[B]\>", "\<'c'[A]\>", "\<'d'[B]\>"}, 
+          PlotLabel -> "\<Wavefunction Amplitude\>", 
+          \(\[IndentingNewLine]PlotStyle\) 
+            \[Rule] {
+              RGBColor[0, .6, 0], {RGBColor[0, 0, .7], Dashing[{Dot}]}, {
+                RGBColor[.6, 1, 0], Dashing[{Dash}]}, {RGBColor[0, .6, 1], 
+                Dashing[{Dot, Dash}]}}, 
+          SymbolShape 
+            \[Rule] {PlotSymbol[Star, Filled \[Rule] False], 
+              PlotSymbol[Diamond, Filled \[Rule] False], 
+              PlotSymbol[Box, Filled \[Rule] False], 
+              PlotSymbol[Triangle, Filled \[Rule] False]}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]MultipleListPlot\)[
+          Arg[lista], Arg[listb], Arg[listc], Arg[listd], 
+          PlotJoined \[Rule] True, Frame \[Rule] True, 
+          PlotLegend 
+            \[Rule] {"\<'a'[A]\>", "\<'b'[B]\>", "\<'c'[A]\>", "\<'d'[B]\>"}, 
+          PlotLabel -> "\<Wavefunction Phase\>", 
+          PlotStyle 
+            \[Rule] {
+              RGBColor[0, .6, 0], {RGBColor[0, 0, .7], Dashing[{Dot}]}, {
+                RGBColor[.6, 1, 0], Dashing[{Dash}]}, {RGBColor[0, .6, 1], 
+                Dashing[{Dot, Dash}]}}, 
+          SymbolShape 
+            \[Rule] {PlotSymbol[Star, Filled \[Rule] False], 
+              PlotSymbol[Diamond, Filled \[Rule] False], 
+              PlotSymbol[Box, Filled \[Rule] False], 
+              PlotSymbol[Triangle, Filled \[Rule] False]}]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(PlotWfA[wf_, options___] := 
+      Module[{len, lista, listsb, listc, listd, listaA, listbA, listcA, 
+          listdA}, 
+        \(\(\[IndentingNewLine]Needs\)["\<Graphics`MultipleListPlot`\>"]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]len\) = Length[wf]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]lista\) = 
+          Table[wf[[i]], {i, 1, len, 4}]; 
+        \(\[IndentingNewLine]listb\) = Table[wf[[i]], {i, 2, len, 4}]; 
+        \(\[IndentingNewLine]listc\) = Table[wf[[i]], {i, 3, len, 4}]; 
+        \(\[IndentingNewLine]listd\) = Table[wf[[i]], {i, 4, len, 4}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]listaA\)\  = \ \ 
+          Table[{i + .5, Abs[lista[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listbA\)\  = \ 
+          Table[{i, Abs[listb[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listcA\)\  = \ 
+          Table[{i, Abs[listc[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listdA\)\  = \ 
+          Table[{i + .5, Abs[listd[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          MultipleListPlot[listaA, listbA, listcA, listdA, 
+            PlotJoined \[Rule] True, 
+            PlotStyle 
+              \[Rule] {
+                RGBColor[0, .6, 0], {RGBColor[0, 0, .7], Dashing[{Dot}]}, {
+                  RGBColor[.6, 1, 0], Dashing[{Dash}]}, {RGBColor[0, .6, 1], 
+                  Dashing[{Dot, Dash}]}}, 
+            SymbolShape 
+              \[Rule] {PlotSymbol[Star, Filled \[Rule] False], 
+                PlotSymbol[Diamond, Filled \[Rule] False], 
+                PlotSymbol[Box, Filled \[Rule] False], 
+                PlotSymbol[Triangle, Filled \[Rule] False]}]]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(jy[wf_, Ly_, Nx_, ep_, \[CapitalDelta]SO_, Bz_, j_] := 
+      Module[{vyOp, jy}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]vyOp
+            \) = GSSvy[Ly, Nx, ep, \[CapitalDelta]SO, Bz, j]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jy\) = 
+          Chop[\((Conjugate[{wf}].Transpose[{vyOp.wf}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]Return\)\ [jy]; \[IndentingNewLine]\)]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(jy[wf_, vyj_] := 
+      Module[{jy}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]\[IndentingNewLine]jy\) = 
+          Chop[\((Conjugate[{wf}].Transpose[{vyj.wf}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]Return\)\ [jy]; \[IndentingNewLine]\)]
+        \[IndentingNewLine]\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(jySmear[wf_] := 
+      Module[{sigmay, Ns, i, jy, cwf, swf}, 
+        \(\[IndentingNewLine]\[IndentingNewLine]Ns\) = Length[wf]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]sigmay
+            \) = DiagonalMatrix[Table[0, {i, 1, Ns}]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          sigmay[[i, i + 3]] = \(-\[ImaginaryI]\); 
+          sigmay[[i + 3, i]] = \[ImaginaryI]]; 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          sigmay[[i + 2, i + 1]] = \(-\[ImaginaryI]\); 
+          sigmay[[i + 1, i + 2]] = \[ImaginaryI]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]cwf\) = Conjugate[wf]; 
+        \(\[IndentingNewLine]swf\) = Transpose[sigmay.wf]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jy\) = 
+          Table\ [\(cwf[\([i]\)]*swf[[i]]\), {i, 1, Ns}]; 
+        \(\[IndentingNewLine]Return\)\ [jy]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(EdgeJy[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, dE_]
+         := Module[
+        \(\[IndentingNewLine]{eig, Ham, vy, Em, \ EM, jyTot, eigi, count, ly}
+          \), \(\(\[IndentingNewLine]ly\) = Abs[Lx]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Em\)\  = \ Ef - dE/2; \ \ \ \ 
+        \ \ \ \ \ \ \ \ \ \ \ \(\[IndentingNewLine]EM\)\  = \ Ef + dE/2; \ \ 
+        \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) {eig, Ham, vy} = 
+          GetEdgeStates[Ly, Nx, ep, \[CapitalDelta]SO, Bz]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jyTot\)\  = \ 0; 
+        \(\[IndentingNewLine]count\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((ly + 1)\), \(i++\), 
+          \(\(\[IndentingNewLine]eigi\) = eig[[i]]; 
+          \(\[IndentingNewLine]If\)[\((eigi > Em)\) && \((eigi < EM)\), 
+            \(\[IndentingNewLine]jyTot\)\  += \ 
+              jy[GetWf[eigi, Ham[[i]]], vy[[i]]]; 
+            \(\[IndentingNewLine]\(\(count++\); 
+            \)\[IndentingNewLine]\[IndentingNewLine]\), 
+            \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+          \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]Print\)["\<Number of edges states: \>", count]; 
+        \(\[IndentingNewLine]Return\)[jyTot]; \[IndentingNewLine]\)]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(BulkJyj[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, dE_, 
+        ei_, Hi_, vyi_, j_, mover_] := 
+      Module[\(\[IndentingNewLine]{ly, Hamj, Em, \ EM, jyTot, eigj, Ns, rwf}
+          \), \(\(\[IndentingNewLine]\[IndentingNewLine]Em\)\  = \ Ef - dE/2; 
+        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \(\[IndentingNewLine]EM\)\  = \ Ef + dE/2; \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \ \ \(\[IndentingNewLine]\[IndentingNewLine]ly\) = Abs[Ly]; 
+        \(\[IndentingNewLine]Ns\) = 4*Nx; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Hamj\) = Hi[[j]]; 
+        \(\[IndentingNewLine]eigj\) = ei[[j]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jyTot\)\  = \ 0; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[i = 1, i < \((Ns/2)\), 
+          \(i++\), \(\(\[IndentingNewLine]eigi\) = eigj[[i]]; 
+          \(\[IndentingNewLine]If\)[\((eigi > Em)\) && \((eigi < EM)\), 
+            \(\[IndentingNewLine]\[IndentingNewLine]rwf\) = 
+              mover.GetWf[eigi, Hamj]; 
+            \(\(\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(jyTot\  += jy[rwf, vyi[[j]]]; 
+              \)\[IndentingNewLine]\[IndentingNewLine]\), 
+            \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+          \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]For\)[i = \((Ns/2 + 2)\), i < \((Ns + 1)\), 
+          \(i++\), \(\(\[IndentingNewLine]eigi\) = eigj[[i]]; 
+          \(\[IndentingNewLine]If\)[\((eigi > Em)\) && \((eigi < EM)\), 
+            \(\[IndentingNewLine]\[IndentingNewLine]rwf\) = 
+              mover.GetWf[eigi, Hamj]; 
+            \(\(\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(jyTot\  += \ 2*jy[rwf, vyi[[j]]]; 
+              \)\[IndentingNewLine]\[IndentingNewLine]\), 
+            \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+          \[IndentingNewLine]\)]; \(\[IndentingNewLine]Return\)[jyTot]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(BulkJy[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, dE_, 
+        ei_, Hi_, vyi_, Dj_] := 
+      Module[\(\[IndentingNewLine]{ly, r, ld, rd, mover, i, jyTot, Ns}\), 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]ly\) = Abs[Ly]; 
+        \(\[IndentingNewLine]r\) = \ Sign[Ly]; 
+        \(\[IndentingNewLine]Ns\) = 4*Nx; 
+        \(\[IndentingNewLine]L2\) = Abs[Ly/2]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]If\)[r < 0, 
+            \(\[IndentingNewLine]ld\) = 
+              Table[If[i < \((Ns/2 + 1)\), 1, 0], {i, 1, Ns}]; 
+            \(\[IndentingNewLine]\(mover = DiagonalMatrix[ld]; 
+            \)\[IndentingNewLine]\), 
+            \(\(\[IndentingNewLine]rd\) = 
+              Table[If[i < \((Ns/2 + 1)\), 0, 1], {i, 1, Ns}]; 
+            \(\[IndentingNewLine]mover\) = DiagonalMatrix[rd]; 
+            \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jyTot\) = 0; 
+        \(\[IndentingNewLine]For\)[i = L2 - Dj, i < \((L2 + Dj + 1)\), 
+          \(i++\), 
+          \(\[IndentingNewLine]\(jyTot += 
+            BulkJyj[Ly, Nx, ep, \[CapitalDelta]SO, Bz, Ef, dE, ei, Hi, vyi, 
+              i, mover]; \)\[IndentingNewLine]\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[jyTot]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(\(BulkWf[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, 
+        dE_, j_, i_] := 
+      Module[{Hamj, eigj, ly}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]ly\)\  = Abs[Ly]; 
+        \(\[IndentingNewLine]Hamj\) = 
+          GSSarmH[ly, Nx, ep, \[CapitalDelta]SO, Bz, j]; 
+        \(\[IndentingNewLine]eigj\) = Sort[Eigenvalues[Hamj]]; 
+        \(\[IndentingNewLine]Return\)[GetWf[eigj[[i]], Hamj]]; 
+        \[IndentingNewLine]\)]; \)\[IndentingNewLine]\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(BulkWfK[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, 
+        dE_, j_, i_] := 
+      Module[{Hamj, eigj, ly}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]ly\)\  = Abs[Ly]; 
+        \(\[IndentingNewLine]Hamj\) = 
+          GSSarmH[ly, Nx, ep, \[CapitalDelta]SO, Bz, j]; 
+        \(\[IndentingNewLine]eigj\) = Sort[Eigenvalues[Hamj]]; 
+        \(\[IndentingNewLine]Return\)[GetWfK[eigj[[i]], Hamj]]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(dEJy3[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, NE_, Ni_, 
+        esE_, HE_, vyE_, ei_, Hi_, vyi_] := 
+      Module[\(\[IndentingNewLine]{L2, ly, i, j, jyTot, jyeList, jyEdge, 
+          jyBulk, Emax, Emin, Ef, dE, Dj}\), 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]jyTot\) = 
+          Table[{0, 0}, {i, 1, NE}]; \(\[IndentingNewLine]L2\) = Abs[Ly/2]; 
+        \(\[IndentingNewLine]Dj\) = Ni + NE + 4; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jyeList\)\  = 
+          Table[jy[GetWf[esE[[i]], HE[[i]]], vyE[[i]]], {i, L2 - 2 - Ni, 
+              L2 - Dj, \(-1\)}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[j = 1, 
+          j < \((NE + 1)\), \(j++\), 
+          \(\(\[IndentingNewLine]i\) = L2 - j - Ni; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Emax\)\  = \ 
+            \((esE[[i]] + esE[[i - 1]])\)/2; 
+          \(\[IndentingNewLine]Emin\)\  = \ 
+            \((esE[[i - 3]] + esE[[i - 4]])\)/2; 
+          \(\[IndentingNewLine]jyEdge\) = 
+            jyeList[[j]] + jyeList[[j + 1]] + jyeList[[j + 2]]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Ef\)\  = \ 
+            \((Emax + Emin)\)/2; 
+          \(\[IndentingNewLine]dE\)\  = \ \((Emax - Emin)\)/2; 
+          \(\[IndentingNewLine]\[IndentingNewLine]If\)[
+            Abs[Emax] > \[CapitalDelta]SO/3.033, 
+            \(\[IndentingNewLine]\(jyBulk = 
+              BulkJy[Ly, Nx, ep, \[CapitalDelta]SO, Bz, Ef, dE, ei, Hi, vyi, 
+                Dj]; \)\[IndentingNewLine]\), 
+            \(\[IndentingNewLine]jyBulk\) = \(0\[IndentingNewLine]\)]; 
+          \(\[IndentingNewLine]jyTot\)[[j]] = {Abs[Ef], jyEdge + jyBulk}; 
+          \(\[IndentingNewLine]Print\)[jyTot[[j]]]; \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[jyTot]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(dEJy3E[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, NE_, Ni_, 
+        es_, H_, vy_] := 
+      Module[\(\[IndentingNewLine]{L2, ly, i, j, jyTot, jyeList, jyEdge, 
+          jyBulk, Emax, Emin, Ef, dE}\), 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]jyTot\) = 
+          Table[{0, 0}, {i, 1, NE}]; \(\[IndentingNewLine]L2\) = Abs[Ly/2]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jyeList\)\  = 
+          Table[jy[GetWf[es[[i]], H[[i]]], vy[[i]]], {i, L2 - 2 - Ni, 
+              L2 - Ni - NE - 4, \(-1\)}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[j = 1, 
+          j < \((NE + 1)\), \(j++\), \(\[IndentingNewLine]i\) = L2 - j - Ni; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Emax\)\  = \ 
+            \((es[[i]] + es[[i - 1]])\)/2; 
+          \(\[IndentingNewLine]Emin\)\  = \ 
+            \((es[[i - 3]] + es[[i - 4]])\)/2; 
+          \(\[IndentingNewLine]jyEdge\) = 
+            jyeList[[j]] + jyeList[[j + 1]] + jyeList[[j + 2]]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Ef\)\  = \ 
+            \((Emax + Emin)\)/2; 
+          \(\[IndentingNewLine]dE\)\  = \ \((Emax - Emin)\)/2; 
+          \(\[IndentingNewLine]Print\)[{Ef, dE}]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(\[IndentingNewLine]\[IndentingNewLine]jyTot\)[[j]] = {
+              Abs[Ef], jyEdge}; \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[jyTot]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(dEJy5[Ly_Integer, Nx_Integer, ep_, \[CapitalDelta]SO_, Bz_, NE_, Ni_, 
+        es_, H_, vy] := 
+      Module[\(\[IndentingNewLine]{L2, i, j, jyTot, jyeList, jyEdge, jyBulk, 
+          Emax, Emin, Ef, dE}\), 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]jyTot\) = 
+          Table[{0, 0}, {i, 1, NE}]; \(\[IndentingNewLine]L2\) = Abs[Ly/2]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]jyeList\)\  = 
+          Table[jy[GetWf[es[[i]], H[[i]]], vy[[i]]], {i, L2 - 2 - Ni, 
+              L2 - Ni - NE - 6, \(-1\)}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]For\)[j = 1, 
+          j < \((NE + 1)\), \(j++\), 
+          \(\(\[IndentingNewLine]i\) = L2 - j - Ni; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Emax\)\  = \ 
+            \((es[[i]] + es[[i - 1]])\)/2; 
+          \(\[IndentingNewLine]Emin\)\  = \ 
+            \((es[[i - 5]] + es[[i - 6]])\)/2; 
+          \(\[IndentingNewLine]jyEdge\) = 
+            jyeList[[j]] + jyeList[[j + 1]] + jyeList[[j + 2]] + 
+              jyeList[[j + 3]] + jyeList[[j + 4]]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Ef\)\  = \ 
+            \((Emax + Emin)\)/2; 
+          \(\[IndentingNewLine]dE\)\  = \ \((Emax - Emin)\)/2; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]jyBulk
+            \) = BulkJy[Ly, Nx, ep, \[CapitalDelta]SO, Bz, Ef, dE]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]jyTot\)[[j]] = {Ef, 
+              jyEdge + jyBulk}; \(\[IndentingNewLine]Print\)[j]; 
+          \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[jyTot]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(SumJyE[dEJyList_] := 
+      Module[{EJyList, len, i}, 
+        \(\(\[IndentingNewLine]len\) = Length[dEJyList]; 
+        \(\[IndentingNewLine]EJyList\) = 
+          Table[{\(dEJyList[[i]]\)[[1]], \(dEJyList[[i]]\)[[2]]}, {i, 1, 
+              len}]; \(\[IndentingNewLine]For\)[i = 2, i < \((len + 1)\), 
+          \(i++\), \(EJyList[[i, 2]] += \(EJyList[[i - 1]]\)[[2]]; \)]; 
+        \(\[IndentingNewLine]Return\)[EJyList]; \[IndentingNewLine]\)]; \)\)],
+   "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Simple Armchair", "Section",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSaPlotA[percent_, range_List, Ly_Integer, Nx_Integer, ep_, 
+        \[CapitalDelta]SO_, Bz_, options___] := 
+      Module[\(\[IndentingNewLine]{spectrum}\), 
+        \(\(\[IndentingNewLine]spectrum\) = 
+          GSSarmchair[percent, Ly, Nx, ep, \[CapitalDelta]SO, Bz, options]; 
+        \(\[IndentingNewLine]Return\)[
+          ListPlot[spectrum, 
+            AxesOrigin 
+              \[Rule] {\(N[\((\[Pi] \((2 - Ly)\))\)/Ly]*percent\), 
+                range[[1]]}, Ticks \[Rule] {None, Automatic}, 
+            GridLines \[Rule] {{0}, {0}}, 
+            PlotRange 
+              \[Rule] {{\(N[\((\[Pi] \((2 - Ly)\))\)/Ly]*percent\), 
+                  \(N[\[Pi]]*percent\)}, range}, ImageSize \[Rule] 72*7.5, 
+            RotateLabel \[Rule] False, options]]; \[IndentingNewLine]\)]; 
+    \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell["2*16+1", "Subsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(33\)], "Output"],
+
+Cell[BoxData[
+    \(\(armgappl1 = 
+      GSSaPlotA[.25, {\(-.25\), .25}, 300, 16, 0, 0, 0, 
+        PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {Hue[.7], Thickness[0.012]}]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 1606 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\({es16, Hs16, vys16} = GetMatrices[300, 16, 0, 0, 0]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es16[[150]]\)[[33]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1.5850519386948545`*^-16\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es16[[150]]\)[[34]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.160113819142396`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es16[[150]]\)[[35]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.1691699739962271`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(2\/\@3\) Sin[n\ \[Pi]/3] /. n \[Rule] 1\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(88*11 + 13\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(981\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(\(n[i_] := \ Mod[i, 3]; \)\), 
+    \(\n\), 
+    \(\(M[i_] := \((i - n[i])\)/3; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(2*11/33\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(2\/3\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(dk[i_] := 
+      4*\((i - 3  M[i] - \(\@3\) Sin[n[i]\ \[Pi]/3])\)/\((\ 3  i)\); \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\[IndentingNewLine]n[33]\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Sin[n[33]\ \[Pi]/3]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(M[33]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(11\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(dk[33]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((\(-1\) + Cos[\(\[Pi]\ \((dk[33] + 2/33)\)\)\/2.] + 
+        \@3\ Sin[\(\[Pi] \((\ dk[33] + 2/33)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.16011381914239634`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((1 - Cos[\(\[Pi]\ \((dk[33] + 2/33)\)\)\/2.] + 
+        \@3\ Sin[\(\[Pi] \((\ dk[33] + 2/33)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.16916997399622716`\)], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2*17+1", "Subsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(35\)], "Output"],
+
+Cell[BoxData[
+    \(\(armgappl2 = 
+      GSSaPlotA[.25, {\(-.25\), .25}, 300, 17, 0, 0, 0, 
+        PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {Hue[.7], Thickness[0.012]}]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 1661 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\(GSSaPlot2[.25, {\(-.5\), .5}, 300, 17, 0, .5, 0, 
+      PlotJoined \[Rule] True, PlotStyle \[Rule] Hue[.7]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 4103 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\({es17, Hs17, vys17} = GetMatrices[300, 17, 0, 0, 0]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(N[es17[[150]]] // Chop\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es17[[150]]\)[[35]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.052262675054002755`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es17[[150]]\)[[36]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.10179396290420525`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es17[[150]]\)[[37]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.2139499366921528`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(0.101793962904205037`\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(dk[35]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/105\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(2/3 - \((2*11 + 1)\)/\((35)\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/105\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(2 \((35 - 3  M[35] - 3/2)\)\)\/\(3*35\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/105\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(2/3 - \((2*11 + 2)\)/\((35.)\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(-0.01904761904761909`\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(dk[35]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/105\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(The\ dispersion\ at\ ky = 0\ point\ near\ K\ \(points : \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(t_  0 \@\( 1 + 4  Cos[\(\@3\/2\) kx\ a] Cos[ky/2] + 4\ Cos[ky/2]^2\)\)],
+   "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(2\ different\ K - \(points : \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Cos[\(2  \[Pi]\)\/3]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(-\(1\/2\)\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Sin[\(2  \[Pi]\)\/3]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\@3\/2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Cos[Ky + dky] // TrigExpand\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(Cos[dky]\ Cos[Ky] - Sin[dky]\ Sin[Ky]\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\[Sqrt]\((
+          1 - 2  Cos[dky\ a/2] + 2 \(\@ 3\) Sin[dky\ a/2] + 
+            \((Cos[dky\ a/2] - \(\@3\) Sin[dky\ a/2])\)^2)\) // FullSimplify
+      \)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\@\((1 - Cos[\(a\ dky\)\/2] + \@3\ Sin[\(a\ dky\)\/2])\)\^2\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((1 - Cos[\(\[Pi]\ dk[35]\)\/2.] + \@3\ Sin[\(\[Pi]\ dk[35]\)\/2.])
+      \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.0522626750540027`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((\(-1\) + Cos[\(\[Pi]\ \((dk[35] - 2/35)\)\)\/2.] - 
+        \@3\ Sin[\(\[Pi]\ \((dk[35] - 2/35)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.10179396290420503`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((1 - Cos[\(\[Pi]\ \((dk[35] + 2/35)\)\)\/2.] + 
+        \@3\ Sin[\(\[Pi]\ \((dk[35] + 2/35)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.2139499366921527`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2*18+1", "Subsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(37\)], "Output"],
+
+Cell[BoxData[
+    \(\(armgappl3 = 
+      GSSaPlotA[.25, {\(-.25\), .25}, 300, 18, 0, 0, 0, 
+        PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {Hue[.7], Thickness[0.012]}]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 1599 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\({es18, Hs18, vys18} = GetMatrices[300, 18, 0, 0, 0]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es18[[150]]\)[[37]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.048614567114463415`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((\(-1\) + Cos[\(\[Pi]\ dk[37]\)\/2.] - 
+        \@3\ Sin[\(\[Pi]\ dk[37]\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.048614567114463415`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es18[[150]]\)[[38]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.09959251036465347`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((1 - Cos[\(\[Pi]\ \((dk[37] + 2/37)\)\)\/2.] + 
+        \@3\ Sin[\(\[Pi]\ \((dk[37] + 2/37)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.09959251036465334`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es18[[150]]\)[[39]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.18926635260857316`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((\(-1\) + Cos[\(\[Pi]\ \((dk[37] - 2/37)\)\)\/2.] - 
+        \@3\ Sin[\(\[Pi]\ \((dk[37] - 2/37)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.18926635260857316`\)], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2*19+1", "Subsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(39\)], "Output"],
+
+Cell[BoxData[
+    \(\(armgappl4 = 
+      GSSaPlotA[.25, {\(-.25\), .25}, 300, 19, 0, 0, 0, 
+        PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {Hue[.7], Thickness[0.012]}]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 1687 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\({es19, Hs19, vys19} = GetMatrices[300, 19, 0, 0, 0]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es19[[150]]\)[[39]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1.0144924574844024`*^-17\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((1 - Cos[\(\[Pi]\ dk[39]\)\/2.] + \@3\ Sin[\(\[Pi]\ dk[39]\)\/2.])
+      \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es19[[150]]\)[[40]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.13612949346231157`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((\(-1\) + Cos[\(\[Pi]\ \((dk[39] + 2/39)\)\)\/2.] + 
+        \@3\ Sin[\(\[Pi] \((\ dk[39] + 2/39)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.13612949346231165`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(es19[[150]]\)[[41]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.14261487719389165`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((1 - Cos[\(\[Pi]\ \((dk[39] + 2/39)\)\)\/2.] + 
+        \@3\ Sin[\(\[Pi] \((\ dk[39] + 2/39)\)\)\/2.])\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.14261487719389157`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(Show[GraphicsArray[{armgappl1, armgappl2, armgappl3, armgappl4}]]; 
+    \)\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 5109 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell["<<Graphics`Animation`", "Input",
+  GeneratedCell->True,
+  CellTags->"S5.25.1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(armarray = {armgappl1, armgappl2, armgappl3, armgappl4}\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+          False,
+          Editable->False], ",", 
+        TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+          False,
+          Editable->False], ",", 
+        TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+          False,
+          Editable->False], ",", 
+        TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+          False,
+          Editable->False]}], "}"}]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    RowBox[{"Show", "[", 
+      RowBox[{"GraphicsArray", "[", 
+        RowBox[{\(Partition[armarray, 2]\), ",", 
+          RowBox[{
+            StyleBox["GraphicsSpacing",
+              "MR"], " ", "\[Rule]", " ", 
+            StyleBox["0",
+              "MR"]}]}], "]"}], "]"}]], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 5147 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  GraphicsArray\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Gapped Armchair", "Section",
+  GeneratedCell->True],
+
+Cell[TextData[{
+  "Parameters:\n\tL= \[Infinity],\n\tLength of unit cell = ",
+  Cell[BoxData[
+      \(TraditionalForm\`\@3\)]],
+  "a = ",
+  Cell[BoxData[
+      \(4.2629\)], "Output"],
+  " \[Angstrom];\n            Number of unit cells = 64,\n            Width \
+of unit cell = a =  2.4612 \[Angstrom],\n            W = (128+1)(a/2) = 16.24 \
+nm;\n            66 total unit cells (2 extra ends with zero amplitude?)=> no \
+microgap since 66 mod 3 = 0\n            E scale is in units of t, where t = \
+3.033 eV (symmetric gap at M point),\n            \[CapitalDelta] = 0.5 eV = \
+",
+  Cell[BoxData[
+      \(0.165\)], "Output"],
+  "eV/t.\n            Note: used this large of a \[CapitalDelta] to insure \
+localization to a single edge. Also, there is a conformal symmetry between \
+\[CapitalDelta] verses t1 for the Dirac energy dispersion; \[CapitalDelta] \
+versus x for the wavefunction. So dividing  \[CapitalDelta] by say 100 would \
+give the same wavefunction envelope pictured here, but for the x-scale*100 \
+and the energies/100 in the Dirac region.  The phases would be more \
+coherent."
+}], "Text",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell["Armchair Energy versus ky", "Subsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(apl1 = 
+      GSSaPlot[300, 64, 0, .5, 0, PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] Hue[.1]]\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 80727 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(\(Show[KGamma3NN, GammaM3NN, MK3NN, LK1, LG, LM, LK2, LT, LB, 
+      Graphics[Text["\<K\>", {\(-\((2/\@3)\)\) b/2, \(-11\)}]], 
+      Graphics[Text["\<\[CapitalGamma]\>", {0.06, \(-11\)}]], 
+      Graphics[Text["\<M\>", {b/2, \(-11\)}]], 
+      Graphics[Text["\<K\>", {b/2 + b/\((2 \@ 3)\), \(-11\)}]], 
+      \(\[IndentingNewLine]Graphics\)[Text["\<\[Pi]\>", {1, \(-6\)}]], 
+      \(\[IndentingNewLine]Graphics\)[
+        Text["\<\!\(\(\[Pi]\^*\)\)\>", {1, 9}]], 
+      \(\[IndentingNewLine]AxesLabel\) \[Rule] {"\<b/2\>", "\<E-Ef\>"}]; 
+    \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[TextData[
+"Note ky=0 is the K points and ky*a = \[PlusMinus]\[Pi]  is the so-called M \
+point."], "Text",
+  GeneratedCell->True],
+
+Cell["Zooming in on the Dirac region:", "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(apl2 = 
+      GSSaPlot2[.5, {\(-.5\), .5}, 300, 64, 0, .5, 0, 
+        PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {RGBColor[0, 0, .7], Thickness[0.005]}]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 8501 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(apl2 = 
+      Show[GSSaPlot2[.5, {\(-.5\), .5}, 300, 64, 0, .5, 0, 
+          PlotJoined \[Rule] True, 
+          PlotStyle \[Rule] {RGBColor[0, 0, .7], Thickness[0.005]}, 
+          AxesLabel \[Rule] 
+            TraditionalForm/@{"\<\!\(q\_y\)\!\(\@3\)a\>", 
+                "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+          \(\[IndentingNewLine]TextStyle\) 
+            \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}], 
+        Graphics[Text["\<Armchair  ribbon\>", {\(-Pi\)/4 - .125, .2}]], 
+        Graphics[Text["\<64 unit cells\>", {Pi/4 + .125, .2}]], 
+        Graphics[
+          Text["\<\[CapitalDelta]=0.5 eV\>", {\(-Pi\)/4 - .125, \(-.2\)}]], 
+        Graphics[Text["\<m= 0.0 eV\>", {Pi/4 + .125, \(-.2\)}]]]\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 8496 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell["This was a graphics cell with 8854 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(Note : \ 
+      the\ exact\ dispersion\ for\ the\ armchair\ edge\ states\ is\ 
+        \(\(4  \[HBar]\ v\ \)\/\(\@3\ a\)\) \(Sin[\ \@3\ q\_y\ a/4].\)\)], 
+  "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(GSSaPlot[300, 64, 0, .5, 0, PlotJoined \[Rule] True, 
+      PlotStyle \[Rule] Hue[.1]]\)], "Input",
+  GeneratedCell->True]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Rashba Armchair", "Section",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(aplR25 = 
+      GSSaPlot2[.025, {\(-.01\), .04}, 300, 25, 0, 0.2, 0, 0.1, 0, 0, 0, 0, 
+        1, PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {RGBColor[.7, 0, 0], Thickness[0.005]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_y\)\!\(\@3\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        \(\[IndentingNewLine]TextStyle\) 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2178 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(aplR40 = 
+      GSSaPlot2[.025, {\(-.01\), .04}, 300, 40, 0, 0.2, 0, 0.1, 0, 0, 0, 0, 
+        1, PlotJoined \[Rule] True, 
+        PlotStyle 
+          \[Rule] {RGBColor[0, 0, .7], Thickness[0.005], 
+            Dashing[{0.05, 0.05}]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_y\)\!\(\@3\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        \(\[IndentingNewLine]TextStyle\) 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2375 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(aplR67 = 
+      GSSaPlot2[.025, {\(-.01\), .04}, 300, 67, 0, 0.2, 0, 0.1, 0, 0, 0, 0, 
+        1, PlotJoined \[Rule] True, 
+        PlotStyle 
+          \[Rule] {RGBColor[.6, 0, .6], Thickness[0.005], 
+            Dashing[{0.01, 0.05, 0.05, 0.05}]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_y\)\!\(\@3\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        \(\[IndentingNewLine]TextStyle\) 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2453 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(\(v = \(\@3\/2.\) 1\/\@3; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(aplRsemi = 
+      Plot[{\(2\ v^2\ ky\^2 + 2\ v\ ky\ \[CapitalDelta] + 
+                \[CapitalDelta]\^2 + \[CapitalLambda]\^2 - 
+                \@\(\[CapitalDelta]\^4 + 
+                    4\ \ v^2  ky\^2\ \[CapitalLambda]\^2 - 
+                    2\ \[CapitalDelta]\^2\ \[CapitalLambda]\^2 + 
+                    \[CapitalLambda]\^4\)\)\/\(2\ 
+                \((v\ ky + \[CapitalDelta])\)\) /. {
+              \[CapitalDelta] \[Rule] 0.2/2.7, 
+              \[CapitalLambda] \[Rule] 0.1/2.7}, 
+          \(\(-2\) v^2\ ky\^2 + 2\ v\ ky\ \[CapitalDelta] - 
+                \[CapitalDelta]\^2 - \[CapitalLambda]\^2 + 
+                \@\(\[CapitalDelta]\^4 + 4\ v^2\ ky\^2\ \[CapitalLambda]\^2 - 
+                    2\ \[CapitalDelta]\^2\ \[CapitalLambda]\^2 + 
+                    \[CapitalLambda]\^4\)\)\/\(2\ 
+                \((v\ ky - \[CapitalDelta])\)\) /. {
+              \[CapitalDelta] \[Rule] 0.2/2.7, 
+              \[CapitalLambda] \[Rule] 0.1/2.7}}, {ky, \(-.078\), .078}, 
+        PlotStyle 
+          \[Rule] {{RGBColor[.75, 0.7, .3], Thickness[0.007]}, {
+              RGBColor[.75, 0.7, .3], Thickness[0.007]}}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_y\)\!\(\@3\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        \(\[IndentingNewLine]TextStyle\) 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 1323 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(Show[aplR25, aplR40, aplR67, aplRsemi]\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 4547 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[{
+    \(\(wf = GetWfK[e40RrArt[[175]], H40RrArt[[175]]]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(len = Length[wf]/2; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(listA = Table[wf[[i]], {i, 1, len, 2}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listB = Table[wf[[i]], {i, 2, len, 2}]; \)\[IndentingNewLine]\ \ \), 
+    \(\[IndentingNewLine]\), 
+    \(\(listAA\  = \ \ 
+      Table[{\((i + 1 - 2  Mod[i, 2])\)/2, Abs[listA[[i + 1]]]}, {i, 0, 
+          Length[listA] - 1}]; \)\n\ \ \), 
+    \(\[IndentingNewLine]\), 
+    \(\(listBA\  = \ 
+      Table[{i/2, Abs[listB[[i + 1]]]}, {i, 0, Length[listB] - 1}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listAA = Table[listAA[[i]], {i, 0, Length[listA] - 1, 6}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listBA = Table[listBA[[i]], {i, 0, Length[listB] - 1, 6}]; \)\)}], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(v\  = \@3./2; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ky = \((\((2*175 - 300)\) \[Pi]/300.)\)*\((1/\@3.)\); \)\), 
+    \(\[IndentingNewLine]\), 
+    \(ee = .24089604; \ \ \ \(\[IndentingNewLine]dd\) = .2/2.7; \), 
+    \(\[IndentingNewLine]\), 
+    \(\(A = .18957; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(B = .00904992  \[ImaginaryI]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ke = .0696448  \[ImaginaryI]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ko = .19443  \[ImaginaryI]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(W = \((40*2 + 1)\)/2.; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(g[x_] := \((ee - dd)\) \((B\ Sin[ko\ x]\  + A\ Cos[ke\ x])\); \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(f[x_] := 
+      \(-v\) \((
+          \(-ke\)\ A\ Sin[ke\ x]\  + B\ ko\ Cos[ko\ x] + 
+            ky\ \((B\ Sin[ko\ x]\  + A\ Cos[ke\ x])\))\); \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(\[Psi]B[J_Integer] := \ 
+      Table[{j/2, Abs[g[\((j)\)/2 - W/2]]}\ , {j, 0, 2*J}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(\[Psi]A[J_Integer] := 
+      Table[{j/2, Abs[f[\((j)\)/2 - W/2]]}\ , {j, 0, 2*J}]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(ThryB = \[Psi]B[40]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ThryA = \[Psi]A[40]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(MultipleListPlot[ThryA, ThryB, listAA, listBA, 
+      PlotJoined \[Rule] {True, True, False, False}, 
+      PlotStyle 
+        \[Rule] {{RGBColor[0, .9, 0], Thickness[0.008]}, {
+            RGBColor[.25, .25, 1], Thickness[0.008]}, {RGBColor[0, .5, 0], 
+            Thickness[0.000]}, {RGBColor[0, 0, .7], Thickness[0.000]}}, 
+      SymbolShape 
+        \[Rule] {PlotSymbol[Triangle, .1], PlotSymbol[Box, .1], 
+          PlotSymbol[Triangle, 5], PlotSymbol[Box, 3]}, 
+      PlotRange \[Rule] {0.03, .15}, 
+      AxesLabel \[Rule] {"\<x/a\>", "\<|Amplitude|\>"}, 
+      \(\[IndentingNewLine]TextStyle\) 
+        \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+      PlotLegend 
+        \[Rule] {"\<A theory\>", "\<B theory\>", "\<A numerics\>", 
+          "\<B numerics\>"}, LegendPosition \[Rule] {\(-.25\), \(-.25\)}, 
+      LegendShadow \[Rule] {.02, \(-.02\)}, 
+      LegendBackground \[Rule] RGBColor[1, .97, .85], 
+      ShadowBackground \[Rule] GrayLevel[.5]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(MultipleListPlot::badpt \( : \ \) 
+      "\!\(List\) is not a valid specification for a point in \
+MultipleListPlot. It should be a number, a pair of numbers, or the same with \
+an error specification given as an Interval around zero."\)], "Message"],
+
+Cell[BoxData[
+    \(MultipleListPlot::badpt \( : \ \) 
+      "\!\(List\) is not a valid specification for a point in \
+MultipleListPlot. It should be a number, a pair of numbers, or the same with \
+an error specification given as an Interval around zero."\)], "Message"]
+}, Open  ]],
+
+Cell["This was a graphics cell with 2720 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[BoxData[
+    \(\({e40RrArt, H40RrArt} = 
+      GetEdgeStates[1, 300, 40, 0, 0.2, 0, 0.1, 0, 0, 0, 0, 1]; \)\)], "Input",\
+
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(wf = GetWfK[e40RrArt[[160]], H40RrArt[[160]]]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(len = Length[wf]/2; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(len\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(160\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(\(listA = Table[wf[[i]], {i, 1, len, 2}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listB = Table[wf[[i]], {i, 2, len, 2}]; \)\[IndentingNewLine]\ \ \), 
+    \(\[IndentingNewLine]\), 
+    \(\(listAA\  = \ \ 
+      Table[{\((i + 1 - 2  Mod[i, 2])\)/2, Abs[listA[[i + 1]]]}, {i, 0, 
+          Length[listA] - 1}]; \)\n\ \ \), 
+    \(\[IndentingNewLine]\), 
+    \(\(listBA\  = \ 
+      Table[{i/2, Abs[listB[[i + 1]]]}, {i, 0, Length[listB] - 1}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listAA = Table[listAA[[i]], {i, 3, Length[listA] - 1, 4}]; \)\), 
+    \(\n\), 
+    \(\(listBA = Table[listBA[[i]], {i, 3, Length[listB] - 1, 4}]; \)\)}], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(v\  = \@3./2; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(ky = \((\((2*160 - 300)\) \[Pi]/300.)\)*\((1/\@3.)\)\), 
+    \(\[IndentingNewLine]\), 
+    \(ee = .095265; \ \ \ \(\[IndentingNewLine]dd\) = .2/2.7; \), 
+    \(\[IndentingNewLine]\), 
+    \(\(A = 1.04641; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(B = .610926  \[ImaginaryI]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ke = .0880006  \[ImaginaryI]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ko = .109224  \[ImaginaryI]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(W = \((40*2 + 1)\)/2.; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.12091995761561454`\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(\(g[x_] := \((ee - dd)\) \((B\ Sin[ko\ x]\  + A\ Cos[ke\ x])\); \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(f[x_] := 
+      \(-v\) \((
+          \(-ke\)\ A\ Sin[ke\ x]\  + B\ ko\ Cos[ko\ x] + 
+            ky\ \((B\ Sin[ko\ x]\  + A\ Cos[ke\ x])\))\); \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(\[Psi]B[J_Integer] := \ 
+      Table[{j/2., Abs[g[\((j)\)/2 - W/2]]}\ , {j, 0, 2*J}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(\[Psi]A[J_Integer] := 
+      Table[{j/2., Abs[f[\((j)\)/2 - W/2]]}\ , {j, 0, 2*J}]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(ThryB = \[Psi]B[40]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(ThryA = \[Psi]A[40]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(MultipleListPlot[ThryA, ThryB, listAA, listBA, 
+      PlotJoined \[Rule] {True, True, False, False}, 
+      PlotStyle 
+        \[Rule] {{RGBColor[0, .9, 0], Thickness[0.008]}, {
+            RGBColor[.25, .25, 1], Thickness[0.008]}, {RGBColor[0, .5, 0], 
+            Thickness[0.000]}, {RGBColor[0, 0, .7], Thickness[0.000]}}, 
+      SymbolShape 
+        \[Rule] {PlotSymbol[Triangle, .1], PlotSymbol[Box, .1], 
+          PlotSymbol[Triangle, 5], PlotSymbol[Box, 3]}, 
+      PlotRange \[Rule] {0.0, .13}, 
+      AxesLabel \[Rule] {"\<x/a\>", "\<|Amplitude|\>"}, 
+      \(\[IndentingNewLine]TextStyle\) 
+        \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+      PlotLegend 
+        \[Rule] {"\<A theory\>", "\<B theory\>", "\<A numerics\>", 
+          "\<B numerics\>"}, LegendPosition \[Rule] {\(-.2\), .05}, 
+      LegendOrientation \[Rule] Vertical, LegendSize \[Rule] {.7, .5}, 
+      LegendShadow \[Rule] {.03, \(-.03\)}, 
+      LegendBackground \[Rule] RGBColor[1, .97, .85], 
+      ShadowBackground \[Rule] GrayLevel[.5]]\)], "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2722 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Berry Curvature", "Section",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(BCg2DPlot[179, 0, .2*2.7, .005*2.7, 0, 0, PlotJoined \[Rule] True, 
+      PlotStyle 
+        \[Rule] {{Hue[.0], Thickness[0.008]}, {Hue[.1], Thickness[0.008]}, {
+            Hue[.3], Thickness[0.008]}, {Hue[.7], Thickness[0.008]}}, 
+      SymbolShape \[Rule] {None, None, None, None}, 
+      PlotRange \[Rule] {{9.9, 16.2}, All}, 
+      TextStyle 
+        \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]; \)\)],
+   "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2679 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\(G2DSPlot[{\(-3\), 3}, 179, 0, .2*2.7, .005*2.7, .1*2.7, 0, 
+      PlotJoined \[Rule] True, 
+      PlotStyle 
+        \[Rule] {{Hue[.0], Thickness[0.008]}, {Hue[.1], Thickness[0.008]}, {
+            Hue[.3], Thickness[0.008]}, {Hue[.7], Thickness[0.008]}}, 
+      SymbolShape \[Rule] {None, None, None, None}, 
+      TextStyle 
+        \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]; \)\)],
+   "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2588 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"],
+
+Cell[BoxData[
+    \(\(BCg2DPlot[179, 0, .2*2.7, .005*2.7, .1*2.7, 0, 
+      PlotJoined \[Rule] True, 
+      PlotStyle 
+        \[Rule] {{Hue[.0], Thickness[0.008]}, {Hue[.1], Thickness[0.008]}, {
+            Hue[.3], Thickness[0.008]}, {Hue[.7], Thickness[0.008]}}, 
+      SymbolShape \[Rule] {None, None, None, None}, 
+      PlotRange \[Rule] {{9.9, 16.2}, {\(-9.2\), 9.2}}, 
+      TextStyle 
+        \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]; \)\)],
+   "Input",
+  GeneratedCell->True],
+
+Cell["This was a graphics cell with 2796 lines.", "Text",
+  GeneratedCell->True,
+  FontColor->RGBColor[0, 0, 1],
+  CellTags->"GraphicsDeleted"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Zigzag edges", "Subtitle",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell["Zigzag Definitions", "Subsection",
+  GeneratedCell->True],
+
+Cell["The graphene strip spectrum for a zigzag edge:", "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(Off[General::spell]\), 
+    \(\n\), 
+    \(Off[General::spell1]\), 
+    \(\n\), 
+    \(Needs["\<Graphics`Graphics`\>"]\), 
+    \(\n\), 
+    \(Needs["\<Graphics`MultipleListPlot`\>"]\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzigzag[Ly_Integer, Nx_, ep_, \[CapitalDelta]SO_, Bz_, options___]
+         := Module[
+        \(\(\[IndentingNewLine]{kya, a, \[Phi], \ fa, Ns, e2p, t0, t1, ts, i, 
+            j, H, spectrum, energies, ept}\), 
+          \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\
+\[IndentingNewLine]\)\)\n\t
+          \(\(\[IndentingNewLine]\[IndentingNewLine]a\) = \ 
+            2.4612*10^\(-10\); \ \ 
+          \(\[IndentingNewLine]\[Phi]0\)\  = \ 4.1356*10^\(-15\); \ 
+          \(\[IndentingNewLine]fa\)\  = 
+            \(-N[\((2  \[Pi]\ \(a\^2\) Bz/\[Phi]0\ )\)]\); \ \ \ \ \ \ \ \ 
+          \(\[IndentingNewLine]\[IndentingNewLine]Ns\)\  = Round[4  Nx]\ ; \ 
+          \ \(\[IndentingNewLine]spectrum\) = Table[{0, 0}, {i, 1, Ly*Ns}]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(\[IndentingNewLine]\[IndentingNewLine]t0\) = \ 2.7; 
+          \(\[IndentingNewLine]t1\) = 0; \(\[IndentingNewLine]t2\) = 0; 
+          \(\[IndentingNewLine]\(\[IndentingNewLine]ts\)\)\  = \ 
+            \((\[CapitalDelta]SO\/\(3 \@ 3.\))\)/t0; \ 
+          \(\[IndentingNewLine]ept\) = ep/t0; 
+          \(\[IndentingNewLine]\[IndentingNewLine]e2p\) = 3*t1; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\)\ 
+              \(\[IndentingNewLine]xD\)[i_] := 
+            If[OddQ[i], Return[\(3\/\(4 \@ 3.\)\) \((i - 1)\)], 
+              Return\ [\((\(3 \((i/2)\) - 1\ \)\/\(2 \@ 3.\))\)]]; 
+          \(\[IndentingNewLine]phase1\)[i_] := 
+            fa \((xD[i] + 1\/\(4 \@ 3.\))\); 
+          \(\[IndentingNewLine]phase2\)[i_] := fa \((xD[i] + \@3.\/4)\); 
+          \(\[IndentingNewLine]phase3\)[i_] := fa \((xD[i] + 1\/\@3.)\); 
+          \(\[IndentingNewLine]phase4\)[i_] := 
+            fa \((xD[i] + 1\/\(2 \@ 3.\))\); 
+          \(\[IndentingNewLine]phase5\)[i_] := 
+            fa \((xD[i] + 5\/\(4 \@ 3.\))\); \n\t\t
+          \(\[IndentingNewLine]For\)[j = 1, j <= Ly, \(j++\), 
+            \(\[IndentingNewLine]kya\) = N[\(2  \[Pi]\ j\)\/Ly]; \ \ \ \ \ \ 
+            \ \ \ \ \ \ \ 
+            \(\[IndentingNewLine]\[IndentingNewLine]\) 
+                \(\[IndentingNewLine]diag\) = 
+              Table[\ e2p + 
+                  2 \((t1\ Cos[kya + \ fa\ xD[i]] + 
+                        \(\((\(-1\))\)\^i\) ts\ Sin[kya + \ fa\ xD[i]])\) + 
+                  If[OddQ[i], ept, \(-ept\)], {i, 1, Ns}]; 
+            \(\[IndentingNewLine]\[IndentingNewLine]\(\[IndentingNewLine]H
+              \)\) = DiagonalMatrix[diag]; 
+            \(\[IndentingNewLine]\[IndentingNewLine]\)\ 
+                \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 2, 
+                  H[[i, i + 1]] = 
+                    \(H[[i + 1, i]] = 
+                      \(-2\)\ \ Cos[.5 \((kya + \ phase1[i])\)]\)] + 
+              2\ t2\ Cos[1.5 \((kya + \ phase1[i])\)]; 
+            \(\[IndentingNewLine]For\)[i = 2, i < Ns, i += 2, 
+              H[[i, i + 1]] = 
+                \(H[[i + 1, i]] = 
+                  \(-1\) + 2\ t2\ \ Cos[kya + \ phase4[i]]\)]; 
+            \(\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 1)\), \(i++\), 
+                H[[i, i + 2]] = 
+                  \(H[[i + 2, i]] = 
+                    2\ t1\ Cos[.5 \((kya + \ phase2[i])\)] - 
+                      \(\((\(-1\))\)\^i\) 2  ts\ 
+                        Sin[.5 \((kya + \ phase2[i])\)]\)]; 
+            \(\[IndentingNewLine]\[IndentingNewLine]\(\[IndentingNewLine]\
+\[IndentingNewLine]\) 
+              \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 2)\), i += 2, 
+                H[[i, i + 3]] = 
+                  \(H[[i + 3, i]] = t2 \((1 + 2\ Cos[kya + \ phase3[i]])\)\)]
+                \); \(\[IndentingNewLine]For\)[i = 2, i < \((Ns - 2)\), 
+              i += 2, H[[i, i + 3]] = 
+                \(H[[i + 3, i]] = 2  t2\ Cos[.5 \((kya + \ phase5[i])\)]\)]; 
+            \(\[IndentingNewLine]\[IndentingNewLine]energies\)[j] = 
+              Sort[Eigenvalues[Chop[H]]]; 
+            \(\[IndentingNewLine]\[IndentingNewLine]For\)[i = 1, i <= Ns, 
+                \(i++\), 
+                If[OddQ[i], 
+                  spectrum[[\((i - 1)\)*Ly + j]] = {kya, 
+                      \(energies[j]\)[[i]]}, 
+                  spectrum[[i*Ly - \((j - 1)\)]] = {kya, 
+                      \(energies[j]\)[[i]]}]] 
+              \(\[IndentingNewLine]\[IndentingNewLine]\)]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]Return\)[spectrum]; 
+          \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzzH[Ly_Integer, Nx_, ep_, \[CapitalDelta]SO_, Bz_, j_, options___]
+         := Module[
+        \(\(\[IndentingNewLine]{kya, a, \[Phi], \ fa, Ns, e2p, t0, t1, ts, i, 
+            H}\), \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\
+\[IndentingNewLine]\)\)\n\t
+          \(\(\[IndentingNewLine]\[IndentingNewLine]a\) = \ 
+            2.4612*10^\(-10\); \ \ 
+          \(\[IndentingNewLine]\[Phi]0\)\  = \ 4.1356*10^\(-15\); \ 
+          \(\[IndentingNewLine]fa\)\  = 
+            \(-N[\((2  \[Pi]\ \(a\^2\) Bz/\[Phi]0\ )\)]\); \ \ \ \ \ \ \ \ 
+          \(\[IndentingNewLine]\[IndentingNewLine]Ns\)\  = Round[4  Nx]\ ; \ 
+          \ \(\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(\[IndentingNewLine]\[IndentingNewLine]t0\) = \ 2.7; \ 
+          \(\[IndentingNewLine]t1\) = 0; \(\[IndentingNewLine]t2\) = 0; \ 
+          \(\[IndentingNewLine]\(\[IndentingNewLine]ts\)\)\  = \ 
+            \((\[CapitalDelta]SO\/\(3 \@ 3.\))\)/t0; \ 
+          \(\[IndentingNewLine]ept\) = ep/t0; 
+          \(\[IndentingNewLine]e2p\) = 3*t1; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\)\ 
+              \(\[IndentingNewLine]xD\)[i_] := 
+            If[OddQ[i], Return[\(3\/\(4 \@ 3.\)\) \((i - 1)\)], 
+              Return\ [\((\(i\ \)\/\(2 \@ 3.\))\)]]; 
+          \(\[IndentingNewLine]phase1\)[i_] := 
+            fa \((xD[i] + 1\/\(4 \@ 3.\))\); 
+          \(\[IndentingNewLine]phase2\)[i_] := fa \((xD[i] + \@3.\/4)\); 
+          \(\[IndentingNewLine]phase3\)[i_] := fa \((xD[i] + 1\/\@3.)\); 
+          \(\[IndentingNewLine]phase4\)[i_] := 
+            fa \((xD[i] + 1\/\(2 \@ 3.\))\); 
+          \(\[IndentingNewLine]phase5\)[i_] := 
+            fa \((xD[i] + 5\/\(4 \@ 3.\))\); 
+          \(\[IndentingNewLine]\[IndentingNewLine]kya\) = 
+            N[\(2  \[Pi]\ j\)\/Ly]; \ \ \ \ \ \ \ \ \ \ \ \ \ 
+          \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\) 
+              \(\[IndentingNewLine]diag\) = 
+            Table[\ e2p + 
+                2 \((t1\ Cos[kya + \ fa\ xD[i]] + 
+                      \(\((\(-1\))\)\^i\) ts\ Sin[kya + \ fa\ xD[i]])\) + 
+                If[OddQ[i], ept, \(-ept\)], {i, 1, Ns}]; 
+          \(\[IndentingNewLine]H\) = DiagonalMatrix[diag]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]\)\ 
+              \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 2, 
+                H[[i, i + 1]] = 
+                  \(H[[i + 1, i]] = \(-2\)\ Cos[.5 \((kya + \ phase1[i])\)]\)]
+                 + 2\ t2\ Cos[1.5 \((kya + \ phase1[i])\)]; 
+          \(\[IndentingNewLine]For\)[i = 2, i < Ns, i += 2, 
+            H[[i, i + 1]] = 
+              \(H[[i + 1, i]] = \(-1\) + 2\ t2\ \ Cos[kya + \ phase4[i]]\)]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 1)\), \(i++\), 
+              H[[i, i + 2]] = 
+                \(H[[i + 2, i]] = 
+                  2\ t1\ Cos[.5 \((kya + \ phase2[i])\)] - 
+                    \(\((\(-1\))\)\^i\) 2  ts\ 
+                      Sin[.5 \((kya + \ phase2[i])\)]\)]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]For\)[i = 1, i < \((Ns - 2)\), i += 2, 
+              H[[i, i + 3]] = 
+                \(H[[i + 3, i]] = t2 \((1 + 2\ Cos[kya + \ phase3[i]])\)\)]; 
+          \(\[IndentingNewLine]For\)[i = 2, i < \((Ns - 2)\), i += 2, 
+            H[[i, i + 3]] = 
+              \(H[[i + 3, i]] = 2  t2\ Cos[.5 \((kya + \ phase5[i])\)]\)]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\[IndentingNewLine]Return\)[
+            Chop[H]]; \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzPlotArt[range_List, Lx_Integer, Ny_, m_, \[CapitalDelta]SO_, Bz_, 
+        options___] := 
+      Module[\(\[IndentingNewLine]{spectrum}\), 
+        \(\(\[IndentingNewLine]spectrum\) = 
+          GSSzigzag[Lx, Ny, m, \[CapitalDelta]SO, Bz, options]; 
+        \(\[IndentingNewLine]Return\)[
+          ListPlot[spectrum, 
+            Ticks \[Rule] {{\[Pi]\/3, \(2  \[Pi]\)\/3, \[Pi], 
+                  \(4  \[Pi]\)\/3, \(5  \[Pi]\)\/3, 2  \[Pi]}, Automatic}, 
+            AxesOrigin \[Rule] {N[2  \[Pi]/Lx], range[[1]]}, 
+            GridLines 
+              \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+            PlotRange \[Rule] {{N[2  \[Pi]/Lx], N[2  \[Pi]]}, range}, 
+            ImageSize \[Rule] 72*7.5, RotateLabel \[Rule] False, 
+            AxesLabel \[Rule] 
+              TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+                  "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+            \(\[IndentingNewLine]TextStyle\) 
+              \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+            options]]; \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(GSSzPlot[Lx_Integer, Ny_, ep_, \[CapitalDelta]SO_, Bz_, options___]
+         := Module[\(\[IndentingNewLine]{spectrum}\), 
+        \(\[IndentingNewLine]spectrum\) = 
+          GSSzigzag[Lx, Ny, ep, \[CapitalDelta]SO, Bz, options]; 
+        \(\(\[IndentingNewLine]ListPlot\)[spectrum, Frame \[Rule] True, 
+          FrameTicks 
+            \[Rule] {{\[Pi]\/3, \(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3, 
+                \(5  \[Pi]\)\/3, 2  \[Pi]}, Automatic}, 
+          GridLines 
+            \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, None}, 
+          PlotRange \[Rule] {{N[2  \[Pi]/Lx], N[2  \[Pi]]}, Automatic}, 
+          ImageSize \[Rule] 72*8, 
+          FrameLabel 
+            \[Rule] {"\<\!\(k\_x\)a\>", "\<\!\(E\/t\)\>", "\<\>", "\<\>"}, 
+          RotateLabel \[Rule] False, options]\[IndentingNewLine]\)]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(GSSzPlot2[range_List, Lx_Integer, Ny_, ep_, \[CapitalDelta]SO_, Bz_, 
+        options___] := 
+      Module[\(\[IndentingNewLine]{spectrum}\), 
+        \(\(\[IndentingNewLine]spectrum\) = 
+          GSSzigzag[Lx, Ny, ep, \[CapitalDelta]SO, Bz, options]; 
+        \(\[IndentingNewLine]Return\)[
+          ListPlot[spectrum, AxesOrigin \[Rule] {N[2  \[Pi]/Lx], range[[1]]}, 
+            Ticks \[Rule] {{\[Pi]\/3, \(2  \[Pi]\)\/3, \[Pi], 
+                  \(4  \[Pi]\)\/3, \(5  \[Pi]\)\/3, 2  \[Pi]}, Automatic}, 
+            GridLines 
+              \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+            PlotRange \[Rule] {{N[2  \[Pi]/Lx], N[2  \[Pi]]}, range}, 
+            ImageSize \[Rule] 72*8, RotateLabel \[Rule] False, options]]; 
+        \[IndentingNewLine]\)]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzEdgeP[Lx_Integer, Ny_, ep_, \[CapitalDelta]SO_, Bz_, options___]
+         := Module[
+        \(\[IndentingNewLine]{spectrum, edgeP, postives, NP, Ns}\), 
+        \(\[IndentingNewLine]spectrum\) = 
+          GSSzigzag[Lx, Ny, ep, \[CapitalDelta]SO, Bz, options]; 
+        \(\[IndentingNewLine]Ns\)\  = Round[4  Nx]\ ; 
+        \(\[IndentingNewLine]spectrum\) = Table[{0, 0}, {i, 1, Lx*Ns}]; 
+        \(\[IndentingNewLine]NP\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i \[LessEqual] Ns*Lx, \(i++\), 
+          If[\(spectrum[[i]]\)[[2]] < 0, spectrum[[i]]\  = \(+1000\)\ ]]; 
+        \(\[IndentingNewLine]positives\) = Table[{0, 0}, {i, 1, NP}]; 
+        \(\[IndentingNewLine]edgeP\) = \ Table[{0, 0}, {i, 1, Lx}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetzEdgeStates[Lx_Integer, Ny_, ep_, \[CapitalDelta]SO_, Bz_] := 
+      Module[{Proto, EdgeEg, EdgeH, diag, i, Nes, spectrum, r, lx, Ns}, 
+        \(\[IndentingNewLine]r\) = Sign[Lx]; 
+        \(\[IndentingNewLine]lx\) = Abs[Lx]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]spectrum\) = 
+          GSSzigzag[lx, Ny, ep, \[CapitalDelta]SO, Bz]; 
+        \(\[IndentingNewLine]Ns\)\  = Round[4  Ny]\ ; 
+        \(\[IndentingNewLine]Proto\) = 
+          Table[\(spectrum[[i + \((Ns/2 - 1)\)*lx]]\)[[2]], {i, 1, 2*lx}]; 
+        \(\[IndentingNewLine]EdgeEg\) = Table[0, {i, 1, lx}]; 
+        \(\[IndentingNewLine]diag\) = Table[0, {i, 1, Ns}]; 
+        \(\[IndentingNewLine]EdgeH\) = 
+          Table[DiagonalMatrix[diag], {i, 1, lx}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]If\)[r > 0, 
+          \(\[IndentingNewLine]For\)[i = 1, i < \((lx/2 + 1)\), \(i++\), 
+            EdgeEg[[i]] = Proto[[lx + 1 - i]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = 
+              GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, i]; ]; 
+          \(\[IndentingNewLine]For\)[i = \((lx/2)\) + 1, i < \((lx + 1)\), 
+            \(i++\), EdgeEg[[i]] = Proto[[i + lx]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = 
+              GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, i]; ], 
+          \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 1, 
+            i < \((lx/2 + 1)\), \(i++\), EdgeEg[[i]] = Proto[[lx + i]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = 
+              GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, i]; ]\); 
+          \(\[IndentingNewLine]For\)[i = \((lx/2 + 1)\), i < \((lx + 1)\), 
+            \(i++\), EdgeEg[[i]] = Proto[[lx + 1 - i]]; 
+            \(\[IndentingNewLine]EdgeH\)[[i]] = 
+              GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, i]; ]; ]; 
+        \(\[IndentingNewLine]Return\)[{EdgeEg, EdgeH}]; ]\n\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(GetzMatrices[Ly_Integer, Nx_, ep_, \[CapitalDelta]SO_, Bz_] := 
+      Module[{Eig, Ham, diag, i, Ns, spectrum, ly}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]ly\) = Abs[Ly]; 
+        \(\[IndentingNewLine]Ns\) = 4*Nx; 
+        \(\[IndentingNewLine]\[IndentingNewLine]diag\) = 
+          Table[\ 0, {i, 1, Ns}]; 
+        \(\[IndentingNewLine]Eig\) = Table[\ diag, {i, 1, ly}]; 
+        \(\[IndentingNewLine]Ham\) = Table[DiagonalMatrix[diag], {i, 1, ly}]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]\[IndentingNewLine]For\)[
+          i = 1, i < \((ly + 1)\), \(i++\), 
+          \(\[IndentingNewLine]Ham\)[[i]] = 
+            GSSzzH[Ly, Nx, ep, \[CapitalDelta]SO, Bz, i]; 
+          \(\[IndentingNewLine]Eig\)[[i]] = Sort[Eigenvalues[Ham[[i]]]]; 
+          \(\[IndentingNewLine]\[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[{Eig, Ham}]; 
+        \[IndentingNewLine]\)]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetWf[eigi_, Hami_] := 
+      Module[{evs, i, ind, L}, 
+        \(\(\[IndentingNewLine]\[IndentingNewLine]evs\) = Eigenvalues[Hami]; 
+        \(\[IndentingNewLine]L\) = Length[evs]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]ind\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]\(If[
+            SetPrecision[evs[[i]], 12] == SetPrecision[eigi, 12], ind = i, ]; 
+          \)\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          \(Eigenvectors[Hami]\)[[ind]]]; \[IndentingNewLine]\)]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(PlotWf[wf_] := 
+      Module[{len, lencd, lista, listsb, listc, listd, listaA, listbA, 
+          listcA, listdA}, \(Needs["\<Graphics`MultipleListPlot`\>"]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]len\) = Length[wf]; 
+        \(\[IndentingNewLine]If\)[IntegerQ[len/4], \(lencd = len; \), 
+          \(lencd = len - 1; \)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]lista\) = 
+          Table[wf[[i]], {i, 1, len, 4}]; 
+        \(\[IndentingNewLine]listb\) = Table[wf[[i]], {i, 2, len, 4}]; 
+        \(\[IndentingNewLine]listc\) = Table[wf[[i]], {i, 3, lencd, 4}]; 
+        \(\[IndentingNewLine]listd\) = Table[wf[[i]], {i, 4, lencd, 4}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]listaA\) = 
+          Table[{i, Abs[lista[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listbA\) = 
+          Table[{i, Abs[listb[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listcA\) = 
+          Table[{i, Abs[listc[[i]]]}, {i, 1, Length[listc]}]; 
+        \(\[IndentingNewLine]listdA\) = 
+          Table[{i, Abs[listd[[i]]]}, {i, 1, Length[listc]}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]MultipleListPlot\)[listaA, 
+          listbA, listcA, listdA, PlotJoined \[Rule] True, 
+          Frame \[Rule] True, 
+          PlotLegend 
+            \[Rule] {"\<'a'[A]\>", "\<'b'[B]\>", "\<'c'[A]\>", "\<'d'[B]\>"}, 
+          PlotLabel \[Rule] "\<Wavefunction Amplitudes\>", 
+          PlotRange \[Rule] All, 
+          PlotStyle 
+            \[Rule] {
+              RGBColor[0, .6, 0], {RGBColor[0, 0, .7], Dashing[{Dot}]}, {
+                RGBColor[.6, 1, 0], Dashing[{Dash}]}, {RGBColor[0, .6, 1], 
+                Dashing[{Dot, Dash}]}}, 
+          SymbolShape 
+            \[Rule] {PlotSymbol[Star, Filled \[Rule] False], 
+              PlotSymbol[Diamond, Filled \[Rule] False], 
+              PlotSymbol[Box, Filled \[Rule] False], 
+              PlotSymbol[Triangle, Filled \[Rule] False]}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]MultipleListPlot\)[
+          Arg[lista], Arg[listb], Arg[listc], Arg[listd], 
+          PlotJoined \[Rule] True, Frame \[Rule] True, 
+          PlotLegend 
+            \[Rule] {"\<'a'[A]\>", "\<'b'[B]\>", "\<'c'[A]\>", "\<'d'[B]\>"}, 
+          PlotLabel \[Rule] "\<Wavefunction Phases\>", 
+          PlotStyle 
+            \[Rule] {
+              RGBColor[0, .6, 0], {RGBColor[0, 0, .7], Dashing[{Dot}]}, {
+                RGBColor[.6, 1, 0], Dashing[{Dash}]}, {RGBColor[0, .6, 1], 
+                Dashing[{Dot, Dash}]}}, 
+          SymbolShape 
+            \[Rule] {PlotSymbol[Star, Filled \[Rule] False], 
+              PlotSymbol[Diamond, Filled \[Rule] False], 
+              PlotSymbol[Box, Filled \[Rule] False], 
+              PlotSymbol[Triangle, Filled \[Rule] False]}]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(PlotWfAzz[wf_, options___] := 
+      Module[{len, lista, listsb, listc, listd, listaA, listbA, listcA, 
+          listdA}, 
+        \(\(\[IndentingNewLine]Needs\)["\<Graphics`MultipleListPlot`\>"]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]len\) = Length[wf]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]lista\) = 
+          Table[wf[[i]], {i, 1, len, 4}]; 
+        \(\[IndentingNewLine]listb\) = Table[wf[[i]], {i, 2, len, 4}]; 
+        \(\[IndentingNewLine]listc\) = Table[wf[[i]], {i, 3, len, 4}]; 
+        \(\[IndentingNewLine]listd\) = Table[wf[[i]], {i, 4, len, 4}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]listaA\)\  = \ 
+          Table[{\((i - 1)\) \@3., Abs[lista[[i]]]}, {i, 1, Length[lista]}]; 
+        \(\[IndentingNewLine]listbA\)\  = \ 
+          Table[{\((i - 1)\) \@3. + 1\/\(2 \@ 3.\), Abs[listb[[i]]]}, {i, 1, 
+              Length[lista]}]; 
+        \(\[IndentingNewLine]listcA\)\  = \ 
+          Table[{\((i - 1)\) \@3. + \@3.\/2, Abs[listc[[i]]]}, {i, 1, 
+              Length[lista]}]; 
+        \(\[IndentingNewLine]listdA\)\  = \ 
+          Table[{\((i - 1)\) \@3. + 2\/\@3., Abs[listd[[i]]]}, {i, 1, 
+              Length[lista]}]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          MultipleListPlot[listaA, listbA, listcA, listdA, 
+            PlotJoined \[Rule] True, 
+            PlotStyle 
+              \[Rule] {
+                RGBColor[0, .6, 0], {RGBColor[0, 0, .7], Dashing[{Dot}]}, {
+                  RGBColor[.6, 1, 0], Dashing[{Dash}]}, {RGBColor[0, .6, 1], 
+                  Dashing[{Dot, Dash}]}}, 
+            SymbolShape 
+              \[Rule] {PlotSymbol[Star, Filled \[Rule] False], 
+                PlotSymbol[Diamond, Filled \[Rule] False], 
+                PlotSymbol[Box, Filled \[Rule] False], 
+                PlotSymbol[Triangle, Filled \[Rule] False]}, options]]; 
+        \[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetWfzK[eigi_, Hami_] := 
+      Module[{evs, i, ind, L, evc, R, th, devc, K, diag, inFT}, 
+        \(\[IndentingNewLine]\[IndentingNewLine]evs\) = Eigenvalues[Hami]; 
+        \(\[IndentingNewLine]L\) = Length[evs]; 
+        \(\[IndentingNewLine]K\) = \(-\(\(2\ \[Pi]\)\/3.0\)\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]ind\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]\(If[evs[[i]] \[Equal] eigi, ind = i, ]; 
+          \)\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]diag
+            \) = Table[\ 
+            Exp[\(-\[ImaginaryI]\)*K*Floor[\((i - .5)\)/4]], {i, 1, L}]; 
+        \(\[IndentingNewLine]inFT\) = DiagonalMatrix[diag]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = 
+          \(Eigenvectors[Hami]\)[[ind]]; 
+        \(\[IndentingNewLine]evc\) = inFT.evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]\[IndentingNewLine]devc\) = evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 5, 
+          i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = L - 3, 
+          i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + 
+                  \((Abs[evc[[i]]]/Abs[evc[[i - 12]]])\) evc[[i - 8]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = devc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]For\)[i = 5, i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          devc/\@\((Conjugate[{devc}].Transpose[{devc}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GetWfzKp[eigi_, Hami_] := 
+      Module[{evs, i, ind, L, evc, R, th, devc, K, diag, inFT}, 
+        \(\[IndentingNewLine]\[IndentingNewLine]evs\) = Eigenvalues[Hami]; 
+        \(\[IndentingNewLine]L\) = Length[evs]; 
+        \(\[IndentingNewLine]Kp\) = \(2\ \[Pi]\)\/3.0; 
+        \(\[IndentingNewLine]\[IndentingNewLine]ind\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]\(If[evs[[i]] \[Equal] eigi, ind = i, ]; 
+          \)\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) \(\[IndentingNewLine]diag
+            \) = Table[\ 
+            Exp[\(-\[ImaginaryI]\)*Kp*Floor[\((i - .5)\)/4]], {i, 1, L}]; 
+        \(\[IndentingNewLine]inFT\) = DiagonalMatrix[diag]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = 
+          \(Eigenvectors[Hami]\)[[ind]]; 
+        \(\[IndentingNewLine]evc\) = inFT.evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+            \(\[IndentingNewLine]\[IndentingNewLine]devc\) = evc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = 5, 
+          i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\(\[IndentingNewLine]For\)[i = L - 3, 
+          i < \((L + 1)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + 
+                  \((Abs[evc[[i]]]/Abs[evc[[i - 12]]])\) evc[[i - 8]])\)/3
+              \[IndentingNewLine]\)]\); 
+        \(\[IndentingNewLine]\[IndentingNewLine]evc\) = devc; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\) 
+          \(\[IndentingNewLine]For\)[i = 1, i < 5, \(i++\), 
+            \(\[IndentingNewLine]devc\)[[i]] = 
+              \(\((\ \ \ 
+                  \((Abs[evc[[i]]]/Abs[evc[[i + 12]]])\) evc[[i + 8]] + 
+                    evc[[i]] + \ evc[[i + 4]])\)/3\[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]For\)[i = 5, i < \((L - 3)\), \(i++\), 
+          \(\[IndentingNewLine]devc\)[[i]] = 
+            \(\((evc[[i - 4]] + evc[[i]] + evc[[i + 4]])\)/3
+              \[IndentingNewLine]\)]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]Return\)[
+          devc/\@\((Conjugate[{devc}].Transpose[{devc}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]\[IndentingNewLine]\)]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(jy[wf_] := 
+      Module[{sigmay, Ns, i, jy, e}, Ns = Length[wf]; 
+        \(\[IndentingNewLine]sigmay\) = DiagonalMatrix[Table[0, {i, 1, Ns}]]; 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          sigmay[[i, i + 3]] = \(-\[ImaginaryI]\); 
+          \(\[IndentingNewLine]sigmay\)[[i + 3, i]] = \[ImaginaryI]]; 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          sigmay[[i + 2, i + 1]] = \(-\[ImaginaryI]\); 
+          \(\[IndentingNewLine]sigmay\)[[i + 1, i + 2]] = \[ImaginaryI]]; 
+        \(\[IndentingNewLine]jy\) = 
+          Chop[\((Conjugate[{wf}].Transpose[{sigmay.wf}])\)[[1, 1]]]; 
+        \(\[IndentingNewLine]Return\)[jy]; ]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(jySmear[wf_] := 
+      Module[{sigmay, Ns, i, jy, cwf, swf}, Ns = Length[wf]; 
+        \(\[IndentingNewLine]sigmay\) = DiagonalMatrix[Table[0, {i, 1, Ns}]]; 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          sigmay[[i, i + 3]] = \(-\[ImaginaryI]\); 
+          \(\[IndentingNewLine]sigmay\)[[i + 3, i]] = \[ImaginaryI]]; 
+        \(\[IndentingNewLine]For\)[i = 1, i < Ns, i += 4, 
+          sigmay[[i + 2, i + 1]] = \(-\[ImaginaryI]\); 
+          \(\[IndentingNewLine]sigmay\)[[i + 1, i + 2]] = \[ImaginaryI]]; 
+        \(\[IndentingNewLine]cwf\) = Conjugate[wf]; 
+        \(\[IndentingNewLine]swf\) = Transpose[sigmay.wf]; 
+        \(\[IndentingNewLine]jy\) = 
+          Table[\(cwf[\([i]\)]*swf[[i]]\), {i, 1, Ns}]; 
+        \(\[IndentingNewLine]Return\)[jy]; ]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(EdgeJy[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, dE_]
+         := Module[{eig, Ham, Em, EM, jyTot, eigi, count}, Em = Ef - dE/2; 
+        EM = Ef + dE/2; {eig, Ham} = 
+          GetzEdgeStates[Lx, Ny, ep, \[CapitalDelta]SO, Bz]; 
+        \(\[IndentingNewLine]jyTot\) = 0; \(\[IndentingNewLine]count\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((Lx + 1)\), \(i++\), 
+          eigi = eig[[i]]; 
+          \(\[IndentingNewLine]If\)[\((eigi > Em)\) && \((eigi < EM)\), 
+            jyTot += jy[GetWf[eigi, Ham[[i]]]]; 
+            \(\[IndentingNewLine]\(\(count++\); \)\), ]; ]; 
+        \(\[IndentingNewLine]Print\)["\<Number of edges states: \>", count]; 
+        \(\[IndentingNewLine]Return\)[jyTot]; ]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(BulkJyj[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, dE_, 
+        j_] := Module[{lx, Hamj, Em, EM, jyTot, eigj, Ns, ld, rd, Lmover, 
+          Rmover, rwf}, Em = Ef - dE/2; EM = Ef + dE/2; r = Sign[Lx]; 
+        \(\[IndentingNewLine]lx\) = Abs[Lx]; 
+        \(\[IndentingNewLine]Ns\) = 4*Ny; 
+        \(\[IndentingNewLine]If[r < 0, 
+          ld = Table[If[i < \((Ns/2 + 1)\), 1, 0], {i, 1, Ns}]; 
+          \(\[IndentingNewLine]\(Lmover = DiagonalMatrix[ld]; \)\), 
+          rd = Table[If[i < \((Ns/2 + 1)\), 0, 1], {i, 1, Ns}]; 
+          \(\[IndentingNewLine]Rmover\) = DiagonalMatrix[rd]; ]\); 
+        \(\[IndentingNewLine]Hamj\) = 
+          GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, j]; 
+        \(\[IndentingNewLine]eigj\) = Sort[Eigenvalues[Hamj]]; 
+        \(\[IndentingNewLine]jyTot\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((Ns/2)\), \(i++\), 
+          eigi = eigj[[i]]; 
+          \(\[IndentingNewLine]If\)[\((eigi > Em)\) && \((eigi < EM)\), 
+            If[r < 0, rwf = Lmover.GetWf[eigi, Hamj], 
+              rwf = Rmover.GetWf[eigi, Hamj]]; 
+            \(\[IndentingNewLine]\(jyTot += jy[rwf]; \)\), ]; ]; 
+        \(\[IndentingNewLine]For\)[i = \((Ns/2 + 2)\), i < \((Ns + 1)\), 
+          \(i++\), eigi = eigj[[i]]; 
+          \(\[IndentingNewLine]If\)[\((eigi > Em)\) && \((eigi < EM)\), 
+            If[r < 0, rwf = Lmover.GetWf[eigi, Hamj], 
+              rwf = Rmover.GetWf[eigi, Hamj]]; 
+            \(\[IndentingNewLine]\(jyTot += jy[rwf]; \)\), ]; ]; 
+        \(\[IndentingNewLine]Return\)[jyTot]; ]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(BulkJy[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, dE_]
+         := Module[{lx, i, jyTot}, lx = Abs[Lx]; 
+        \(\[IndentingNewLine]jyTot\) = 0; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((lx + 1)\), \(i++\), 
+          \(jyTot += BulkJyj[Lx, Ny, ep, \[CapitalDelta]SO, Bz, Ef, dE, i]; 
+          \)]; \(\[IndentingNewLine]Return\)[jyTot]; ]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(TotalJy[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, 
+        dE_] := EdgeJy[Lx, Ny, ep, \[CapitalDelta]SO, Bz, Ef, dE] + 
+        BulkJy[Lx, Ny, ep, \[CapitalDelta]SO, Bz, Ef, dE]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(BulkWf[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, 
+        dE_, j_, i_] := 
+      Module[{Hamj, eigj, lx}, lx = Abs[Lx]; 
+        \(\[IndentingNewLine]Hamj\) = 
+          GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, j]; 
+        \(\[IndentingNewLine]eigj\) = Sort[Eigenvalues[Hamj]]; 
+        \(\[IndentingNewLine]Return\)[GetWf[eigj[[i]], Hamj]]; ]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(BulkWfK[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, Ef_, 
+        dE_, j_, i_] := 
+      Module[{Hamj, eigj, lx}, lx = Abs[Lx]; 
+        \(\[IndentingNewLine]Hamj\) = 
+          GSSzzH[lx, Ny, ep, \[CapitalDelta]SO, Bz, j]; 
+        \(\[IndentingNewLine]eigj\) = Sort[Eigenvalues[Hamj]]; 
+        \(\[IndentingNewLine]Return\)[GetWfK[eigj[[i]], Hamj]]; ]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(SumJyE[dEJyList_] := 
+      Module[{EJyList, len, i}, len = Length[dEJyList]; 
+        \(\[IndentingNewLine]EJyList\) = 
+          Table[{\(dEJyList[[i]]\)[[1]], \(dEJyList[[i]]\)[[2]]}, {i, 1, 
+              len}]; \(\[IndentingNewLine]For\)[i = 2, i < \((len + 1)\), 
+          \(i++\), \(EJyList[[i, 2]] += \(EJyList[[i - 1]]\)[[2]]; \)]; 
+        \(\[IndentingNewLine]Return\)[EJyList]; ]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(JvsdE[Lx_Integer, Ny_Integer, ep_, \[CapitalDelta]SO_, Bz_, iEf_, dE_, 
+        dEf_, NE_] := 
+      Module[{JyList, i, Ef}, JyList = Table[{0., 0.}, {i, 1, NE}]; 
+        \(\[IndentingNewLine]Ef\) = iEf; 
+        \(\[IndentingNewLine]For\)[i = 1, i < \((NE + 1)\), \(i++\), 
+          JyList[[i]] = {Ef, 
+              TotalJy[Lx, Ny, ep, \[CapitalDelta]SO, Bz, Ef, dE]}; 
+          \(\[IndentingNewLine]Ef\) += dEf; ]; 
+        \(\[IndentingNewLine]Return\)[JyList]; ]\)], "Input",
+  GeneratedCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Simple Zigzag", "Section",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell["(* NN case: A edge on R/ B edge of L of strip*)", "Subsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzPlot2[{\(-.4\), .4}, 300, 38, 0, .0, 0, PlotJoined \[Rule] True, 
+      PlotStyle \[Rule] Hue[.7]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(12*2 + 1\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(25\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \("\<\!\(\[Epsilon]\/t\_0\)\>"\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(sZZpl = 
+      GSSzPlot2[{\(-.25\), .25}, 300, 12, 0, .0, 0, 
+        PlotStyle \[Rule] {RGBColor[0, 0, .7], PointSize[0.01]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotRange \[Rule] {{1.9, \[Pi]}, {\(-.25\), .25}}]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(Plot[{
+        \(\(2\ *0.18518518518518517`\)\/\@3\) Sin[\ \((kya - \[Pi])\)] - 
+          \((.25/2.7)\), 
+        \(\(2\ *0.18518518518518517`\)\/\@3\) Sin[\ \((\(-kya\) - \[Pi])\)] + 
+          \((.25/2.7)\)}, {kya, 1.8, 4.5}, 
+      PlotStyle -> {{RGBColor[.7, .7, 0], Thickness[0.008]}, {
+            RGBColor[.7, .7, 0], Thickness[0.008]}}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Plot[\[Lambda]\ Coth[\[Lambda]\ \((25)\)*\@3], {\[Lambda], 0, .01}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Limit[\[Lambda]\ Coth[\[Lambda]\ W], \[Lambda] \[Rule] 0]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/W\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(1/\((\((25.)\)*2/\@3)\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.034641016151377546`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(FindRoot[
+      2.5\  \[Equal] \ \[Lambda]\ Coth[\[Lambda]\ \((25)\)*2/\@3], {
+        \[Lambda], .1}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \({\[Lambda] \[Rule] 2.5`}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(FindRoot[
+      2.5\  \[Equal] \ \(-\[Lambda]\)\ Coth[\[Lambda]\ \((25)\)*2/\@3], {
+        \[Lambda], .1}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    RowBox[{
+    \(FindRoot::lstol\), \( : \ \), 
+      "\<\"The line search decreased the step size to within tolerance \
+specified by AccuracyGoal and PrecisionGoal but was unable to find a \
+sufficient decrease in the merit function.  You may need more than \
+\\!\\(MachinePrecision\\) digits of working precision to meet these \
+tolerances. \\!\\(\\*ButtonBox[\\\"More\[Ellipsis]\\\", \
+ButtonStyle->\\\"RefGuideLinkText\\\", ButtonFrame->None, \
+ButtonData:>\\\"FindRoot::lstol\\\"]\\)\"\>"}]], "Message"],
+
+Cell[BoxData[
+    \({\[Lambda] \[Rule] \(-2.925227789987543`*^-9\)}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(FindRoot[
+      0.05 \[Equal] \ \[Lambda]\ Coth[\[Lambda]\ \((25)\)*2/\@3], {\[Lambda], 
+        0.1}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \({\[Lambda] \[Rule] 0.04177124056380179`}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(FindRoot[
+      0.05 \[Equal] \ \(-\[Lambda]\)\ Coth[\[Lambda]\ \((25)\)*2/\@3], {
+        \[Lambda], 0.2}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    RowBox[{
+    \(FindRoot::jsing\), \( : \ \), 
+      "\<\"Encountered a singular Jacobian at the point \\!\\({\[Lambda]}\\) \
+= \\!\\({1.930801553574085`*^-10}\\). Try perturbing the initial point(s). \
+\\!\\(\\*ButtonBox[\\\"More\[Ellipsis]\\\", ButtonStyle->\\\"RefGuideLinkText\
+\\\", ButtonFrame->None, ButtonData:>\\\"FindRoot::jsing\\\"]\\)\"\>"}]], 
+  "Message"],
+
+Cell[BoxData[
+    \({\[Lambda] \[Rule] 1.930801553574085`*^-10}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[
+      0\  \[Equal] \ \[Lambda]\ Coth[\[Lambda]\ \((25)\)*2/\@3], {\[Lambda]}]
+      \)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    RowBox[{
+    \(Solve::verif\), \( : \ \), 
+      "\<\"Potential solution \\!\\({\[Lambda] \[Rule] 0}\\) (possibly \
+discarded by verifier) should be checked by hand. May require use of limits. \
+\\!\\(\\*ButtonBox[\\\"More\[Ellipsis]\\\", ButtonStyle->\\\"RefGuideLinkText\
+\\\", ButtonFrame->None, ButtonData:>\\\"Solve::verif\\\"]\\)\"\>"}]], 
+  "Message"],
+
+Cell[BoxData[
+    RowBox[{
+    \(Solve::ifun\), \( : \ \), 
+      "\<\"Inverse functions are being used by \\!\\(Solve\\), so some \
+solutions may not be found; use Reduce for complete solution information. \\!\
+\\(\\*ButtonBox[\\\"More\[Ellipsis]\\\", \
+ButtonStyle->\\\"RefGuideLinkText\\\", ButtonFrame->None, \
+ButtonData:>\\\"Solve::ifun\\\"]\\)\"\>"}]], "Message"],
+
+Cell[BoxData[
+    \({{\[Lambda] \[Rule] \(-\(1\/100\)\)\ \[ImaginaryI]\ \@3\ \[Pi]}, {
+        \[Lambda] \[Rule] 1\/100\ \[ImaginaryI]\ \@3\ \[Pi]}}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[
+      0\  \[Equal] \ \[Lambda]\ Coth[\[Lambda]\ \((25)\)*2/\@3], {\[Lambda]}]
+      \)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \({{\[Lambda] \[Rule] \(-\(1\/100\)\)\ \[ImaginaryI]\ \@3\ \[Pi]}, {
+        \[Lambda] \[Rule] 1\/100\ \[ImaginaryI]\ \@3\ \[Pi]}}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\ \[Pi]\)\/\(50. \@ 3\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.036275987284684355`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[0\  \[Equal] \ \[Lambda]\ Coth[\[Lambda]\ \((W)\)*2/\@3], 
+      \[Lambda]]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \({{\[Lambda] \[Rule] \(-\(\(\[ImaginaryI]\ \@3\ \[Pi]\)\/\(4\ W\)\)\)}, {
+        \[Lambda] \[Rule] \(\[ImaginaryI]\ \@3\ \[Pi]\)\/\(4\ W\)}}\)], 
+  "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(\(Lambda[kx_, W_] := 
+      If[kx < 2/\((\@3.\ W)\), 
+        \(\(FindRoot[
+              kx\  \[Equal] \ \[Lambda]\ Cot[\[Lambda]\ \@3.\ W/2], {
+                \[Lambda], 0.08}]\)[[1]]\)[[2]], 
+        \(\(FindRoot[
+              kx\  \[Equal] \ \[Lambda]\ Coth[\[Lambda]\ \@3.\ W/2], {
+                \[Lambda], .2}]\)[[1]]\)[[2]]]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(EsZZ[kxa_, W_] := 
+      If[kxa < 2/\((\@3.\ W)\), 
+        Lambda[kxa, W]\ Csc[Lambda[kxa, W] \@3.\ W/2], 
+        Lambda[kxa, W]\ Csch[Lambda[kxa, W] \@3.\ W/2]]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(2  \[Pi]\)\/3.\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(2.0943951023931953`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(sZZthplc = 
+      Plot[{EsZZ[kxa - \(2  \[Pi]\)\/3., 26], 
+          \(-EsZZ[kxa - \(2  \[Pi]\)\/3., 26]\)}, {kxa, 1.9, \[Pi]}, 
+        PlotStyle
+           -> {{RGBColor[1, .25, .25], Thickness[0.005]}, {
+              RGBColor[1, .25, .25], Thickness[0.005]}}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotRange \[Rule] {{1.9, \[Pi]}, {\(-.25\), .25}}, 
+        Ticks \[Rule] {{\(2  \[Pi]\)\/3, \(5  \[Pi]\)\/6, \[Pi]}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi]}, {0}}, 
+        AxesOrigin \[Rule] {1.9, \(-.25\)}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(\[IndentingNewLine]Show[sZZthplc, sZZpl]\)\)], "Input",
+  GeneratedCell->True]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Gapped Zigzag", "Section",
+  GeneratedCell->True],
+
+Cell[TextData[{
+  "Parameters:\n\tL= \[Infinity],\n\tLength of unit cell = a =  2.4612 \
+\[Angstrom];\n            Number of unit cells = 38,\n            Width of \
+unit cell  = ",
+  Cell[BoxData[
+      \(TraditionalForm\`\@3\)]],
+  "a = ",
+  Cell[BoxData[
+      \(4.2629\)], "Output"],
+  " \[Angstrom],\n            W = 38 ",
+  Cell[BoxData[
+      \(TraditionalForm\`\@3\)]],
+  "a = 16.19 nm (so about the same W as armchair case);\n            E scale \
+is in units of t, where t = 2.7 eV (symmetric gap at M point),\n            \
+\[CapitalDelta] = 0.5 eV = ",
+  Cell[BoxData[
+      \(0.18518518518518517`\)], "Output",
+    GeneratedCell->False,
+    CellAutoOverwrite->False],
+  "eV/t."
+}], "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(result = 
+      Show[GSSzPlotArt[{\(-.5\), .5}, 300, 38, 0, .5, 0, 
+          PlotJoined \[Rule] True, 
+          PlotStyle \[Rule] {RGBColor[0, 0, .7], Thickness[0.005]}], 
+        Graphics[Text["\<K\>", {2\ Pi/3 - .15, .1}]], 
+        Graphics[Text["\<M\>", {Pi - .15, .1}]], 
+        Graphics[Text["\<\!\(K\^\[Prime]\)\>", {4  Pi/3 - .15, .1}]], 
+        Graphics[Text["\<Zigzag ribbon\>", {Pi/3 - .2, .2}]], 
+        Graphics[Text["\<38 unit cells\>", {5\ Pi/3 - .2, .2}]], 
+        Graphics[Text["\<\[CapitalDelta]=0.5 eV\>", {Pi/3 - .4, \(-.2\)}]], 
+        Graphics[Text["\<m= 0.0 eV\>", {5\ Pi/3 - .25, \(-.2\)}]]]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(Show[
+      GSSzPlotArt[{\(-.5\), .5}, 300, 38, .5, 0, 0, PlotJoined \[Rule] True, 
+        PlotStyle \[Rule] {RGBColor[0, 0, .7], Thickness[0.005]}], 
+      Graphics[Text["\<K\>", {2\ Pi/3 - .15, .1}]], 
+      Graphics[Text["\<M\>", {Pi - .15, .1}]], 
+      Graphics[Text["\<\!\(K\^\[Prime]\)\>", {4  Pi/3 - .15, .1}]], 
+      Graphics[Text["\<Zigzag ribbon\>", {Pi/3 - .2, .2}]], 
+      Graphics[Text["\<38 unit cells\>", {5\ Pi/3 - .2, .2}]], 
+      Graphics[Text["\<\[CapitalDelta]=0.0 eV\>", {Pi/3 - .4, \(-.2\)}]], 
+      Graphics[Text["\<m= 0.5 eV\>", {5\ Pi/3 - .25, \(-.2\)}]]]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(zpl = 
+      Show[GSSzPlotArt[{\(-.25\), .25}, 120, 38, 0, .5, 0, 
+          PlotJoined \[Rule] False, 
+          PlotStyle \[Rule] {RGBColor[0, 0, .75], PointSize[0.01]}], 
+        Graphics[Text["\<K\>", {2\ Pi/3 - .1, .1}]], 
+        Graphics[Text["\<M\>", {Pi - .1, .1}]], 
+        Graphics[Text["\<\!\(K\^\[Prime]\)\>", {4  Pi/3 - .1, .1}]], 
+        Graphics[Text["\<Zigzag ribbon\>", {2  Pi/3 + .4, \(+.05\)}]], 
+        Graphics[Text["\<38 unit cells\>", {4  Pi/3 - .4, \(+.05\)}]], 
+        Graphics[
+          Text["\<\[CapitalDelta] = 0.5 eV\>", {2  Pi/3 + .4, \(-.05\)}]], 
+        Graphics[Text["\<m = 0.0 eV\>", {4  Pi/3 - .4, \(-.05\)}]]]; \)\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(For\ NN\ 
+      \(TBMA : \ 
+        It\ seems\ that\ the\ zigzag\ dispersion\ is\ 
+          \(\(2\ \[CapitalDelta]\)\/\@3\) 
+          \(Sin[\ \((\(k\_x\) a - \[Pi])\)].\)\)\)], "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(2\ \[Pi]\)\/3.\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(2.0943951023931953`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(4\ \[Pi]\)\/3.\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(4.1887902047863905`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Show[thpl, zpl]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(zpl2 = 
+      Show[GSSzPlotArt[{\(-.25\), .25}, 120, 38, \(-0.25\), .5, 0, 
+          PlotJoined \[Rule] False, 
+          PlotStyle \[Rule] {RGBColor[0, 0, .75], PointSize[0.01]}], 
+        Graphics[Text["\<K\>", {2\ Pi/3 - .1, .035}]], 
+        Graphics[Text["\<M\>", {Pi - .1, .035}]], 
+        Graphics[Text["\<\!\(K\^\[Prime]\)\>", {4  Pi/3 - .1, .035}]], 
+        Graphics[Text["\<Zigzag ribbon\>", {2  Pi/3 + .5, \(+.1\)}]], 
+        Graphics[Text["\<38 unit cells\>", {4  Pi/3 - .5, \(+.1\)}]], 
+        Graphics[
+          Text["\<\[CapitalDelta] = 0.5 eV\>", {2  Pi/3 + .5, \(-.1\)}]], 
+        Graphics[Text["\<m = 0.0 eV\>", {4  Pi/3 - .5, \(-.1\)}]]]\)], "Input",\
+
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(thpl2 = 
+      Plot[{If[kxa > \(2  \[Pi]\)\/3 && kxa < \(4  \[Pi]\)\/3, 
+            \(\(2\ *0.18518518518518517`\)\/\@3\) Sin[\ \((kxa - \[Pi])\)] - 
+              0.18518518518518517`/2, \[ImaginaryI]], 
+          If[kxa > \(2  \[Pi]\)\/3 && kxa < \(4  \[Pi]\)\/3, 
+            \(\(2\ *0.18518518518518517`\)\/\@3\) 
+                Sin[\ \((\(-kxa\) - \[Pi])\)] + 0.18518518518518517`/2, 
+            \[ImaginaryI]]}, {kxa, 1.8, 4.5}, 
+        PlotStyle
+           -> {{RGBColor[1, .2, .2], Thickness[0.008]}, {RGBColor[1, .2, .2], 
+              Thickness[0.008]}}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotRange \[Rule] {{1.8, 4.5}, {\(-.3\), .3}}, 
+        Ticks \[Rule] {{\(2  \[Pi]\)\/3, \(5  \[Pi]\)\/6, \[Pi], 
+              \(7  \[Pi]\)\/6, \(4  \[Pi]\)\/3}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+        AxesOrigin \[Rule] {1.8, \(-.3\)}, ImageSize \[Rule] 72*7.5]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Show[thpl2, zpl2]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(z1[q_, \[Delta]_, m_] := 
+      \(-Sec[q\/2]\)\ 
+        \((1 - 6\ \[Delta]\^2 + \((1 + \[Delta]\^2)\)\ Cos[q] + 
+            5\ \[Delta]\^2\ Cos[2\ q] + 2\ m\ \[Delta]\ Sin[q])\); \)\), 
+    \(\n\), 
+    \(\(z2[q_, \[Delta]_] := \(\[Delta]\^2\) \((Cos[q] - 1)\) Sec[q\/2]; 
+    \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[{
+    \(\(lambda1[q_, \[Delta]_, m_] := 
+      2/\((\@3)\) Log[\ Abs[1/z1[q, \[Delta], m]]]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(lambda2[q_, \[Delta]_] := 2/\((\@3)\) Log[\ Abs[1/z2[q, \[Delta]]]]; 
+    \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(lambda0500Plot = 
+      Plot[lambda1[qx, .185185/\((3 \@ 3.)\), 0], {qx, \(5  \[Pi]\)\/6, 
+          \(7  \[Pi]\)\/6}, 
+        Ticks \[Rule] {{\(5  \[Pi]\)\/6, \[Pi], \(7  \[Pi]\)\/6}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+        PlotRange \[Rule] {{\(5  \[Pi]\)\/6, \(7  \[Pi]\)\/6}, {0, 9}}, 
+        PlotStyle
+           -> {RGBColor[0, 0, .8], Thickness[0.008], Dashing[{.05, .0324}]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", "\<\[Lambda] a\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotPoints \[Rule] 50]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((3.21 - 3.07)\)/2\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.07000000000000006`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Plot[lambda1[qx, .185185/\((3 \@ 3.)\), 0], {qx, 3.2135, 3.214}, 
+      GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+      PlotRange \[Rule] {{3.2135, 3.214}, {0, 20}}, PlotPoints \[Rule] 150]
+      \)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Plot[lambda2[qx, .185185/\((3 \@ 3.)\)], {qx, 2  Pi/3, 4  Pi/3}, 
+      Ticks \[Rule] {{\(2  \[Pi]\)\/3, \(5  \[Pi]\)\/6, \[Pi], 
+            \(7  \[Pi]\)\/6, \(4  \[Pi]\)\/3}, Automatic}, 
+      GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(zpl2 = 
+      GSSzPlot2[{\(-.25\), .25}, 120, 38, 0, .5, .25, 0, 0, 
+        PlotStyle \[Rule] {RGBColor[0, 0, .75], PointSize[0.01]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        \(\[IndentingNewLine]TextStyle\) 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]; 
+    \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(lambda025Plot = 
+      Plot[lambda1[qx, .185185/\((6 \@ 3.)\), 0], {qx, \(5  \[Pi]\)\/6, 
+          \(7  \[Pi]\)\/6}, 
+        Ticks \[Rule] {{\(5  \[Pi]\)\/6, \[Pi], \(7  \[Pi]\)\/6}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+        PlotRange \[Rule] {{\(5  \[Pi]\)\/6, \(7  \[Pi]\)\/6}, {0, 9}}, 
+        PlotStyle -> {RGBColor[.8, .4, 0], Thickness[0.008]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", "\<\[Lambda] a\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotPoints \[Rule] 60]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\((3.18 - 3.11)\)/2\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.03500000000000014`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(lambda0505Plot = 
+      Plot[lambda1[qx, .185185/\((3 \@ 3.)\), .185185], {qx, \(5  \[Pi]\)\/6, 
+          \(7  \[Pi]\)\/6}, 
+        Ticks \[Rule] {{\(5  \[Pi]\)\/6, \[Pi], \(7  \[Pi]\)\/6}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+        PlotRange \[Rule] {{\(5  \[Pi]\)\/6, \(7  \[Pi]\)\/6}, {0, 10}}, 
+        PlotStyle -> {RGBColor[.8, 0, 0], Thickness[0.008]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", "\<\[Lambda] a\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]\)], 
+  "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(lambda[qx_] := 2/\((\@3)\) Log[.5\ Abs[Sec[qx/2]]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(lambda0Plot = 
+      Plot[lambda[qx], {qx, \(5  \[Pi]\)\/6, \(7  \[Pi]\)\/6}, 
+        Ticks \[Rule] {{\(5  \[Pi]\)\/6, \[Pi], \(7  \[Pi]\)\/6}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+        PlotRange \[Rule] {{\(5  \[Pi]\)\/6, \(7  \[Pi]\)\/6}, {0, 9}}, 
+        PlotStyle -> {Thickness[0.008], Dashing[{.005, .0356, .05, .0356}]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", "\<\[Lambda] a\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotPoints \[Rule] 50]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(InputForm\`lambda0500Plot\)], "Input",
+  GeneratedCell->True,
+  FormatType->StandardForm],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(lambda0500Plot\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Show[lambda0500Plot, lambda025Plot, lambda0Plot]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Gapped Zigzag with AB term", "Section",
+  GeneratedCell->True],
+
+Cell[TextData[{
+  "Parameters:\n\tL= \[Infinity],\n\tLength of unit cell = a =  2.4612 \
+\[Angstrom];\n            Number of unit cells = 38,\n            Width of \
+unit cell  = ",
+  Cell[BoxData[
+      \(TraditionalForm\`\@3\)]],
+  "a = ",
+  Cell[BoxData[
+      \(4.2629\)], "Output"],
+  " \[Angstrom],\n            W = 38 ",
+  Cell[BoxData[
+      \(TraditionalForm\`\@3\)]],
+  "a = 16.19 nm (so about the same W as armchair case);\n            E scale \
+is in units of t, where t = 2.7 eV (symmetric gap at M point),\n            \
+\[CapitalDelta] = 0.5 eV = ",
+  Cell[BoxData[
+      \(0.18518518518518517`\)], "Output",
+    GeneratedCell->False,
+    CellAutoOverwrite->False],
+  "eV/t."
+}], "Text",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(zplABart = 
+      GSSzPlot2[{\(-.3\), .3}, 120, 38, \(-.25\), .5, 0, 
+        PlotStyle \[Rule] {RGBColor[0, 0, .7], PointSize[0.01]}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        \(\[IndentingNewLine]TextStyle\) 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}]; 
+    \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(thplABart = 
+      Plot[{If[kxa > \(2  \[Pi]\)\/3 && kxa < \(4  \[Pi]\)\/3, 
+            \(\(2\ *0.18518518518518517`\)\/\@3\) Sin[\ \((kxa - \[Pi])\)] - 
+              \((.25/2.7)\), \[ImaginaryI]], 
+          If[kxa > \(2  \[Pi]\)\/3 && kxa < \(4  \[Pi]\)\/3, 
+            \(\(2\ *0.18518518518518517`\)\/\@3\) 
+                Sin[\ \((\(-kxa\) - \[Pi])\)] + \((.25/2.7)\), 
+            \[ImaginaryI]]}, {kxa, 1.8, 4.5}, 
+        PlotStyle
+           -> {{RGBColor[1, .2, .2], Thickness[0.008]}, {RGBColor[1, .2, .2], 
+              Thickness[0.008]}}, 
+        AxesLabel \[Rule] 
+          TraditionalForm/@{"\<\!\(q\_x\)a\>", 
+              "\<\[Epsilon] / \!\(t\_0\)\>"}, 
+        TextStyle 
+          \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+        PlotRange \[Rule] {{1.8, 4.5}, {\(-.3\), .3}}, 
+        Ticks \[Rule] {{\(2  \[Pi]\)\/3, \(5  \[Pi]\)\/6, \[Pi], 
+              \(7  \[Pi]\)\/6, \(4  \[Pi]\)\/3}, Automatic}, 
+        GridLines \[Rule] {{\(2  \[Pi]\)\/3, \[Pi], \(4  \[Pi]\)\/3}, {0}}, 
+        AxesOrigin \[Rule] {1.8, \(-.3\)}]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Show[thplABart, zplABart]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    TagBox[\(\(\[SkeletonIndicator]  Graphics\) \[SkeletonIndicator]\),
+      False,
+      Editable->False]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzPlot2[{\(-.5\), .5}, 300, 38, 0, .5, 0, PlotJoined \[Rule] True, 
+      PlotStyle \[Rule] Hue[.7]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzPlot2[{\(-.5\), .5}, 300, 38, 0.25, .5, 0, 
+      PlotJoined \[Rule] True, PlotStyle \[Rule] Hue[.7]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(GSSzPlot2[{\(-.5\), .5}, 300, 38, 0.25, \(-.5\), 0, 
+      PlotJoined \[Rule] True, PlotStyle \[Rule] Hue[.7]]; \)\)], "Input",
+  GeneratedCell->True]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Exact 2D dispersion for bulk states", "Subtitle",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"H2D", "=", 
+        RowBox[{
+          RowBox[{"(", GridBox[{
+               
+                 {\(m + 
+                    2  \[Delta] \((
+                      2  Cos[qy \(\(\@ 3\) a\)\/2] Sin[qx\ a\/2] - Sin[qx\ a])
+                      \)\), \(t0\ \((
+                    \[ExponentialE]\^\(\[ImaginaryI]\ qy\ a/\@3\) + 
+                      2 \( \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ qy\ 
+                              a/\((2 \@ 3)\)\)\) Cos[qx\ a\/2])\)\)},
+               
+                 {\(t0\ \((
+                    \[ExponentialE]\^\(\(-\[ImaginaryI]\)\ qy\ a/\@3\) + 
+                      2 \( \[ExponentialE]\^\(\[ImaginaryI]\ qy\ 
+                              a/\((2 \@ 3)\)\)\) Cos[qx\ a\/2])\)\), 
+                  \(\(-m\) - 
+                    2  \[Delta] \((
+                      2  Cos[qy \(\(\@ 3\) a\)\/2] Sin[qx\ a\/2] - Sin[qx\ a])
+                      \)\)}
+                }], ")"}], "/.", 
+          \(\[Delta] -> \[CapitalDelta]\/\(3 \@ 3\)\)}]}], ";"}]], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Eigensystem[H2D] // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \({{\(-
+          \[Sqrt]\((
+              m\^2 + 3\ t0\^2 + 
+                2\/27\ \((
+                    27\ t0\^2\ Cos[a\ qx] + 
+                      54\ t0\^2\ Cos[\(a\ qx\)\/2]\ Cos[1\/2\ \@3\ a\ qy] + 
+                      2\ \[CapitalDelta]\ \((
+                        2\ Cos[1\/2\ \@3\ a\ qy]\ Sin[\(a\ qx\)\/2] - 
+                          Sin[a\ qx])\)\ 
+                        \((3\ \@3\ m + 
+                            2\ \[CapitalDelta]\ Cos[1\/2\ \@3\ a\ qy]\ 
+                              Sin[\(a\ qx\)\/2] - \[CapitalDelta]\ Sin[a\ qx])
+                          \))\))\)\), 
+        \[Sqrt]\((
+            m\^2 + 3\ t0\^2 + 
+              2\/27\ \((
+                  27\ t0\^2\ Cos[a\ qx] + 
+                    54\ t0\^2\ Cos[\(a\ qx\)\/2]\ Cos[1\/2\ \@3\ a\ qy] + 
+                    2\ \[CapitalDelta]\ \((
+                      2\ Cos[1\/2\ \@3\ a\ qy]\ Sin[\(a\ qx\)\/2] - 
+                        Sin[a\ qx])\)\ 
+                      \((3\ \@3\ m + 
+                          2\ \[CapitalDelta]\ Cos[1\/2\ \@3\ a\ qy]\ 
+                            Sin[\(a\ qx\)\/2] - \[CapitalDelta]\ Sin[a\ qx])
+                        \))\))\)}, {{
+          \((\[ExponentialE]\^\(\(\[ImaginaryI]\ a\ qy\)\/\@3\)\ \((
+                9\ m - 4\ \@3\ \[CapitalDelta]\ \((
+                    Cos[\(a\ qx\)\/2] - Cos[1\/2\ \@3\ a\ qy])\)\ 
+                    Sin[\(a\ qx\)\/2] - 
+                  9\ \[Sqrt]\((
+                        m\^2 + 3\ t0\^2 + 
+                          2\/27\ \((
+                              27\ t0\^2\ Cos[a\ qx] + 
+                                54\ t0\^2\ Cos[\(a\ qx\)\/2]\ 
+                                  Cos[1\/2\ \@3\ a\ qy] + 
+                                2\ \[CapitalDelta]\ \((
+                                  2\ Cos[1\/2\ \@3\ a\ qy]\ 
+                                      Sin[\(a\ qx\)\/2] - Sin[a\ qx])\)\ 
+                                  \((3\ \@3\ m + 
+                                      2\ \[CapitalDelta]\ 
+                                        Cos[1\/2\ \@3\ a\ qy]\ 
+                                        Sin[\(a\ qx\)\/2] - 
+                                      \[CapitalDelta]\ Sin[a\ qx])\))\))\))\))
+              \)/\((9\ \((
+                  t0 + 2\ \[ExponentialE]\^\(1\/2\ \[ImaginaryI]\ \@3\ a\ qy
+                          \)\ t0\ Cos[\(a\ qx\)\/2])\))\), 1}, {
+          \((\[ExponentialE]\^\(\(\[ImaginaryI]\ a\ qy\)\/\@3\)\ \((
+                9\ m - 4\ \@3\ \[CapitalDelta]\ \((
+                    Cos[\(a\ qx\)\/2] - Cos[1\/2\ \@3\ a\ qy])\)\ 
+                    Sin[\(a\ qx\)\/2] + 
+                  9\ \[Sqrt]\((
+                        m\^2 + 3\ t0\^2 + 
+                          2\/27\ \((
+                              27\ t0\^2\ Cos[a\ qx] + 
+                                54\ t0\^2\ Cos[\(a\ qx\)\/2]\ 
+                                  Cos[1\/2\ \@3\ a\ qy] + 
+                                2\ \[CapitalDelta]\ \((
+                                  2\ Cos[1\/2\ \@3\ a\ qy]\ 
+                                      Sin[\(a\ qx\)\/2] - Sin[a\ qx])\)\ 
+                                  \((3\ \@3\ m + 
+                                      2\ \[CapitalDelta]\ 
+                                        Cos[1\/2\ \@3\ a\ qy]\ 
+                                        Sin[\(a\ qx\)\/2] - 
+                                      \[CapitalDelta]\ Sin[a\ qx])\))\))\))\))
+              \)/\((9\ \((
+                  t0 + 2\ \[ExponentialE]\^\(1\/2\ \[ImaginaryI]\ \@3\ a\ qy
+                          \)\ t0\ Cos[\(a\ qx\)\/2])\))\), 1}}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(E2D2 = 
+      t0^2 \((1 + 4\ Cos[\(\@3\) qya/2] Cos[qxa/2]\  + \ 4  Cos[qxa/2]^2)\) + 
+        m^2 + \(\(8\ \[CapitalDelta]\)\/27\) Sin[qxa/2] 
+          \((Cos[\(\@3\) qya/2] - Cos[qxa/2]\ )\) 
+          \((3 \(\@\( 3\ \)\) m\ \  + 
+              \[CapitalDelta] \((2\ Cos[\(\@3\) qya/2] Sin[qxa/2] - Sin[qxa])
+                \))\); \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell["Archair dispersion:", "Subsubsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(Kxaf = \(-\[Tau]\) \(4  \[Pi]\)\/3; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(Kyaf = 0; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(E2D2 /. qxa \[Rule] Kxaf + kxa\) /. qya -> Kyaf + kya\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(m\^2 + 
+      t0\^2\ \((
+        1 + 4\ Cos[\(\@3\ kya\)\/2]\ 
+            Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)] + 
+          4\ Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)]\^2)\) + 
+      8\/27\ \[CapitalDelta]\ \((
+        Cos[\(\@3\ kya\)\/2] - Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)])
+        \)\ Sin[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)]\ 
+        \((3\ \@3\ m + 
+            \[CapitalDelta]\ \((
+              2\ Cos[\(\@3\ kya\)\/2]\ 
+                  Sin[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)] - 
+                Sin[kxa - \(4\ \[Pi]\ \[Tau]\)\/3])\))\)\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(t0\^2\ \((
+            1 + 4\ Cos[\(\@3\ kya\)\/2]\ 
+                Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)] + 
+              4\ Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)]\^2)\) /. 
+          \[Tau] \[Rule] 1 // TrigExpand\) // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(t0\^2\ \((
+      3 - Cos[kxa] + 
+        2\ Cos[\(\@3\ kya\)\/2]\ \((\(-Cos[kxa\/2]\) + \@3\ Sin[kxa\/2])\) - 
+        \@3\ Sin[kxa])\)\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(t0\^2\ \((
+      3 - Cos[kxa] - \@3\ Sin[kxa] + 
+        2\ Cos[\(\@3\ kya\)\/2]\ \((\(-Cos[kxa\/2]\) + \@3\ Sin[kxa\/2])\))
+      \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(% /. kxa \[Rule] 0 // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(4\ t0\^2\ Sin[\(\@3\ kya\)\/4]\^2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(t0\^2\ \((
+            1 + 4\ Cos[\(\@3\ kya\)\/2]\ 
+                Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)] + 
+              4\ Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)]\^2)\) /. 
+          \[Tau] \[Rule] \(-1\) // TrigExpand\) // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(t0\^2\ \((
+      3 - Cos[kxa] - 
+        2\ Cos[\(\@3\ kya\)\/2]\ \((Cos[kxa\/2] + \@3\ Sin[kxa\/2])\) + 
+        \@3\ Sin[kxa])\)\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(% /. kxa \[Rule] 0 // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(4\ t0\^2\ Sin[\(\@3\ kya\)\/4]\^2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(8\/27\ \[CapitalDelta]\ \((
+            Cos[\(\@3\ kya\)\/2] - 
+              Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)])\)\ 
+            Sin[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)]\ 
+            \((3\ \@3\ m + 
+                \[CapitalDelta]\ \((
+                  2\ Cos[\(\@3\ kya\)\/2]\ 
+                      Sin[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)] - 
+                    Sin[kxa - \(4\ \[Pi]\ \[Tau]\)\/3])\))\) /. 
+          \[Tau] \[Rule] 1 // TrigExpand\) // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/27\ \[CapitalDelta]\ \((
+      6\ \[CapitalDelta] + \[CapitalDelta]\ Cos[2\ kxa] + 
+        2\ Cos[kxa]\ 
+          \((\(-9\)\ m + \[CapitalDelta] + \[CapitalDelta]\ Cos[\@3\ kya])
+            \) + 4\ Cos[\(\@3\ kya\)\/2]\ 
+          \((\((\(-9\)\ m + \[CapitalDelta])\)\ Cos[kxa\/2] + 
+              2\ \[CapitalDelta]\ Cos[\(3\ kxa\)\/2] - 
+              \@3\ \((3\ m + \[CapitalDelta])\)\ Sin[kxa\/2])\) + 
+        2\ \@3\ \((3\ m + \[CapitalDelta] - \[CapitalDelta]\ Cos[kxa])\)\ 
+          Sin[kxa] + 
+        2\ \[CapitalDelta]\ Cos[\@3\ kya]\ \((2 + \@3\ Sin[kxa])\))\)\)], 
+  "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(8\/27\ \[CapitalDelta]\ \((
+            Cos[\(\@3\ kya\)\/2] - 
+              Cos[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)])\)\ 
+            Sin[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)]\ 
+            \((3\ \@3\ m + 
+                \[CapitalDelta]\ \((
+                  2\ Cos[\(\@3\ kya\)\/2]\ 
+                      Sin[1\/2\ \((kxa - \(4\ \[Pi]\ \[Tau]\)\/3)\)] - 
+                    Sin[kxa - \(4\ \[Pi]\ \[Tau]\)\/3])\))\) /. 
+          \[Tau] \[Rule] \(-1\) // TrigExpand\) // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(1\/27\ \[CapitalDelta]\ \((
+      6\ \[CapitalDelta] + \[CapitalDelta]\ Cos[2\ kxa] + 
+        2\ Cos[kxa]\ 
+          \((9\ m + \[CapitalDelta] + \[CapitalDelta]\ Cos[\@3\ kya])\) + 
+        4\ Cos[\(\@3\ kya\)\/2]\ 
+          \((\((9\ m + \[CapitalDelta])\)\ Cos[kxa\/2] + 
+              2\ \[CapitalDelta]\ Cos[\(3\ kxa\)\/2] + 
+              \@3\ \((\(-3\)\ m + \[CapitalDelta])\)\ Sin[kxa\/2])\) + 
+        2\ \@3\ \((3\ m - \[CapitalDelta] + \[CapitalDelta]\ Cos[kxa])\)\ 
+          Sin[kxa] - 
+        2\ \[CapitalDelta]\ Cos[\@3\ kya]\ \((\(-2\) + \@3\ Sin[kxa])\))\)\)],
+   "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["ZZ dispersion:", "Subsubsection",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(Kxaf = \[Tau] \( 2  \[Pi]\)\/3; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(Kyaf = \(2  \[Pi]\)\/\@3; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(E2D2 /. qxa \[Rule] Kxaf + kxa\) /. qya -> Kyaf + kya\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(m\^2 + 
+      t0\^2\ \((
+        1 + 4\ Cos[1\/2\ \@3\ \((kya + \(2\ \[Pi]\)\/\@3)\)]\ 
+            Cos[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)] + 
+          4\ Cos[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)]\^2)\) + 
+      8\/27\ \[CapitalDelta]\ \((
+        Cos[1\/2\ \@3\ \((kya + \(2\ \[Pi]\)\/\@3)\)] - 
+          Cos[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)])\)\ 
+        Sin[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)]\ 
+        \((3\ \@3\ m + 
+            \[CapitalDelta]\ \((
+              2\ Cos[1\/2\ \@3\ \((kya + \(2\ \[Pi]\)\/\@3)\)]\ 
+                  Sin[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)] - 
+                Sin[kxa + \(2\ \[Pi]\ \[Tau]\)\/3])\))\)\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(t0\^2\ \((
+      1 + 4\ Cos[1\/2\ \@3\ \((kya + \(2\ \[Pi]\)\/\@3)\)]\ 
+          Cos[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)] + 
+        4\ Cos[1\/2\ \((kxa + \(2\ \[Pi]\ \[Tau]\)\/3)\)]\^2)\)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\[IndentingNewLine]\)], "Input",
+  GeneratedCell->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(-\(\(\(\[Epsilon]\^2\) Q\^2 - 
+                \((\[Delta] \((V + \ Q \((R + Q\ V)\))\) - Q\ m\ )\)\^2
+                  \)\/\(\ Q\ \((\(-1\) + Q\^2)\)\)\)\) /. 
+        \[Epsilon] -> \(-m\) + 3  \[Delta]\ R // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\[Delta]\ Sec[q\/2]\ 
+      \((\[Delta]\ \((\(-6\) + Cos[q] + 5\ Cos[2\ q])\) + 2\ m\ Sin[q])\)\)], 
+  "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\[Epsilon] - m + \[Delta] \((V\ \((1 + Q^2)\)/Q + R)\) /. 
+        \[Epsilon] -> \(-m\) + 3  \[Delta]\ R // FullSimplify\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(-2\)\ m + 10\ \[Delta]\ Sin[q] + \[Delta]\ Tan[q\/2]\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(\(z1[q_, \[Delta]_, m_] := 
+      \(-Sec[q\/2]\)\ 
+        \((1 - 6\ \[Delta]\^2 + \((1 + \[Delta]\^2)\)\ Cos[q] + 
+            5\ \[Delta]\^2\ Cos[2\ q] + 2\ m\ \[Delta]\ Sin[q])\); \)\), 
+    \(\n\), 
+    \(\(z2[q_, \[Delta]_] := \(\[Delta]\^2\) \((Cos[q] - 1)\) Sec[q\/2]; \)\),
+   
+    \(\[IndentingNewLine]\), 
+    \(\[Psi]A0[q_, \[Delta]_, m_] := 
+      \[Delta]\ Sec[q\/2]\ 
+        \((\[Delta]\ \((\(-6\) + Cos[q] + 5\ Cos[2\ q])\) + 2\ m\ Sin[q])\); 
+    \[Psi]B0[q_, \[Delta]_, m_] := 
+      \(-2\)\ m + 10\ \[Delta]\ Sin[q] + \[Delta]\ Tan[q\/2]; \), 
+    \(\[IndentingNewLine]\), 
+    \(\(\[Psi]Aun[q_, \[Delta]_, m_, J_Integer] := \ 
+      Table[\((z1[q, \[Delta], m])\)^j\ *\ \[Psi]A0[q, \[Delta], m]\ , {j, 0, 
+          J}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(\[Psi]Bun[q_, \[Delta]_, m_, J_Integer] := 
+      Table[\((z1[q, \[Delta], m])\)^j\ *\ \[Psi]B0[q, \[Delta], m]\ , {j, 0, 
+          J}]; \)\[IndentingNewLine]\), 
+    \(\[IndentingNewLine]\), 
+    \(\(C1[q_, \[Delta]_, m_, J_Integer] := 
+      Module[{psiunA, psiunB, sumi}, 
+        \(\(\[IndentingNewLine]psiunA\) = \[Psi]Aun[q, \[Delta], m, J]; 
+        \(\[IndentingNewLine]psiunB\) = \[Psi]Bun[q, \[Delta], m, J]; 
+        \(\[IndentingNewLine]sumi\) = 
+          Sum[psiunA[[i]]^2 + psiunB[[i]]^2, {i, 1, J + 1}]; 
+        \(\[IndentingNewLine]Return\)[1/\@sumi]; \[IndentingNewLine]\)]; \)\),
+   
+    \(\[IndentingNewLine]\), 
+    \(\(\[Psi]A[q_, \[Delta]_, m_, J_Integer] := \ 
+      Table[{\(\((j + 1)\) \@3.\)\/2, 
+          \(C1[q, \[Delta], m, J]*
+            \((\((z1[q, \[Delta], m])\)^j\  - \((z2[q, \[Delta]])\)^j)\)*\ 
+            \[Psi]A0[q, \[Delta], m]\)}\ , {j, 0, J}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(\[Psi]B[q_, \[Delta]_, m_, J_Integer] := 
+      Table[{\(\((j)\) \@3.\)\/2, 
+          \(C1[q, \[Delta], m, J]*
+            \((\((z1[q, \[Delta], m])\)^j\  - \((z2[q, \[Delta]])\)^j)\)\ *\ 
+            \[Psi]B0[q, \[Delta], m]\)\ }, {j, 0, J}]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(ThryB = 
+      Abs[\[Psi]A[\(-4\) \[Pi]/15. - \[Pi], .185185/\((3 \@ 3.)\), .185185, 
+          30]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\(ThryA = 
+      Abs[\[Psi]B[\(-4\) \[Pi]/15. - \[Pi], .185185/\((3 \@ 3.)\), .185185, 
+          30]]; \)\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[""], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(\({e38LAB2, H38LAB2} = GetzEdgeStates[\(-300\), 38, .5, .5, 0, 0, 0]; 
+    \)\)], "Input",
+  GeneratedCell->True,
+  FontWeight->"Plain"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(wf = GetWf[e38LAB2[[110]], H38LAB2[[110]]]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(wf[[1]]\), 
+    \(\[IndentingNewLine]\), 
+    \(\(len = Length[wf] - 92; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(0.575652910906338`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(len\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(212\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Length[listA]\)], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(106\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(\(listA = Table[wf[[i]], {i, 1, len, 2}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listB = Table[wf[[i]], {i, 2, len, 2}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listAA\  = \ 
+      Table[{i \@ 3.\/2, Abs[listA[[i + 1]]]}, {i, 0, 
+          Length[listA] - 1 - 77}]; \)\), 
+    \(\[IndentingNewLine]\), 
+    \(\(listBA\  = \ 
+      Table[{\((i + 1)\) \@3.\/2, Abs[listB[[i + 1]]]}, {i, 0, 
+          Length[listB] - 1 - 77}]; \)\)}], "Input",
+  GeneratedCell->True],
+
+Cell[BoxData[
+    \(MultipleListPlot[ThryA, ThryB, listAA, listBA, 
+      PlotJoined \[Rule] {True, True, False, False}, 
+      PlotStyle 
+        \[Rule] {{RGBColor[0, .9, 0], Thickness[0.008]}, {
+            RGBColor[.25, .25, 1], Thickness[0.008]}, {RGBColor[0, .5, 0], 
+            Thickness[0.000]}, {RGBColor[0, 0, .7], Thickness[0.000]}}, 
+      SymbolShape 
+        \[Rule] {PlotSymbol[Triangle, .1], PlotSymbol[Box, .1], 
+          PlotSymbol[Triangle, 5], PlotSymbol[Box, 3]}, 
+      PlotRange \[Rule] {0, .6}, 
+      AxesLabel \[Rule] {"\<y/a\>", "\<|Amplitude|\>"}, 
+      \(\[IndentingNewLine]TextStyle\) 
+        \[Rule] {FontFamily \[Rule] "\<Times\>", FontSize \[Rule] 14}, 
+      PlotLegend 
+        \[Rule] {"\<A theory\>", "\<B theory\>", "\<A numerics\>", 
+          "\<B numerics\>"}, LegendPosition \[Rule] {.35, \(-.25\)}, 
+      LegendShadow \[Rule] {.03, \(-.03\)}, 
+      LegendBackground \[Rule] RGBColor[1, .97, .85], 
+      ShadowBackground \[Rule] GrayLevel[.5]]\)], "Input",
+  GeneratedCell->True]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+FrontEndVersion->"Microsoft Windows 3.0",
+ScreenRectangle->{{0, 1024}, {0, 699}},
+WindowSize->{495, 565},
+WindowMargins->{{30, Automatic}, {1, Automatic}}
+]
+
+
+(***********************************************************************
+Cached data follows.  If you edit this Notebook file directly, not using
+Mathematica, you must remove the line containing CacheID at the top of 
+the file.  The cache data will then be recreated when you save this file 
+from within Mathematica.
+***********************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{
+  "GraphicsDeleted"->{
+    Cell[55199, 1094, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[58273, 1259, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[58591, 1269, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[62830, 1483, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[64862, 1580, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[66657, 1666, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[67938, 1709, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[69720, 1762, 144, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[71046, 1801, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[71979, 1823, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[72125, 1828, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[73418, 1873, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[74245, 1898, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[75085, 1923, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[76897, 1967, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[77276, 1981, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[81447, 2093, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[85460, 2213, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[86322, 2241, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[86933, 2258, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"],
+    Cell[87589, 2276, 143, 3, 33, "Text",
+      CellTags->"GraphicsDeleted"]},
+  "S5.25.1"->{
+    Cell[66803, 1671, 84, 2, 30, "Input",
+      CellTags->"S5.25.1"]}
+  }
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{
+  {"GraphicsDeleted", 162851, 4218},
+  {"S5.25.1", 164505, 4261}
+  }
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1731, 51, 60, 1, 105, "Title"],
+Cell[1794, 54, 57, 1, 54, "Subtitle"],
+
+Cell[CellGroupData[{
+Cell[1876, 59, 65, 1, 47, "Subsection"],
+Cell[1944, 62, 87, 1, 33, "Text"],
+Cell[2034, 65, 315, 10, 270, "Input"],
+Cell[2352, 77, 49, 1, 30, "Input"],
+Cell[2404, 80, 8161, 138, 2056, "Input"],
+Cell[10568, 220, 5424, 91, 1634, "Input"],
+Cell[15995, 313, 49, 1, 30, "Input"],
+Cell[16047, 316, 49, 1, 30, "Input"],
+Cell[16099, 319, 49, 1, 30, "Input"],
+Cell[16151, 322, 49, 1, 30, "Input"],
+Cell[16203, 325, 4537, 80, 1351, "Input"],
+Cell[20743, 407, 2112, 42, 610, "Input"],
+Cell[22858, 451, 2056, 36, 710, "Input"],
+Cell[24917, 489, 3118, 53, 830, "Input"],
+Cell[28038, 544, 1061, 19, 390, "Input"],
+Cell[29102, 565, 652, 13, 270, "Input"],
+Cell[29757, 580, 3135, 57, 1233, "Input"],
+Cell[32895, 639, 3085, 56, 1193, "Input"],
+Cell[35983, 697, 2775, 52, 850, "Input"],
+Cell[38761, 751, 1808, 33, 570, "Input"],
+Cell[40572, 786, 49, 1, 30, "Input"],
+Cell[40624, 789, 475, 9, 170, "Input"],
+Cell[41102, 800, 375, 8, 170, "Input"],
+Cell[41480, 810, 1010, 18, 390, "Input"],
+Cell[42493, 830, 1354, 24, 510, "Input"],
+Cell[43850, 856, 1947, 33, 830, "Input"],
+Cell[45800, 891, 1394, 26, 550, "Input"],
+Cell[47197, 919, 533, 10, 190, "Input"],
+Cell[47733, 931, 512, 10, 170, "Input"],
+Cell[48248, 943, 1873, 33, 670, "Input"],
+Cell[50124, 978, 1544, 27, 610, "Input"],
+Cell[51671, 1007, 1667, 30, 630, "Input"],
+Cell[53341, 1039, 512, 10, 170, "Input"],
+Cell[53856, 1051, 49, 1, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[53942, 1057, 57, 1, 53, "Section"],
+Cell[54002, 1060, 856, 17, 250, "Input"],
+
+Cell[CellGroupData[{
+Cell[54883, 1081, 51, 1, 47, "Subsection"],
+Cell[54937, 1084, 36, 1, 29, "Output"],
+Cell[54976, 1087, 220, 5, 70, "Input"],
+Cell[55199, 1094, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[55345, 1099, 113, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[55483, 1105, 77, 2, 30, "Input"],
+Cell[55563, 1109, 58, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[55658, 1115, 77, 2, 30, "Input"],
+Cell[55738, 1119, 52, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[55827, 1125, 77, 2, 30, "Input"],
+Cell[55907, 1129, 53, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[55997, 1135, 97, 2, 48, "Input"],
+Cell[56097, 1139, 35, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[56169, 1145, 66, 2, 30, "Input"],
+Cell[56238, 1149, 37, 1, 29, "Output"]
+}, Open  ]],
+Cell[56290, 1153, 139, 4, 90, "Input"],
+
+Cell[CellGroupData[{
+Cell[56454, 1161, 63, 2, 30, "Input"],
+Cell[56520, 1165, 38, 1, 42, "Output"]
+}, Open  ]],
+Cell[56573, 1169, 143, 4, 35, "Input"],
+
+Cell[CellGroupData[{
+Cell[56741, 1177, 84, 2, 50, "Input"],
+Cell[56828, 1181, 35, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[56900, 1187, 75, 2, 30, "Input"],
+Cell[56978, 1191, 35, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[57050, 1197, 61, 2, 30, "Input"],
+Cell[57114, 1201, 36, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[57187, 1207, 62, 2, 30, "Input"],
+Cell[57252, 1211, 35, 1, 29, "Output"]
+}, Open  ]],
+Cell[57302, 1215, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[57376, 1220, 167, 3, 42, "Input"],
+Cell[57546, 1225, 54, 1, 29, "Output"]
+}, Open  ]],
+Cell[57615, 1229, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[57689, 1234, 162, 3, 42, "Input"],
+Cell[57854, 1239, 54, 1, 29, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[57957, 1246, 51, 1, 47, "Subsection"],
+Cell[58011, 1249, 36, 1, 29, "Output"],
+Cell[58050, 1252, 220, 5, 70, "Input"],
+Cell[58273, 1259, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[58419, 1264, 169, 3, 50, "Input"],
+Cell[58591, 1269, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[58737, 1274, 113, 2, 30, "Input"],
+Cell[58853, 1278, 78, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[58956, 1284, 77, 2, 30, "Input"],
+Cell[59036, 1288, 55, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[59128, 1294, 77, 2, 30, "Input"],
+Cell[59208, 1298, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[59299, 1304, 77, 2, 30, "Input"],
+Cell[59379, 1308, 53, 1, 29, "Output"]
+}, Open  ]],
+Cell[59447, 1312, 77, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[59549, 1318, 62, 2, 30, "Input"],
+Cell[59614, 1322, 40, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[59691, 1328, 85, 2, 30, "Input"],
+Cell[59779, 1332, 40, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[59856, 1338, 97, 2, 42, "Input"],
+Cell[59956, 1342, 40, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[60033, 1348, 86, 2, 30, "Input"],
+Cell[60122, 1352, 59, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[60218, 1358, 62, 2, 30, "Input"],
+Cell[60283, 1362, 40, 1, 42, "Output"]
+}, Open  ]],
+Cell[60338, 1366, 114, 2, 30, "Input"],
+Cell[60455, 1370, 127, 3, 62, "Input"],
+Cell[60585, 1375, 87, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[60697, 1381, 76, 2, 42, "Input"],
+Cell[60776, 1385, 47, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[60860, 1391, 76, 2, 42, "Input"],
+Cell[60939, 1395, 40, 1, 46, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[61016, 1401, 83, 2, 30, "Input"],
+Cell[61102, 1405, 71, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[61210, 1411, 211, 5, 76, "Input"],
+Cell[61424, 1418, 93, 1, 50, "Output"]
+}, Open  ]],
+Cell[61532, 1422, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[61606, 1427, 133, 3, 42, "Input"],
+Cell[61742, 1432, 53, 1, 29, "Output"]
+}, Open  ]],
+Cell[61810, 1436, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[61884, 1441, 166, 3, 42, "Input"],
+Cell[62053, 1446, 54, 1, 29, "Output"]
+}, Open  ]],
+Cell[62122, 1450, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[62196, 1455, 161, 3, 42, "Input"],
+Cell[62360, 1460, 53, 1, 29, "Output"]
+}, Open  ]],
+Cell[62428, 1464, 49, 1, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[62514, 1470, 51, 1, 47, "Subsection"],
+Cell[62568, 1473, 36, 1, 29, "Output"],
+Cell[62607, 1476, 220, 5, 70, "Input"],
+Cell[62830, 1483, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[62976, 1488, 113, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[63114, 1494, 77, 2, 30, "Input"],
+Cell[63194, 1498, 55, 1, 29, "Output"]
+}, Open  ]],
+Cell[63264, 1502, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[63338, 1507, 140, 3, 42, "Input"],
+Cell[63481, 1512, 55, 1, 29, "Output"]
+}, Open  ]],
+Cell[63551, 1516, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[63625, 1521, 77, 2, 30, "Input"],
+Cell[63705, 1525, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[63796, 1531, 161, 3, 42, "Input"],
+Cell[63960, 1536, 54, 1, 29, "Output"]
+}, Open  ]],
+Cell[64029, 1540, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[64103, 1545, 77, 2, 30, "Input"],
+Cell[64183, 1549, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[64274, 1555, 166, 3, 42, "Input"],
+Cell[64443, 1560, 54, 1, 29, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[64546, 1567, 51, 1, 47, "Subsection"],
+Cell[64600, 1570, 36, 1, 29, "Output"],
+Cell[64639, 1573, 220, 5, 70, "Input"],
+Cell[64862, 1580, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[65008, 1585, 113, 2, 30, "Input"],
+Cell[65124, 1589, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[65198, 1594, 77, 2, 30, "Input"],
+Cell[65278, 1598, 58, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65373, 1604, 133, 3, 42, "Input"],
+Cell[65509, 1609, 35, 1, 29, "Output"]
+}, Open  ]],
+Cell[65559, 1613, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[65633, 1618, 77, 2, 30, "Input"],
+Cell[65713, 1622, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[65804, 1628, 167, 3, 42, "Input"],
+Cell[65974, 1633, 54, 1, 29, "Output"]
+}, Open  ]],
+Cell[66043, 1637, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[66117, 1642, 77, 2, 30, "Input"],
+Cell[66197, 1646, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[66288, 1652, 162, 3, 42, "Input"],
+Cell[66453, 1657, 54, 1, 29, "Output"]
+}, Open  ]],
+Cell[66522, 1661, 132, 3, 50, "Input"],
+Cell[66657, 1666, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[66803, 1671, 84, 2, 30, "Input",
+  CellTags->"S5.25.1"],
+
+Cell[CellGroupData[{
+Cell[66912, 1677, 111, 2, 30, "Input"],
+Cell[67026, 1681, 568, 14, 29, "Output"]
+}, Open  ]],
+Cell[67609, 1698, 326, 9, 50, "Input"],
+Cell[67938, 1709, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[68084, 1714, 138, 3, 29, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[68271, 1723, 57, 1, 53, "Section"],
+Cell[68331, 1726, 1130, 23, 299, "Text"],
+
+Cell[CellGroupData[{
+Cell[69486, 1753, 70, 1, 47, "Subsection"],
+Cell[69559, 1756, 158, 4, 50, "Input"],
+Cell[69720, 1762, 144, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[69867, 1767, 133, 3, 29, "Output"],
+Cell[70003, 1772, 601, 11, 184, "Input"],
+Cell[70607, 1785, 133, 3, 33, "Text"],
+Cell[70743, 1790, 70, 1, 33, "Text"],
+Cell[70816, 1793, 227, 6, 70, "Input"],
+Cell[71046, 1801, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[71192, 1806, 784, 15, 210, "Input"],
+Cell[71979, 1823, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[72125, 1828, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[72271, 1833, 133, 3, 29, "Output"],
+Cell[72407, 1838, 207, 5, 68, "Text"],
+Cell[72617, 1845, 142, 3, 50, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[72808, 1854, 57, 1, 53, "Section"],
+Cell[72868, 1857, 49, 1, 30, "Input"],
+Cell[72920, 1860, 495, 11, 130, "Input"],
+Cell[73418, 1873, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[73564, 1878, 133, 3, 29, "Output"],
+Cell[73700, 1883, 542, 13, 150, "Input"],
+Cell[74245, 1898, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[74391, 1903, 133, 3, 29, "Output"],
+Cell[74527, 1908, 555, 13, 150, "Input"],
+Cell[75085, 1923, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[75231, 1928, 133, 3, 29, "Output"],
+Cell[75367, 1933, 84, 2, 54, "Input"],
+Cell[75454, 1937, 1440, 28, 282, "Input"],
+Cell[76897, 1967, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[77043, 1972, 133, 3, 29, "Output"],
+Cell[77179, 1977, 94, 2, 30, "Input"],
+Cell[77276, 1981, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[77422, 1986, 133, 3, 29, "Output"],
+Cell[77558, 1991, 174, 4, 90, "Input"],
+Cell[77735, 1997, 719, 16, 410, "Input"],
+Cell[78457, 2015, 622, 16, 482, "Input"],
+Cell[79082, 2033, 312, 7, 110, "Input"],
+Cell[79397, 2042, 275, 6, 130, "Input"],
+Cell[79675, 2050, 149, 4, 90, "Input"],
+
+Cell[CellGroupData[{
+Cell[79849, 2058, 1037, 20, 330, "Input"],
+Cell[80889, 2080, 270, 4, 101, "Message"],
+Cell[81162, 2086, 270, 4, 101, "Message"]
+}, Open  ]],
+Cell[81447, 2093, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[81593, 2098, 133, 3, 29, "Output"],
+Cell[81729, 2103, 150, 4, 50, "Input"],
+Cell[81882, 2109, 174, 4, 90, "Input"],
+
+Cell[CellGroupData[{
+Cell[82081, 2117, 59, 2, 30, "Input"],
+Cell[82143, 2121, 37, 1, 29, "Output"]
+}, Open  ]],
+Cell[82195, 2125, 702, 16, 410, "Input"],
+
+Cell[CellGroupData[{
+Cell[82922, 2145, 614, 16, 482, "Input"],
+Cell[83539, 2163, 54, 1, 29, "Output"]
+}, Open  ]],
+Cell[83608, 2167, 312, 7, 110, "Input"],
+Cell[83923, 2176, 277, 6, 130, "Input"],
+Cell[84203, 2184, 149, 4, 90, "Input"],
+Cell[84355, 2190, 1102, 21, 330, "Input"],
+Cell[85460, 2213, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[85606, 2218, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[85776, 2226, 57, 1, 53, "Section"],
+Cell[85836, 2229, 483, 10, 150, "Input"],
+Cell[86322, 2241, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[86468, 2246, 462, 10, 150, "Input"],
+Cell[86933, 2258, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"],
+Cell[87079, 2263, 507, 11, 170, "Input"],
+Cell[87589, 2276, 143, 3, 33, "Text",
+  CellTags->"GraphicsDeleted"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[87769, 2284, 55, 1, 54, "Subtitle"],
+
+Cell[CellGroupData[{
+Cell[87849, 2289, 63, 1, 47, "Subsection"],
+Cell[87915, 2292, 85, 1, 33, "Text"],
+Cell[88003, 2295, 239, 8, 210, "Input"],
+Cell[88245, 2305, 4505, 81, 1807, "Input"],
+Cell[92753, 2388, 3655, 64, 1524, "Input"],
+Cell[96411, 2454, 1122, 21, 322, "Input"],
+Cell[97536, 2477, 1718, 31, 554, "Input"],
+Cell[99257, 2510, 837, 14, 270, "Input"],
+Cell[100097, 2526, 1897, 32, 570, "Input"],
+Cell[101997, 2560, 978, 17, 390, "Input"],
+Cell[102978, 2579, 652, 13, 270, "Input"],
+Cell[103633, 2594, 49, 1, 30, "Input"],
+Cell[103685, 2597, 2869, 54, 870, "Input"],
+Cell[106557, 2653, 1949, 36, 684, "Input"],
+Cell[108509, 2691, 2772, 50, 1095, "Input"],
+Cell[111284, 2743, 2766, 50, 1095, "Input"],
+Cell[114053, 2795, 726, 13, 190, "Input"],
+Cell[114782, 2810, 837, 15, 230, "Input"],
+Cell[115622, 2827, 786, 13, 250, "Input"],
+Cell[116411, 2842, 1614, 28, 490, "Input"],
+Cell[118028, 2872, 421, 7, 130, "Input"],
+Cell[118452, 2881, 256, 4, 70, "Input"],
+Cell[118711, 2887, 427, 9, 130, "Input"],
+Cell[119141, 2898, 429, 9, 130, "Input"],
+Cell[119573, 2909, 454, 8, 150, "Input"],
+Cell[120030, 2919, 526, 10, 170, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[120593, 2934, 55, 1, 53, "Section"],
+
+Cell[CellGroupData[{
+Cell[120673, 2939, 92, 1, 47, "Subsection"],
+Cell[120768, 2942, 164, 3, 50, "Input"],
+
+Cell[CellGroupData[{
+Cell[120957, 2949, 64, 2, 30, "Input"],
+Cell[121024, 2953, 36, 1, 29, "Output"]
+}, Open  ]],
+Cell[121075, 2957, 84, 2, 30, "Input"],
+Cell[121162, 2961, 463, 10, 130, "Input"],
+Cell[121628, 2973, 401, 8, 153, "Input"],
+
+Cell[CellGroupData[{
+Cell[122054, 2985, 126, 3, 33, "Input"],
+Cell[122183, 2990, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[122353, 2998, 113, 2, 30, "Input"],
+Cell[122469, 3002, 38, 1, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[122544, 3008, 79, 2, 35, "Input"],
+Cell[122626, 3012, 55, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[122718, 3018, 158, 4, 35, "Input"],
+Cell[122879, 3024, 58, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[122974, 3030, 163, 4, 35, "Input"],
+Cell[123140, 3036, 524, 9, 120, "Message"],
+Cell[123667, 3047, 81, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[123785, 3053, 158, 4, 35, "Input"],
+Cell[123946, 3059, 74, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[124057, 3065, 163, 4, 35, "Input"],
+Cell[124223, 3071, 386, 7, 63, "Message"],
+Cell[124612, 3080, 77, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[124726, 3086, 147, 4, 35, "Input"],
+Cell[124876, 3092, 376, 7, 63, "Message"],
+Cell[125255, 3101, 370, 7, 63, "Message"],
+Cell[125628, 3110, 162, 2, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[125827, 3117, 147, 4, 35, "Input"],
+Cell[125977, 3123, 162, 2, 42, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[126176, 3130, 81, 2, 46, "Input"],
+Cell[126260, 3134, 55, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[126352, 3140, 137, 3, 35, "Input"],
+Cell[126492, 3145, 177, 3, 46, "Output"]
+}, Open  ]],
+Cell[126684, 3151, 607, 14, 194, "Input"],
+
+Cell[CellGroupData[{
+Cell[127316, 3169, 72, 2, 42, "Input"],
+Cell[127391, 3173, 53, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[127481, 3179, 778, 16, 264, "Input"],
+Cell[128262, 3197, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[128410, 3203, 100, 2, 50, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[128559, 3211, 55, 1, 53, "Section"],
+Cell[128617, 3214, 725, 21, 166, "Text"],
+Cell[129345, 3237, 687, 13, 210, "Input"],
+Cell[130035, 3252, 651, 12, 210, "Input"],
+Cell[130689, 3266, 717, 14, 210, "Input"],
+Cell[131409, 3282, 229, 6, 68, "Text"],
+Cell[131641, 3290, 133, 3, 29, "Output"],
+
+Cell[CellGroupData[{
+Cell[131799, 3297, 72, 2, 42, "Input"],
+Cell[131874, 3301, 53, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[131964, 3307, 72, 2, 42, "Input"],
+Cell[132039, 3311, 53, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[132129, 3317, 71, 2, 30, "Input"],
+Cell[132203, 3321, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[132373, 3329, 721, 14, 210, "Input"],
+Cell[133097, 3345, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[133267, 3353, 1174, 23, 412, "Input"],
+Cell[134444, 3378, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[134614, 3386, 73, 2, 30, "Input"],
+Cell[134690, 3390, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[134838, 3396, 49, 1, 30, "Input"],
+Cell[134890, 3399, 341, 8, 133, "Input"],
+Cell[135234, 3409, 264, 6, 101, "Input"],
+
+Cell[CellGroupData[{
+Cell[135523, 3419, 719, 14, 238, "Input"],
+Cell[136245, 3435, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[136415, 3443, 75, 2, 30, "Input"],
+Cell[136493, 3447, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[136584, 3453, 279, 5, 90, "Input"],
+Cell[136866, 3460, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[137036, 3468, 322, 6, 102, "Input"],
+Cell[137361, 3476, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[137509, 3482, 439, 10, 110, "Input"],
+
+Cell[CellGroupData[{
+Cell[137973, 3496, 685, 13, 218, "Input"],
+Cell[138661, 3511, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[138831, 3519, 75, 2, 30, "Input"],
+Cell[138909, 3523, 54, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[139000, 3529, 663, 13, 218, "Input"],
+Cell[139666, 3544, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[139814, 3550, 112, 2, 35, "Input"],
+
+Cell[CellGroupData[{
+Cell[139951, 3556, 660, 12, 214, "Input"],
+Cell[140614, 3570, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[140762, 3576, 109, 3, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[140896, 3583, 70, 2, 30, "Input"],
+Cell[140969, 3587, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[141139, 3595, 104, 2, 30, "Input"],
+Cell[141246, 3599, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[141394, 3605, 49, 1, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[141480, 3611, 68, 1, 53, "Section"],
+Cell[141551, 3614, 725, 21, 166, "Text"],
+Cell[142279, 3637, 439, 10, 110, "Input"],
+
+Cell[CellGroupData[{
+Cell[142743, 3651, 1131, 22, 365, "Input"],
+Cell[143877, 3675, 133, 3, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[144047, 3683, 81, 2, 30, "Input"],
+Cell[144131, 3687, 133, 3, 29, "Output"]
+}, Open  ]],
+Cell[144279, 3693, 49, 1, 30, "Input"],
+Cell[144331, 3696, 164, 3, 50, "Input"],
+Cell[144498, 3701, 167, 3, 50, "Input"],
+Cell[144668, 3706, 172, 3, 50, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[144889, 3715, 78, 1, 54, "Subtitle"],
+Cell[144970, 3718, 1067, 24, 206, "Input"],
+
+Cell[CellGroupData[{
+Cell[146062, 3746, 88, 2, 30, "Input"],
+Cell[146153, 3750, 3581, 67, 947, "Output"]
+}, Open  ]],
+Cell[149749, 3820, 395, 8, 110, "Input"],
+
+Cell[CellGroupData[{
+Cell[150169, 3832, 67, 1, 43, "Subsubsection"],
+Cell[150239, 3835, 96, 2, 42, "Input"],
+Cell[150338, 3839, 70, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[150433, 3845, 111, 2, 30, "Input"],
+Cell[150547, 3849, 623, 13, 235, "Output"]
+}, Open  ]],
+Cell[151185, 3865, 49, 1, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[151259, 3870, 309, 6, 142, "Input"],
+Cell[151571, 3878, 169, 4, 135, "Output"]
+}, Open  ]],
+Cell[151755, 3885, 189, 5, 99, "Input"],
+
+Cell[CellGroupData[{
+Cell[151969, 3894, 90, 2, 30, "Input"],
+Cell[152062, 3898, 67, 1, 47, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[152166, 3904, 314, 6, 142, "Input"],
+Cell[152483, 3912, 164, 4, 96, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[152684, 3921, 90, 2, 30, "Input"],
+Cell[152777, 3925, 67, 1, 47, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[152881, 3931, 553, 11, 256, "Input"],
+Cell[153437, 3944, 616, 12, 209, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[154090, 3961, 558, 11, 256, "Input"],
+Cell[154651, 3974, 612, 12, 188, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[155312, 3992, 62, 1, 43, "Subsubsection"],
+Cell[155377, 3995, 92, 2, 42, "Input"],
+Cell[155472, 3999, 86, 2, 48, "Input"],
+
+Cell[CellGroupData[{
+Cell[155583, 4005, 111, 2, 30, "Input"],
+Cell[155697, 4009, 709, 14, 270, "Output"]
+}, Open  ]],
+Cell[156421, 4026, 251, 5, 98, "Input"],
+Cell[156675, 4033, 75, 2, 50, "Input"],
+
+Cell[CellGroupData[{
+Cell[156775, 4039, 281, 5, 69, "Input"],
+Cell[157059, 4046, 132, 3, 40, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[157228, 4054, 176, 3, 30, "Input"],
+Cell[157407, 4059, 88, 1, 40, "Output"]
+}, Open  ]],
+Cell[157510, 4063, 2028, 43, 851, "Input"],
+Cell[159541, 4108, 162, 4, 55, "Input"],
+Cell[159706, 4114, 162, 4, 55, "Input"],
+Cell[159871, 4120, 49, 1, 30, "Input"],
+Cell[159923, 4123, 156, 4, 48, "Input"],
+
+Cell[CellGroupData[{
+Cell[160104, 4131, 222, 6, 150, "Input"],
+Cell[160329, 4139, 52, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[160418, 4145, 59, 2, 30, "Input"],
+Cell[160480, 4149, 37, 1, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[160554, 4155, 69, 2, 30, "Input"],
+Cell[160626, 4159, 37, 1, 29, "Output"]
+}, Open  ]],
+Cell[160678, 4163, 496, 12, 294, "Input"],
+Cell[161177, 4177, 1028, 20, 310, "Input"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+
+(***********************************************************************
+End of Mathematica Notebook file.
+***********************************************************************)
+
